@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 
 import static java.awt.Cursor.*;
 
+@SuppressWarnings("serial")
 public class HyperlinkText extends JLabel {
     public HyperlinkText(String hyperlinkText, int xPos, int yPos, Runnable hyperlinkAction) {
         super(hyperlinkText);

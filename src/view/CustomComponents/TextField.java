@@ -10,11 +10,12 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 
-public class TextFieldUsername extends JTextField {
+@SuppressWarnings("serial")
+public class TextField extends JTextField {
     private Shape shape;
     private Color borderColor = UIColors.COLOR_INTERACTIVE;
 
-    public TextFieldUsername() {
+    public TextField() {
         setOpaque(false);
         setBackground(UIColors.COLOR_BACKGROUND);
         setForeground(Color.white);

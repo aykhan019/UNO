@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 
+@SuppressWarnings("serial")
 public class TextFieldPassword extends JPasswordField {
     private Shape shape;
     private Color borderColor = UIColors.COLOR_OUTLINE;
@@ -37,7 +38,7 @@ public class TextFieldPassword extends JPasswordField {
         g2.setColor(borderColor);
         g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, UIUtils.ROUNDNESS, UIUtils.ROUNDNESS);
     }
-
+    
     public boolean contains(int x, int y) {
         if (shape == null || !shape.getBounds().equals(getBounds())) {
             shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, UIUtils.ROUNDNESS, UIUtils.ROUNDNESS);

@@ -8,7 +8,11 @@ import util.ui.UIUtils;
 import java.awt.*;
 
 class ToasterBody extends JPanel {
-    private static final int TOAST_PADDING = 15;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final int TOAST_PADDING = 15;
     private final int toastWidth;
     private final String message;
     private final Color c;
@@ -41,7 +45,7 @@ class ToasterBody extends JPanel {
                 setBounds((panelToToastOn.getWidth() - toastWidth) / 2, getBounds().y + i1, toastWidth, heightOfToast);
                 repaint();
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(5); 
                 } catch (Exception ignored) {
                 }
             }
