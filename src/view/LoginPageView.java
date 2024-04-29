@@ -1,7 +1,11 @@
 package view;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.*;
+	
+import data.UserRepository;
+import model.User;
 import util.constants.*;
 import util.constants.WindowConstants;
 import util.ui.UIUtils;
@@ -31,6 +35,16 @@ public class LoginPageView extends BaseFrame {
      */
     JPanel mainJPanel = getMainJPanel();
     
+    /**
+     * The password field for the login page.
+     */
+    private TextFieldPassword passwordField;
+
+    /**
+     * The username field for the login page.
+     */
+    private TextField usernameField;
+
     /**
      * Constructs a new LoginPageView.
      *
@@ -211,6 +225,8 @@ public class LoginPageView extends BaseFrame {
         usernameField.setBorderColor(UIColors.COLOR_OUTLINE);
         
         mainJPanel.add(usernameField);
+        
+        this.usernameField = usernameField;
     }
 
     /**
@@ -245,10 +261,9 @@ public class LoginPageView extends BaseFrame {
             	
                 passwordField.setForeground(UIColors.COLOR_OUTLINE);
                 passwordField.setBorderColor(UIColors.COLOR_OUTLINE);
-            }
-            
-            
+            }     
         });
+        
         passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -266,6 +281,8 @@ public class LoginPageView extends BaseFrame {
         passwordField.setBorderColor(UIColors.COLOR_OUTLINE);
           
         mainJPanel.add(passwordField);
+        
+        this.passwordField = passwordField;
     }
 
 
@@ -358,6 +375,44 @@ public class LoginPageView extends BaseFrame {
      * Handles the login event.
      */
     private void loginEventHandler() {
-        toaster.warn("Login event");
+        try {
+        	 var username = usernameField.getText().trim();
+             var password = new String(passwordField.getPassword()).trim();
+                          
+             if (username.equals(UITexts.STRING_EMPTY) || username.equals(UITexts.PLACEHOLDER_TEXT_USERNAME)
+              || password.equals(UITexts.STRING_EMPTY) || password.equals(UITexts.PLACEHOLDER_TEXT_PASSWORD)) {
+             	toaster.warn(WarningConstants.FILL_INPUTS_WARNING);
+             	return;
+             }
+        	
+			var users = UserRepository.getUsers();
+			
+			 boolean userExists = false;
+			 // User currentUser; // TODO UNCOMMENT
+             for (User user : users) {
+            	 // currentUser = user;
+                 if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                     userExists = true;
+                     break;
+                 }
+            }
+ 
+            if (userExists) {
+            	toaster.success(UITexts.WELCOME);
+                // System.out.println("User exists, logging in...");
+            	this.dispose();
+            	
+            	new Welcome(UITexts.WELCOME); // test
+            } else {
+            	toaster.error(ErrorConstants.USER_DOES_NOT_EXIST);
+            	// System.out.println("User does not exist");
+            }
+			
+		} catch (IOException e) {
+
+			toaster.error(ErrorConstants.UNKNOWN_ERROR);
+			// TODO logger
+			e.printStackTrace();
+		}
     }
 }

@@ -81,7 +81,7 @@ class ToasterBody extends JPanel {
 
     public void setyPos(int yPos) {
         this.yPos = yPos;
-//        setBounds((panelToToastOn.getWidth() - toastWidth) / 2, yPos, toastWidth, heightOfToast);
+        // setBounds((panelToToastOn.getWidth() - toastWidth) / 2, yPos, toastWidth, heightOfToast);
 
         new Thread(() -> {
             while (getBounds().y > yPos) {

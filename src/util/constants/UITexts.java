@@ -7,6 +7,7 @@ public class UITexts {
     public static final String PLACEHOLDER_TEXT_USERNAME = "Username";
     public static final String PLACEHOLDER_TEXT_PASSWORD = "Password";
     public static final String PLACEHOLDER_TEXT_EMAIL = "Email";
+    public static final String WELCOME = "Welcome!";
     public static final String LOGIN_PAGE_TEXT = "Login to your account";
     public static final String REGISTRATION_PAGE_TEXT = "Create your account";
     public static final String STRING_EMPTY = "";

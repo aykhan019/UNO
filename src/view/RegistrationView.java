@@ -2,6 +2,9 @@ package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import data.UserRepository;
+import model.User;
 import util.constants.*;
 import util.constants.WindowConstants;
 import util.ui.UIUtils;
@@ -13,6 +16,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * The login page view of the application.
@@ -30,6 +34,21 @@ public class RegistrationView extends BaseFrame {
      * The main JPanel of the login page.
      */
     JPanel mainJPanel = getMainJPanel();
+    
+    /**
+     * The password field for the login page.
+     */
+    private TextFieldPassword passwordField;
+
+    /**
+     * The username field for the login page.
+     */
+    private TextField usernameField;
+    /**
+     * 
+     * The email field for the login page.
+     */
+    private TextField emailField;
     
     /**
      * Constructs a new LoginPageView.
@@ -209,6 +228,8 @@ public class RegistrationView extends BaseFrame {
     	emaailField.setBorderColor(UIColors.COLOR_OUTLINE);
     	
         mainJPanel.add(emaailField);
+        
+        this.emailField = emaailField;
     }      
     /**
      * Adds the username text field to the login page.
@@ -242,6 +263,8 @@ public class RegistrationView extends BaseFrame {
         usernameField.setBorderColor(UIColors.COLOR_OUTLINE);
                 
         mainJPanel.add(usernameField);
+        
+        this.usernameField = usernameField;
     }
 
     /**
@@ -286,7 +309,7 @@ public class RegistrationView extends BaseFrame {
         		passwordField.setEchoChar('*');
 
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    loginEventHandler();
+                	registerEventHandler();
                 }
             }
         });
@@ -297,6 +320,8 @@ public class RegistrationView extends BaseFrame {
         passwordField.setBorderColor(UIColors.COLOR_OUTLINE);
           
         mainJPanel.add(passwordField);
+        
+        this.passwordField = passwordField;
     }
 
 
@@ -331,7 +356,7 @@ public class RegistrationView extends BaseFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                loginEventHandler();
+            	registerEventHandler();
             }
 
             @Override
@@ -365,21 +390,73 @@ public class RegistrationView extends BaseFrame {
      */
     private void addLoginButton() {
         mainJPanel.add(new HyperlinkText(UITexts.BUTTON_TEXT_LOGIN, 940, 469, () -> {
-            toaster.success("Login event");
             try {
 				this.dispose();
 				new LoginPageView();
 			} catch (Throwable e) {
-				// TODO Auto-generated catch block
+				// TODO logger
 				e.printStackTrace();
 			}
         }));
     }
+    
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     /**
      * Handles the login event.
      */
-    private void loginEventHandler() {
-        toaster.warn("Login event");
+    private void registerEventHandler() {
+        try {
+            var email = emailField.getText().trim();
+            var username = usernameField.getText().trim();
+            var password = new String(passwordField.getPassword()).trim();
+
+            if (email.equals(UITexts.PLACEHOLDER_TEXT_EMAIL)
+                    || username.equals(UITexts.PLACEHOLDER_TEXT_USERNAME)
+                    || password.equals(UITexts.BUTTON_TEXT_FORGOT_PASS)) {
+                toaster.error(ErrorConstants.INVALID_FIELD_VALUE);
+                return;
+            }
+
+            if (email.isEmpty() ||
+                    username.isEmpty() ||
+                    password.isEmpty()) {
+                toaster.error(ErrorConstants.EMPTY_FIELD);
+                return;
+            }
+
+            if (!Pattern.matches(EMAIL_REGEX, email)) {
+                toaster.error(ErrorConstants.INVALID_EMAIL_FORMAT);
+                return;
+            }
+
+            if (email.contains(FileConstants.USER_DATA_SEPARATOR)
+                    || username.contains(FileConstants.USER_DATA_SEPARATOR)
+                    || password.contains(FileConstants.USER_DATA_SEPARATOR)) {
+                toaster.error(ErrorConstants.INVALID_CHARACTER);
+                return;
+            }
+
+            if (UserRepository.emailExists(email)) {
+                toaster.error(ErrorConstants.EMAIL_USED);
+                return;
+            }
+
+            if (UserRepository.usernameTaken(username)) {
+                toaster.error(ErrorConstants.USERNAME_TAKEN);
+                return;
+            }
+
+            var currentUser = new User(username, email, password);
+            UserRepository.addUser(currentUser);
+
+            toaster.success(UITexts.WELCOME);
+
+        } catch (IOException e) {
+            toaster.error(ErrorConstants.UNKNOWN_ERROR);
+            // TODO logger
+            e.printStackTrace();
+        }
     }
+
 }

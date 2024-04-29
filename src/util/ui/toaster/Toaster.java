@@ -11,6 +11,7 @@ public class Toaster {
     private static ToasterBody currentToast = null;
     private final JPanel panelToToastOn;
     private final AtomicBoolean isShowingToast = new AtomicBoolean(false);
+    private Thread displayThread;
 
     public Toaster(JPanel panelToToastOn) {
         this.panelToToastOn = panelToToastOn;
@@ -48,21 +49,27 @@ public class Toaster {
 
             if (currentToast != null) {
                 removeToast(currentToast);
+                // Interrupt the thread responsible for displaying the old toast
+                if (displayThread != null && displayThread.isAlive()) {
+                    displayThread.interrupt();
+                }
             }
 
             currentToast = toasterBody;
 
-            new Thread(() -> {
+            displayThread = new Thread(() -> {
                 panelToToastOn.add(toasterBody, 0);
                 panelToToastOn.repaint();
 
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(2500);
                     removeToast(toasterBody);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Thread interrupted, just exit
+                    return;
                 }
-            }).start();
+            });
+            displayThread.start();
         }
     }
 

@@ -1,0 +1,10 @@
+dcd496c2-6720-4c6e-a239-b7bb86e1fc98:JohnDoe:johndoe@example.com:password123
+a06fa77d-c5f0-4472-b696-d35ba65cc6be:AliceSmith:alice.smith@example.com:abc123
+dc201363-8104-479a-82c4-ce3613838d54:RobertJohnson:robert.johnson@example.com:P@ssw0rd
+83626faf-c174-4123-978e-a07951895a29:EmilyBrown:emily.brown@example.com:securepass
+4c5cc330-dc19-4977-a7a8-e332ad5c1892:MichaelWilson:michael.wilson@example.com:password1234
+451d0559-95f9-469a-9ade-186c09558c87:aykhan:aykhan@example.com:letmein
+1775acfa-c9d7-4792-b5f6-681099d7e117:DavidAnderson:david.anderson@example.com:david123
+13b00768-f830-4767-ba4f-5dcdd52ed76f:SophiaMartinez:sophia.martinez@example.com:sophia123
+c22eba5c-8b23-4eab-a73e-f126e2b00ec1:OliviaHernandez:olivia.hernandez@example.com:welcome123
+77263f31-03c5-474a-95d8-d61ca1deb1bf:WilliamGarcia:william.garcia@example.com:garcia123
