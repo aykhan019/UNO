@@ -18,7 +18,7 @@ public class TextField extends JTextField {
     public TextField() {
         setOpaque(false);
         setBackground(UIColors.COLOR_BACKGROUND);
-        setForeground(Color.white);
+        setForeground(UIColors.OFFBLACK);
         setCaretColor(Color.white);
         setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         setMargin(new Insets(2, 10, 2, 2));

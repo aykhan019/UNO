@@ -84,54 +84,70 @@ public class LoginPageView extends BaseFrame {
      *
      * @return The main JPanel for the login page.
      */
-    private JPanel getMainJPanel() {
+	private JPanel getMainJPanel() {
+	    JPanel panel1 = new JPanel() {
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
+	            Graphics2D g2d = (Graphics2D) g.create();
+
+	            Color color1 = new Color(20, 136, 204); 
+	            Color color2 = new Color(43, 50, 178); 
+
+	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
+
+	            g2d.setPaint(gradient);
+	            g2d.fillRect(0, 0, getWidth(), getHeight());
+
+	            g2d.dispose();
+	        }
+	    };
+
 	    Dimension size = new Dimension(WindowConstants.DEFAULT_WINDOW_WIDTH, WindowConstants.DEFAULT_WINDOW_HEIGHT);
-	    JPanel panel1 = new JPanel(new BorderLayout()); 
 	    panel1.setPreferredSize(size);
-        panel1.setSize(size);
-        panel1.setPreferredSize(size);
-        panel1.setBackground(UIColors.COLOR_BACKGROUND);
-        panel1.setLayout(null);
+	    panel1.setSize(size);
+	    panel1.setPreferredSize(size);
+	    panel1.setLayout(null);
 
-        MouseAdapter ma = new MouseAdapter() {
-            int lastX, lastY;
+	    MouseAdapter ma = new MouseAdapter() {
+	        int lastX, lastY;
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                lastX = e.getXOnScreen();
-                lastY = e.getYOnScreen();
-            }
+	        @Override
+	        public void mousePressed(MouseEvent e) {
+	            lastX = e.getXOnScreen();
+	            lastY = e.getYOnScreen();
+	        }
 
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int x = e.getXOnScreen();
-                int y = e.getYOnScreen();
-                setLocation(getLocationOnScreen().x + x - lastX, getLocationOnScreen().y + y - lastY);
-                lastX = x;
-                lastY = y;
-            }
-        };
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+	            int x = e.getXOnScreen();
+	            int y = e.getYOnScreen();
+	            setLocation(getLocationOnScreen().x + x - lastX, getLocationOnScreen().y + y - lastY);
+	            lastX = x;
+	            lastY = y;
+	        }
+	    };
 
-        panel1.addMouseListener(ma);
-        panel1.addMouseMotionListener(ma);
+	    panel1.addMouseListener(ma);
+	    panel1.addMouseMotionListener(ma);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+	    addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            System.exit(0);
+	        }
+	    });
 
-        return panel1;
-    }
-    
+	    return panel1;
+	}
+
     /**
      * Adds the login text label to the login page.
      */
     private void addLoginText() {
         JLabel loginLabel = new JLabel(UITexts.LOGIN_PAGE_TEXT);
         loginLabel.setFont(UIFonts.FONT_GENERAL_UI);
-        loginLabel.setForeground(UIColors.OFFWHITE);
+        loginLabel.setForeground(UIColors.OFFWHITE	);
         loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loginLabel.setBounds(670, 190, 300, 50);
         mainJPanel.add(loginLabel);
@@ -158,7 +174,7 @@ public class LoginPageView extends BaseFrame {
     	    int originalWidth = backgroundImage.getWidth(null);
     	    int originalHeight = backgroundImage.getHeight(null);
 
-    	    int targetWidth = 500;
+    	    int targetWidth = 450;
     	    int targetHeight = 250;
     	    
     	    int newWidth = originalWidth;
@@ -206,7 +222,7 @@ public class LoginPageView extends BaseFrame {
                 if (usernameField.getText().equals(UITexts.PLACEHOLDER_TEXT_USERNAME)) {
                     usernameField.setText(UITexts.STRING_EMPTY);
                 }
-                usernameField.setForeground(Color.white);
+                usernameField.setForeground(UIColors.OFFBLACK);
                 usernameField.setBorderColor(UIColors.COLOR_INTERACTIVE);
             }
 
@@ -244,7 +260,7 @@ public class LoginPageView extends BaseFrame {
             	if (passwordField.getText().equals(UITexts.PLACEHOLDER_TEXT_PASSWORD)) {
             		passwordField.setText(UITexts.STRING_EMPTY);
             	}
-                passwordField.setForeground(Color.white);
+                passwordField.setForeground(UIColors.OFFBLACK);
                 passwordField.setBorderColor(UIColors.COLOR_INTERACTIVE);
             }
 
@@ -323,14 +339,14 @@ public class LoginPageView extends BaseFrame {
              @Override
              public void mouseEntered(MouseEvent e) {
                  loginButtonColors[0] = UIColors.COLOR_INTERACTIVE_DARKER;
-                 loginButtonColors[1] = UIColors.OFFWHITE;
+                 //loginButtonColors[1] = UIColors.OFFBLACK;
                  loginButton.repaint();
              }
 
              @Override
              public void mouseExited(MouseEvent e) {
                  loginButtonColors[0] = UIColors.COLOR_INTERACTIVE;
-                 loginButtonColors[1] = Color.white;
+                 //loginButtonColors[1] = Color.white;
                  loginButton.repaint();
              }
          });
@@ -350,26 +366,58 @@ public class LoginPageView extends BaseFrame {
      * Adds the forgot password button to the login page.
      */
     private void addForgotPasswordButton() {
-        mainJPanel.add(new HyperlinkText(UITexts.BUTTON_TEXT_FORGOT_PASS, 670, 439, () -> {
-            toaster.error("There is nothing I can do.");
-        }));
+    	HyperlinkText forgotPasswordLink = new HyperlinkText(UITexts.BUTTON_TEXT_FORGOT_PASS, 670, 439, () -> {
+    	    toaster.error("There is nothing I can do.");
+    	});
+
+    	forgotPasswordLink.setForeground(UIColors.OFFWHITE); 
+
+
+    	forgotPasswordLink.addMouseListener(new MouseAdapter() {
+    	    @Override
+    	    public void mouseEntered(MouseEvent e) {
+    	        forgotPasswordLink.setForeground(UIColors.COLOR_INTERACTIVE); 
+    	    }
+
+    	    @Override
+    	    public void mouseExited(MouseEvent e) {
+    	        forgotPasswordLink.setForeground(UIColors.OFFWHITE);
+    	    }
+    	});
+    	
+    	mainJPanel.add(forgotPasswordLink);
     }
 
     /**
      * Adds the register button to the login page.
      */
     private void addRegisterButton() {
-        mainJPanel.add(new HyperlinkText(UITexts.BUTTON_TEXT_REGISTER, 925, 439, () -> {
-            toaster.success("Register event");
+        HyperlinkText registerLink = new HyperlinkText(UITexts.BUTTON_TEXT_REGISTER, 925, 439, () -> {
             try {
-				this.dispose();
-				new RegistrationView();
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }));
+                this.dispose();
+                new RegistrationView();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        });
+
+        registerLink.setForeground(UIColors.OFFWHITE); 
+
+        registerLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                registerLink.setForeground(UIColors.COLOR_INTERACTIVE); 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                registerLink.setForeground(UIColors.OFFWHITE); 
+            }
+        });
+
+        mainJPanel.add(registerLink);
     }
+
 
     /**
      * Handles the login event.

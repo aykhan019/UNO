@@ -18,8 +18,8 @@ public class TextFieldPassword extends JPasswordField {
     public TextFieldPassword() {
         setOpaque(false);
         setBackground(UIColors.COLOR_BACKGROUND);
-        setForeground(Color.white);
-        setCaretColor(Color.white);
+        setForeground(UIColors.OFFBLACK);
+        setCaretColor(UIColors.OFFBLACK);
         setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         setMargin(new Insets(2, 10, 2, 2));
         setHorizontalAlignment(SwingConstants.LEFT);

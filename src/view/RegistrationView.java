@@ -56,7 +56,7 @@ public class RegistrationView extends BaseFrame {
      * @param backgroundImage The path to the background image.
      */
     public RegistrationView() {
-        super(WindowConstants.LOGIN_WINDOW_TITLE);
+        super(WindowConstants.REGISTRATION_WINDOW_TITLE);
         toaster = new Toaster(mainJPanel);
         initializeFrame();
     }
@@ -88,46 +88,62 @@ public class RegistrationView extends BaseFrame {
      *
      * @return The main JPanel for the login page.
      */
-    private JPanel getMainJPanel() {
+	private JPanel getMainJPanel() {
+	    JPanel panel1 = new JPanel() {
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
+	            Graphics2D g2d = (Graphics2D) g.create();
+
+	            Color color1 = new Color(43, 50, 178); 
+	            Color color2 = new Color(20, 136, 204); 
+
+	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
+
+	            g2d.setPaint(gradient);
+	            g2d.fillRect(0, 0, getWidth(), getHeight());
+
+	            g2d.dispose();
+	        }
+	    };
+
 	    Dimension size = new Dimension(WindowConstants.DEFAULT_WINDOW_WIDTH, WindowConstants.DEFAULT_WINDOW_HEIGHT);
-	    JPanel panel1 = new JPanel(new BorderLayout()); 
 	    panel1.setPreferredSize(size);
-        panel1.setSize(size);
-        panel1.setPreferredSize(size);
-        panel1.setBackground(UIColors.COLOR_BACKGROUND);
-        panel1.setLayout(null);
+	    panel1.setSize(size);
+	    panel1.setPreferredSize(size);
+	    panel1.setLayout(null);
 
-        MouseAdapter ma = new MouseAdapter() {
-            int lastX, lastY;
+	    MouseAdapter ma = new MouseAdapter() {
+	        int lastX, lastY;
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                lastX = e.getXOnScreen();
-                lastY = e.getYOnScreen();
-            }
+	        @Override
+	        public void mousePressed(MouseEvent e) {
+	            lastX = e.getXOnScreen();
+	            lastY = e.getYOnScreen();
+	        }
 
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int x = e.getXOnScreen();
-                int y = e.getYOnScreen();
-                setLocation(getLocationOnScreen().x + x - lastX, getLocationOnScreen().y + y - lastY);
-                lastX = x;
-                lastY = y;
-            }
-        };
+	        @Override
+	        public void mouseDragged(MouseEvent e) {
+	            int x = e.getXOnScreen();
+	            int y = e.getYOnScreen();
+	            setLocation(getLocationOnScreen().x + x - lastX, getLocationOnScreen().y + y - lastY);
+	            lastX = x;
+	            lastY = y;
+	        }
+	    };
 
-        panel1.addMouseListener(ma);
-        panel1.addMouseMotionListener(ma);
+	    panel1.addMouseListener(ma);
+	    panel1.addMouseMotionListener(ma);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+	    addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            System.exit(0);
+	        }
+	    });
 
-        return panel1;
-    }
+	    return panel1;
+	}
         
     /**
      * Adds the login text label to the login page.
@@ -209,7 +225,7 @@ public class RegistrationView extends BaseFrame {
                 if (emaailField.getText().equals(UITexts.PLACEHOLDER_TEXT_EMAIL)) {
                 	emaailField.setText(UITexts.STRING_EMPTY);
                 }
-                emaailField.setForeground(Color.white);
+                emaailField.setForeground(UIColors.OFFBLACK);
                 emaailField.setBorderColor(UIColors.COLOR_INTERACTIVE);
             }
 
@@ -244,7 +260,7 @@ public class RegistrationView extends BaseFrame {
                 if (usernameField.getText().equals(UITexts.PLACEHOLDER_TEXT_USERNAME)) {
                     usernameField.setText(UITexts.STRING_EMPTY);
                 }
-                usernameField.setForeground(Color.white);
+                usernameField.setForeground(UIColors.OFFBLACK);
                 usernameField.setBorderColor(UIColors.COLOR_INTERACTIVE);
             }
 
@@ -282,7 +298,7 @@ public class RegistrationView extends BaseFrame {
             	if (passwordField.getText().equals(UITexts.PLACEHOLDER_TEXT_PASSWORD)) {
             		passwordField.setText(UITexts.STRING_EMPTY);
             	}
-                passwordField.setForeground(Color.white);
+                passwordField.setForeground(UIColors.OFFBLACK);
                 passwordField.setBorderColor(UIColors.COLOR_INTERACTIVE);
             }
 
@@ -389,15 +405,30 @@ public class RegistrationView extends BaseFrame {
      * Adds the register button to the login page.
      */
     private void addLoginButton() {
-        mainJPanel.add(new HyperlinkText(UITexts.BUTTON_TEXT_LOGIN, 940, 469, () -> {
+        HyperlinkText registerLink = new HyperlinkText(UITexts.BUTTON_TEXT_LOGIN, 940, 469, () -> {
             try {
-				this.dispose();
-				new LoginPageView();
-			} catch (Throwable e) {
-				// TODO logger
-				e.printStackTrace();
-			}
-        }));
+                this.dispose();
+                new LoginPageView();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        });
+
+        registerLink.setForeground(UIColors.OFFWHITE); 
+
+        registerLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                registerLink.setForeground(UIColors.COLOR_INTERACTIVE); 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                registerLink.setForeground(UIColors.OFFWHITE); 
+            }
+        });
+
+        mainJPanel.add(registerLink);
     }
     
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -414,7 +445,7 @@ public class RegistrationView extends BaseFrame {
             if (email.equals(UITexts.PLACEHOLDER_TEXT_EMAIL)
                     || username.equals(UITexts.PLACEHOLDER_TEXT_USERNAME)
                     || password.equals(UITexts.BUTTON_TEXT_FORGOT_PASS)) {
-                toaster.error(ErrorConstants.INVALID_FIELD_VALUE);
+                toaster.warn(WarningConstants.FILL_INPUTS_WARNING);
                 return;
             }
 
