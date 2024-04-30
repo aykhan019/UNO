@@ -1,6 +1,7 @@
 package util.ui;
 
 import java.awt.*;
+import java.io.File;
 import java.util.HashMap;
 
 public class UIUtils {
@@ -18,5 +19,16 @@ public class UIUtils {
             put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         }});
         return g2;
+    }
+    
+    public static Font loadCustomFont(String path) {
+        try {
+            File fontFile = new File(path);
+            return Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 14);
+        } catch (Exception e) {
+        	// TODO logger
+            e.printStackTrace();
+            return null;
+        }
     }
 }

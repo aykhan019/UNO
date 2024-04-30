@@ -424,9 +424,13 @@ public class LoginPageView extends BaseFrame {
      */
     private void loginEventHandler() {
         try {
-        	 var username = usernameField.getText().trim();
-             var password = new String(passwordField.getPassword()).trim();
-                          
+        	//TODO
+        	//var username = usernameField.getText().trim();
+            //var password = new String(passwordField.getPassword()).trim();
+        	
+        	var username = "aykhan";
+            var password = "letmein";
+            
              if (username.equals(UITexts.STRING_EMPTY) || username.equals(UITexts.PLACEHOLDER_TEXT_USERNAME)
               || password.equals(UITexts.STRING_EMPTY) || password.equals(UITexts.PLACEHOLDER_TEXT_PASSWORD)) {
              	toaster.warn(WarningConstants.FILL_INPUTS_WARNING);
@@ -450,7 +454,7 @@ public class LoginPageView extends BaseFrame {
                 // System.out.println("User exists, logging in...");
             	this.dispose();
             	
-            	new Welcome(UITexts.WELCOME); // test
+            	new LeaderboardView(WindowConstants.LEADERBOARD_WINDOW_TITLE); // test
             } else {
             	toaster.error(ErrorConstants.USER_DOES_NOT_EXIST);
             	// System.out.println("User does not exist");

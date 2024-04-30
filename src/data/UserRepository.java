@@ -66,4 +66,14 @@ public class UserRepository {
         	 + user.getEmail() + FileConstants.USER_DATA_SEPARATOR
         	 + user.getPassword();
     }
+
+	public static User getUserById(String userId) throws IOException {
+		var users = getUsers();
+		for (var user : users) {
+			if (user.getId().equals(userId)) {
+				return user;
+			}
+		}
+		return null;
+	}
 }

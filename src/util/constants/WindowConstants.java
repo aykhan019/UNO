@@ -10,4 +10,7 @@ public class WindowConstants {
 	 
 	 public static final String LOGIN_WINDOW_TITLE = "UNO Game Simulation | Login";
 	 public static final String REGISTRATION_WINDOW_TITLE = "UNO Game Simulation | Registration";
+	 
+	 public static final String LEADERBOARD_WINDOW_TITLE = "UNO Game Simulation | Leaderboard";
+
 }

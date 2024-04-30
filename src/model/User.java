@@ -8,12 +8,10 @@ public class User {
 	private String email;
 	private String password;
 	
-	public User() {
-		
-	}
+	public User() { }
 	
 	public User(String username, String email, String password) {
-		generateId();
+		id = UUID.randomUUID().toString();	
 		setUsername(username);
 		setEmail(email);
 		setPassword(password);
@@ -32,10 +30,6 @@ public class User {
 	
 	public void setId(String id) {
 		this.id = id;
-	}
-	
-	public void generateId() {
-		id = UUID.randomUUID().toString();
 	}
 	
 	public String getUsername() {
