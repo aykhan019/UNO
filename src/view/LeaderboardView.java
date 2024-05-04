@@ -1,171 +1,283 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import data.UserRepository;
 import data.UserStatisticRepository;
+import model.User;
 import model.UserStatistic;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
+import util.constants.UIColors;
+import util.constants.UITexts;
+import util.constants.WindowConstants;
 import util.ui.UIUtils;
+import view.CustomComponents.ButtonWithImage;
 
+/**
+ * The leaderboard page view of the application.
+ * This class represents the graphical user interface for the leaderboard functionality.
+ */
 @SuppressWarnings("serial")
 public class LeaderboardView extends BaseFrame {
-    private JScrollPane scrollPane;
-    private JPanel leaderboardPanel;
-    private final int ROW_HEIGHT = 100; // Constant row height
-    private final int ROW_WIDTH = 500; // Constant row width
+    /**
+     * The main JPanel of the leaderboard page.
+     */
+	private JPanel leaderboardPanel;
+	
+	 /**
+     * The main font of the leaderboard page.
+     */
+    private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
 
-    public LeaderboardView(String title) {
-        super(title);
-        initializeFrame();
-        
-	        
+    /**
+     * Constructs a new LeaderboardView.
+     */
+	public LeaderboardView() {
+		super(WindowConstants.LEADERBOARD_WINDOW_TITLE);
+		initializeFrame();
+	}
+	
+	 /**
+     * Initializes the frame components.
+     */
+	@Override
+	void initializeFrame() {
+	    JPanel backgroundPanel = new JPanel(new BorderLayout()) {
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
+
+	            Graphics2D g2d = (Graphics2D) g.create();
+
+	            Color color1 = new Color(20, 136, 204); 
+	            Color color2 = new Color(43, 50, 178); 
+
+	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
+
+	            g2d.setPaint(gradient);
+	            g2d.fillRect(0, 0, getWidth(), getHeight());
+
+	            g2d.dispose();
+	        }
+	    };
+	    backgroundPanel.setOpaque(false);
+	    setContentPane(backgroundPanel);
+
+	    leaderboardPanel = new JPanel(new BorderLayout());
+
+	    ImageIcon icon = new ImageIcon(ImagePath.BACK_ICON);
+	    Image image = icon.getImage();
+	    Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+	    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+	    ButtonWithImage backButton = new ButtonWithImage(scaledIcon, 50, 50);
+
+	    backButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+		         // TODO
+	        }
+	    });
+
+	    JLabel titleLabel = new JLabel(UITexts.LEADERBOARD_HEADLINE.toUpperCase());
+	    titleLabel.setFont(customFont.deriveFont(Font.PLAIN, 32));
+	    titleLabel.setForeground(UIColors.OFFWHITE);
+	    titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 390, 0, 0));
+
+	    JPanel titlePanel = new JPanel(new BorderLayout());
+	    titlePanel.setOpaque(false);
+	    titlePanel.setForeground(UIColors.OFFBLACK);    
+	    titlePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+	    titlePanel.add(backButton, BorderLayout.WEST);
+	    titlePanel.add(titleLabel, BorderLayout.CENTER);
+
+	    backgroundPanel.add(titlePanel, BorderLayout.NORTH);
+
+	    try {
+	        displayLeaderboard();
+	        setVisible(true);
+	    } catch (IOException e) {
+	    	// TODO logger
+	        e.printStackTrace();
+	    }
+	}
+
+	 /**
+     * Display the leaderboard table.
+     */
+	private void displayLeaderboard() throws IOException {
+	    leaderboardPanel.removeAll();
+
+	    List<UserStatistic> userStatisticsList = UserStatisticRepository.getUserStatistics();
+	    Collections.sort(userStatisticsList, Comparator.comparingInt(UserStatistic::getTotalScore).reversed());
+
+	    DefaultTableModel model = new DefaultTableModel();
+	    model.addColumn(UITexts.LEADERBOARD_COLUMN_RANK);
+	    model.addColumn(UITexts.LEADERBOARD_COLUMN_USERNAME);
+	    model.addColumn(UITexts.LEADERBOARD_COLUMN_SCORE);
+
+	    int rank = 1;
+	    for (UserStatistic userStatistic : userStatisticsList) {
+	        var user = UserRepository.getUserById(userStatistic.getUserId());
+	        String username = user != null ? user.getUsername() : UITexts.UNKNOWN;
+
+	        model.addRow(new Object[]{rank, username, userStatistic.getTotalScore()});
+	        rank++;
+	    }
+
+	    JTable leaderboardTable = new JTable(model) {
+	        @Override
+	        public boolean getScrollableTracksViewportWidth() {
+	            return getPreferredSize().width < getParent().getWidth();
+	        }
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+
+	        @Override
+	        public TableCellRenderer getCellRenderer(int row, int column) {
+	            return new DefaultTableCellRenderer() {
+	                @Override
+	                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	                    ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+
+                       if (row == 0) {
+	                        c.setForeground(new Color(249,161,20)); // Gold
+	                    } else if (row == 1) {
+	                        c.setForeground(new Color(192,192,192)); // Silver
+	                    } else if (row == 2) {
+	                        c.setForeground(new Color(205,127,50)); // Bronze
+	                    } else {
+	                        c.setForeground(Color.WHITE); 
+	                    }
+	                    
+	                    return c;
+	                }
+	            };
+	        }
+	    };
 	    
-    }
+	    leaderboardTable.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	                JTable target = (JTable)e.getSource();
+	                int row = target.getSelectedRow();
 
-    @Override
-    void initializeFrame() {
-        // Create a JPanel with gradient background
-        JPanel backgroundPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g.create();
+	                UserStatistic selectedUserStatistic = userStatisticsList.get(row);
 
-                Color color1 = new Color(20, 136, 204); // First color of the gradient
-                Color color2 = new Color(43, 50, 178); // Second color of the gradient
+	                try {
+	                    User selectedUser = UserRepository.getUserById(selectedUserStatistic.getUserId());
+	                    new UserProfileView(selectedUser);
+	                } catch (IOException ex) {
+	                    // TODO: Handle exception
+	                    ex.printStackTrace();
+	                }
+	            }
+	        }
 
-                GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            leaderboardTable.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	        }
 
-                g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            leaderboardTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	        }
+	    });
 
-                g2d.dispose();
-            }
-        };
+	    leaderboardTable.setFont(customFont.deriveFont(Font.PLAIN, 20));
+	    leaderboardTable.setForeground(Color.WHITE);
+	    leaderboardTable.setBackground(new Color(20, 136, 204));
+	    leaderboardTable.setRowHeight(50);
+	    leaderboardTable.getTableHeader().setFont(customFont.deriveFont(Font.BOLD, 25));
+	    leaderboardTable.getTableHeader().setForeground(Color.WHITE);
+	    leaderboardTable.getTableHeader().setBackground(Color.BLACK);
+	    leaderboardTable.getTableHeader()
+	            .setPreferredSize(new Dimension(leaderboardTable.getColumnModel().getTotalColumnWidth(), 50));
 
-        // Set the layout for the background panel
-        backgroundPanel.setLayout(new BorderLayout());
+	    JScrollPane leaderboardScrollPane = new JScrollPane(leaderboardTable);
+	    leaderboardScrollPane.setPreferredSize(new Dimension(800, 500));
+	    leaderboardScrollPane.setBackground(new Color(20, 136, 204));
 
-        // Set the content pane of LeaderboardView to the background panel
-        setContentPane(backgroundPanel);
+	    leaderboardScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+	        @Override
+	        protected void configureScrollBarColors() {
+	            this.thumbColor = new Color(255, 255, 255, 100);
+	            this.thumbDarkShadowColor = new Color(255, 255, 255, 150);
+	            this.thumbHighlightColor = new Color(255, 255, 255, 100);
+	            this.thumbLightShadowColor = new Color(255, 255, 255, 100);
+	            this.trackColor = new Color(20, 136, 204);
+	            this.trackHighlightColor = new Color(43, 50, 178);
+	        }
 
-        // Create leaderboard panel
-        leaderboardPanel = new JPanel();
-        leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
+	        @Override
+	        protected JButton createDecreaseButton(int orientation) {
+	            return createZeroButton();
+	        }
 
-        // Create scroll pane and add leaderboard panel to it
-        scrollPane = new JScrollPane(leaderboardPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
+	        @Override
+	        protected JButton createIncreaseButton(int orientation) {
+	            return createZeroButton();
+	        }
 
-        // Add scroll pane to background panel
-        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+	        private JButton createZeroButton() {
+	            JButton button = new JButton();
+	            button.setPreferredSize(new Dimension(0, 0));
+	            button.setMinimumSize(new Dimension(0, 0));
+	            button.setMaximumSize(new Dimension(0, 0));
+	            return button;
+	        }
+	    });
 
-        // Load and display leaderboard data
-        try {
-            displayLeaderboard();
-            setVisible(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading leaderboard data.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    private void setBackgroundImage(String imagePath) {
-        // Code to set background image
-    }
+	    JPanel tablePanel = new JPanel(new BorderLayout()) {
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
 
-    private void displayLeaderboard() throws IOException {
-        List<UserStatistic> userStatisticsList = UserStatisticRepository.getUserStatistics();
-        
-        var counter = 0;
-        Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath); // Load custom font
-    	
-        
-        for (UserStatistic userStatistic : userStatisticsList) {
-            var user = UserRepository.getUserById(userStatistic.getUserId());
+	            Graphics2D g2d = (Graphics2D) g.create();
 
-            JPanel rowPanel = new JPanel();
-            rowPanel.setPreferredSize(new Dimension(750, ROW_HEIGHT)); // Reduced width of the row
-            rowPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Added border color
-            rowPanel.setBackground(counter % 2 == 0 ? new Color(20, 136, 204) : new Color(43, 50, 178)); // Alternating row colors
-            rowPanel.setBorder(BorderFactory.createEmptyBorder(20,70, 20, 70)); // Added padding
+	            Color color1 = new Color(20, 136, 204); // First color of the gradient
+	            Color color2 = new Color(43, 50, 178); // Second color of the gradien
 
-            rowPanel.setLayout(new BorderLayout()); // Use BorderLayout for rowPanel
-            
-            // Create a panel for the first three properties (rank, user image, username)
-            JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); // Left-aligned layout with horizontal gap
-            leftPanel.setOpaque(false); // Make the panel transparent
+	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
 
-            JLabel rankLabel = new JLabel(Integer.toString(counter + 1));
-            rankLabel.setForeground(Color.WHITE);
-            rankLabel.setFont(customFont.deriveFont(Font.PLAIN, 35)); // Apply custom font
-            rankLabel.setBorder(BorderFactory.createEmptyBorder(0,0, 0, 50)); // Added padding
-            rankLabel.setSize(75, 75);
-            rankLabel.setBackground(Color.gray);
-            rankLabel.repaint();a
-            leftPanel.add(rankLabel);
+	            g2d.setPaint(gradient);
+	            g2d.fillRect(0, 0, getWidth(), getHeight());
 
-            // Load and display user image
-            ImageIcon userImageIcon = getUserImage(userStatistic.getUserId());
-            if (userImageIcon != null) {
-                // Resize the ImageIcon to a fixed size
-                int imageSize = 50; // Set the desired size for the user image
-                Image scaledImage = userImageIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
-                ImageIcon scaledUserImageIcon = new ImageIcon(scaledImage);
-
-                JLabel userImageLabel = new JLabel(scaledUserImageIcon);
-                leftPanel.add(userImageLabel);
-            } else {
-                // Handle case where user image is not available
-                JLabel noImageLabel = new JLabel("No Image");
-                leftPanel.add(noImageLabel);
-            }
-
-            JLabel nameLabel = new JLabel(user.getUsername());
-            nameLabel.setForeground(Color.WHITE);
-            nameLabel.setFont(customFont.deriveFont(Font.PLAIN, 20)); // Apply custom font
-            leftPanel.add(nameLabel);
-
-            // Add the left panel to the row panel at the BorderLayout.WEST position
-            rowPanel.add(leftPanel, BorderLayout.WEST);
-            
-            // Create a panel for the fourth property (total score)
-            JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); // Right-aligned layout with horizontal gap
-            rightPanel.setOpaque(false); // Make the panel transparent
-
-            JLabel totalScoreLabel = new JLabel(Integer.toString(userStatistic.getTotalScore()));
-            totalScoreLabel.setForeground(Color.WHITE);
-            totalScoreLabel.setFont(customFont.deriveFont(Font.PLAIN, 20)); // Apply custom font
-            rightPanel.add(totalScoreLabel);
-
-            // Add the right panel to the row panel at the BorderLayout.EAST position
-            rowPanel.add(rightPanel, BorderLayout.EAST);
-
-            JPanel container = new JPanel();
-            container.setSize(ROW_WIDTH, ROW_HEIGHT);
-            container.setBackground(Color.red);
-            
-            container.add(rowPanel);
-            
-            // Add some spacing between rows
-            leaderboardPanel.add(container);
-            leaderboardPanel.add(Box.createVerticalStrut(10)); // Add some spacing between rows
-            
-            counter++;
-        }
-    }
+	            g2d.dispose();
+	        }
+	    };
+	    
+	    tablePanel.add(leaderboardScrollPane, BorderLayout.CENTER);
+	    tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
 
+	    leaderboardPanel.add(tablePanel, BorderLayout.CENTER);
 
+	    getContentPane().add(leaderboardPanel, BorderLayout.CENTER);
 
-    private ImageIcon getUserImage(String userId) {
-        ImageIcon imageIcon = new ImageIcon(ImagePath.DEFAULT_BACKGROUND_IMAGE_PATH);
-        return imageIcon;
-    }
+	    revalidate();
+	    repaint();
+	}
 }

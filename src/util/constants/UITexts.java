@@ -11,4 +11,11 @@ public class UITexts {
     public static final String LOGIN_PAGE_TEXT = "Login to your account";
     public static final String REGISTRATION_PAGE_TEXT = "Create your account";
     public static final String STRING_EMPTY = "";
+    public static final String LEADERBOARD_HEADLINE = "Leaderboard";
+    public static final String UNKNOWN = "Unknown";
+    public static final String LEADERBOARD_COLUMN_RANK = "Rank";
+    public static final String LEADERBOARD_COLUMN_USERNAME = "Username";
+    public static final String LEADERBOARD_COLUMN_SCORE = "Total Score";
+
 }
+

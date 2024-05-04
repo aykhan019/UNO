@@ -1,12 +1,5 @@
 package uno;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import data.UserRepository;
-import data.UserStatisticRepository;
-import model.UserStatistic;
 import view.LoginPageView;
 
 public class Main {

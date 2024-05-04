@@ -4,7 +4,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import data.UserRepository;
+import data.UserStatisticRepository;
 import model.User;
+import model.UserStatistic;
 import util.constants.*;
 import util.constants.WindowConstants;
 import util.ui.UIUtils;
@@ -480,9 +482,13 @@ public class RegistrationView extends BaseFrame {
 
             var currentUser = new User(username, email, password);
             UserRepository.addUser(currentUser);
-
+            
+            var currentUserStatistic = new UserStatistic(currentUser.getId());
+            UserStatisticRepository.addUserStatistic(currentUserStatistic);
+            
             toaster.success(UITexts.WELCOME);
-
+            
+        	new LeaderboardView(); // test
         } catch (IOException e) {
             toaster.error(ErrorConstants.UNKNOWN_ERROR);
             // TODO logger

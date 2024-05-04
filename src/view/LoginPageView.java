@@ -454,7 +454,7 @@ public class LoginPageView extends BaseFrame {
                 // System.out.println("User exists, logging in...");
             	this.dispose();
             	
-            	new LeaderboardView(WindowConstants.LEADERBOARD_WINDOW_TITLE); // test
+            	new LeaderboardView(); // test
             } else {
             	toaster.error(ErrorConstants.USER_DOES_NOT_EXIST);
             	// System.out.println("User does not exist");
