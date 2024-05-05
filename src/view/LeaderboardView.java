@@ -186,8 +186,10 @@ public class LeaderboardView extends BaseFrame {
 	                UserStatistic selectedUserStatistic = userStatisticsList.get(row);
 
 	                try {
-	                    User selectedUser = UserRepository.getUserById(selectedUserStatistic.getUserId());
-	                    new UserProfileView(selectedUser);
+	                	User selectedUser = UserRepository.getUserById(selectedUserStatistic.getUserId());
+	                	
+	                	dispose();
+	                    new UserProfileView(selectedUser, LeaderboardView.class);
 	                } catch (IOException ex) {
 	                    // TODO: Handle exception
 	                    ex.printStackTrace();

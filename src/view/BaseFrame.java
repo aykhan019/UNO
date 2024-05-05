@@ -36,8 +36,8 @@ public abstract class BaseFrame extends JFrame {
         setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
     
         setResizable(false);  
-    }
-    
+    } 
+     
     /**
      * Constructs a new BaseFrame with the specified title.
      * 

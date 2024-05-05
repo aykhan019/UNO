@@ -11,6 +11,7 @@ import util.constants.*;
 import util.constants.WindowConstants;
 import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
+import view.CustomComponents.GradientPanel;
 import view.CustomComponents.HyperlinkText;
 import view.CustomComponents.TextField;
 import view.CustomComponents.TextFieldPassword;
@@ -91,23 +92,7 @@ public class RegistrationView extends BaseFrame {
      * @return The main JPanel for the login page.
      */
 	private JPanel getMainJPanel() {
-	    JPanel panel1 = new JPanel() {
-	        @Override
-	        protected void paintComponent(Graphics g) {
-	            super.paintComponent(g);
-	            Graphics2D g2d = (Graphics2D) g.create();
-
-	            Color color1 = new Color(43, 50, 178); 
-	            Color color2 = new Color(20, 136, 204); 
-
-	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
-
-	            g2d.setPaint(gradient);
-	            g2d.fillRect(0, 0, getWidth(), getHeight());
-
-	            g2d.dispose();
-	        }
-	    };
+	    JPanel panel1 = new GradientPanel();
 
 	    Dimension size = new Dimension(WindowConstants.DEFAULT_WINDOW_WIDTH, WindowConstants.DEFAULT_WINDOW_HEIGHT);
 	    panel1.setPreferredSize(size);

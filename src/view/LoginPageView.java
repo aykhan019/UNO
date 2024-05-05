@@ -13,6 +13,7 @@ import util.ui.toaster.Toaster;
 import view.CustomComponents.HyperlinkText;
 import view.CustomComponents.TextFieldPassword;
 import view.CustomComponents.TextField;
+import view.CustomComponents.GradientPanel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -85,23 +86,7 @@ public class LoginPageView extends BaseFrame {
      * @return The main JPanel for the login page.
      */
 	private JPanel getMainJPanel() {
-	    JPanel panel1 = new JPanel() {
-	        @Override
-	        protected void paintComponent(Graphics g) {
-	            super.paintComponent(g);
-	            Graphics2D g2d = (Graphics2D) g.create();
-
-	            Color color1 = new Color(20, 136, 204); 
-	            Color color2 = new Color(43, 50, 178); 
-
-	            GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
-
-	            g2d.setPaint(gradient);
-	            g2d.fillRect(0, 0, getWidth(), getHeight());
-
-	            g2d.dispose();
-	        }
-	    };
+		JPanel panel1 = new GradientPanel();
 
 	    Dimension size = new Dimension(WindowConstants.DEFAULT_WINDOW_WIDTH, WindowConstants.DEFAULT_WINDOW_HEIGHT);
 	    panel1.setPreferredSize(size);
@@ -425,11 +410,11 @@ public class LoginPageView extends BaseFrame {
     private void loginEventHandler() {
         try {
         	//TODO
-        	//var username = usernameField.getText().trim();
-            //var password = new String(passwordField.getPassword()).trim();
+        	var username = usernameField.getText().trim();
+            var password = new String(passwordField.getPassword()).trim();
         	
-        	var username = "aykhan";
-            var password = "letmein";
+        	username = "aykhan";
+            password = "letmein";
             
              if (username.equals(UITexts.STRING_EMPTY) || username.equals(UITexts.PLACEHOLDER_TEXT_USERNAME)
               || password.equals(UITexts.STRING_EMPTY) || password.equals(UITexts.PLACEHOLDER_TEXT_PASSWORD)) {

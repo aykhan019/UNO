@@ -9,6 +9,7 @@ public class UserStatistic {
     private int numberOfWins;
     private int totalScore;
     
+    
     public UserStatistic(String id, String userId, int numberOfGamesPlayed, int numberOfWins, int totalScore) {
     	setId(id);
     	setUserId(userId);
@@ -18,6 +19,14 @@ public class UserStatistic {
     }
     
     public UserStatistic(String userId) {
+    	id = UUID.randomUUID().toString();
+    	setUserId(userId);
+    	setNumberOfGamesPlayed(0);
+    	setNumberOfWins(0);
+    	setTotalScore(0);
+    }
+    
+    public UserStatistic() {
     	id = UUID.randomUUID().toString();
     	setUserId(userId);
     	setNumberOfGamesPlayed(0);

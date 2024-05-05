@@ -1,7 +1,9 @@
 package data;
 
 import java.io.*;
+
 import java.util.*;
+
 import model.UserStatistic;
 import util.constants.FileConstants;
 
@@ -49,4 +51,14 @@ public class UserStatisticRepository {
              + userStatistic.getNumberOfWins() + FileConstants.USER_STATISTIC_DATA_SEPARATOR
              + userStatistic.getTotalScore();
     }
+    
+    public static UserStatistic getUserStatisticById(String userId) throws IOException {
+		var userStatistics = getUserStatistics();
+		for (var userStatistic : userStatistics) {
+			if (userStatistic.getUserId().equals(userId)) {
+				return userStatistic;
+			}
+		}
+		return null;
+	}
 }

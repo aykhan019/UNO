@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+@SuppressWarnings("serial")
 public class ButtonWithImage extends JButton {
 
 	public ButtonWithImage(ImageIcon icon, int width, int height) {
