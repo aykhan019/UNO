@@ -1,8 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable{
 	private String id;
 	private String username;
 	private String email;
@@ -18,7 +20,7 @@ public class User {
 	}
 	
 	public User(String id, String username, String email, String password) {
-		setId(id);
+		setId(id);	
 		setUsername(username);
 		setEmail(email);
 		setPassword(password);

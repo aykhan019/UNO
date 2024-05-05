@@ -9,6 +9,7 @@ import model.User;
 import model.UserStatistic;
 import util.constants.*;
 import util.constants.WindowConstants;
+import util.session.CurrentUserManager;
 import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
 import view.CustomComponents.GradientPanel;
@@ -465,15 +466,16 @@ public class RegistrationView extends BaseFrame {
                 return;
             }
 
-            var currentUser = new User(username, email, password);
-            UserRepository.addUser(currentUser);
+            var newUser = new User(username, email, password);
+            UserRepository.addUser(newUser);
+            CurrentUserManager.getInstance().setCurrentUser(newUser);
             
-            var currentUserStatistic = new UserStatistic(currentUser.getId());
-            UserStatisticRepository.addUserStatistic(currentUserStatistic);
+            var newUserStatistic = new UserStatistic(newUser.getId());
+            UserStatisticRepository.addUserStatistic(newUserStatistic);
             
             toaster.success(UITexts.WELCOME);
             
-        	new LeaderboardView(); // test
+        	new LeaderboardView(); 
         } catch (IOException e) {
             toaster.error(ErrorConstants.UNKNOWN_ERROR);
             // TODO logger

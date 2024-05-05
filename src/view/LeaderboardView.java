@@ -80,7 +80,7 @@ public class LeaderboardView extends BaseFrame {
 
 	    leaderboardPanel = new JPanel(new BorderLayout());
 
-	    ImageIcon icon = new ImageIcon(ImagePath.BACK_ICON);
+	    ImageIcon icon = new ImageIcon(ImagePath.CLOSE_ICON);
 	    Image image = icon.getImage();
 	    Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 	    ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -90,7 +90,8 @@ public class LeaderboardView extends BaseFrame {
 	    backButton.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-		         // TODO
+	        	dispose();
+	        	new MainMenu();
 	        }
 	    });
 

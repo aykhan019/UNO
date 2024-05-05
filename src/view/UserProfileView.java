@@ -73,7 +73,7 @@ public class UserProfileView extends BaseFrame {
 	    Image profileImage = profileImageIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH); 
 	    ImageIcon scaledProfileImageIcon = new ImageIcon(profileImage);
 	    JLabel profileImageLabel = new JLabel(scaledProfileImageIcon);
-	    profileImageLabel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+	    profileImageLabel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0)); 
 
 	    JPanel profileImagePanel = new JPanel(new BorderLayout());
 	    profileImagePanel.setOpaque(false);

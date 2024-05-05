@@ -1,15 +1,31 @@
 package uno;
 
+import model.User;
+import util.session.CurrentUserManager;
 import view.LoginPageView;
+import view.MainMenu;
 
 public class Main {
 	public static void main(String[] args) {
-		new LoginPageView();
-		
+		CurrentUserManager.getInstance().loadUserData();
+
+        if (CurrentUserManager.getInstance().isLoggedIn()) {
+            User currentUser = CurrentUserManager.getInstance().getCurrentUser();
+            System.out.println("Welcome back, " + currentUser.getUsername() + "!");
+            new MainMenu();
+        } else {
+            System.out.println("No user logged in.");
+    		new LoginPageView();
+        }
+        
 		System.out.println("Program ended!");
+		
+        // Save user data when the application exits
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			CurrentUserManager.getInstance().saveUserData(CurrentUserManager.getInstance().getCurrentUser());
+	    }));
 	}
 }
-
 
 /*
  * // RANDOM USER STATISTIC DATA GENERATOR try { var users = UserRepository.getUsers();
