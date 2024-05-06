@@ -4,9 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * A button with an image icon.
+ */
 @SuppressWarnings("serial")
 public class ButtonWithImage extends JButton {
 
+	/**
+	 * Constructs a ButtonWithImage with the specified icon, width, and height.
+	 *
+	 * @param icon   The ImageIcon to be displayed on the button.
+	 * @param width  The width of the button.
+	 * @param height The height of the button.
+	 */
 	public ButtonWithImage(ImageIcon icon, int width, int height) {
 		super(icon);
 

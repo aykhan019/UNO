@@ -3,58 +3,94 @@ package util.session;
 import model.User;
 import java.io.*;
 
+/**
+ * Manages the current user session by saving and loading user data.
+ */
 public class CurrentUserManager {
-	private static final String USER_DATA_FILE = "session/userData.ser";
-	private static CurrentUserManager instance;
-	private User currentUser;
+    /** The file path to store user data. */
+    private static final String USER_DATA_FILE = "session/userData.ser";
 
-	private CurrentUserManager() {
-		// Private constructor to prevent instantiation from outside
-	}
+    /** The singleton instance of CurrentUserManager. */
+    private static CurrentUserManager instance;
 
-	public static CurrentUserManager getInstance() {
-		if (instance == null) {
-			instance = new CurrentUserManager();
-		}
-		return instance;
-	}
+    /** The currently logged-in user. */
+    private User currentUser;
 
-	public User getCurrentUser() {
-		return currentUser;
-	}
+    /** Private constructor to prevent instantiation from outside. */
+    private CurrentUserManager() {
+    }
 
-	public void setCurrentUser(User currentUser) {
-		this.currentUser = currentUser;
-		saveUserData(currentUser);
-	}
+    /**
+     * Gets the singleton instance of CurrentUserManager.
+     *
+     * @return The instance of CurrentUserManager.
+     */
+    public static CurrentUserManager getInstance() {
+        if (instance == null) {
+            instance = new CurrentUserManager();
+        }
+        return instance;
+    }
 
-	public boolean isLoggedIn() {
-		return currentUser != null;
-	}
+    /**
+     * Retrieves the current logged-in user.
+     *
+     * @return The current logged-in user.
+     */
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
-	public void saveUserData(User user) {
-		File file = new File(USER_DATA_FILE);
-		if (!file.exists()) {
-			return;
-		}
+    /**
+     * Sets the current logged-in user and saves their data.
+     *
+     * @param currentUser The current logged-in user.
+     */
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        saveUserData(currentUser);
+    }
 
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-			oos.writeObject(user);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Checks if a user is currently logged in.
+     *
+     * @return True if a user is logged in, false otherwise.
+     */
+    public boolean isLoggedIn() {
+        return currentUser != null;
+    }
 
-	public void loadUserData() {
-		File file = new File(USER_DATA_FILE);
-		if (!file.exists() || file.length() == 0) {
-			return;
-		}
+    /**
+     * Saves the user data to a file.
+     *
+     * @param user The user whose data is to be saved.
+     */
+    public void saveUserData(User user) {
+        File file = new File(USER_DATA_FILE);
+        if (!file.exists()) {
+            return;
+        }
 
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-			currentUser = (User) ois.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads user data from the file.
+     */
+    public void loadUserData() {
+        File file = new File(USER_DATA_FILE);
+        if (!file.exists() || file.length() == 0) {
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            currentUser = (User) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

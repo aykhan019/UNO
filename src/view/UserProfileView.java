@@ -24,11 +24,21 @@ import view.CustomComponents.GradientPanel;
  */
 @SuppressWarnings("serial")
 public class UserProfileView extends BaseFrame {
-
+	/**
+	 * Represents a user in the system.
+	 */
 	private User user;
+
+	/**
+	 * Represents the statistics associated with a user.
+	 */
 	private UserStatistic userStatistic;
+
+	/**
+	 * Represents the previous page class.
+	 */
 	private Class<?> previousPage;
-	
+
 	/**
 	 * The main font of the leaderboard page.
 	 */
@@ -55,6 +65,11 @@ public class UserProfileView extends BaseFrame {
 		initializeFrame();
 	}
 
+	/**
+	 * Initializes the frame with user details and graphical components.
+	 * Displays user information including username, email, game statistics, and profile picture.
+	 * Allows navigation to the previous page.
+	 */
 	@Override
 	void initializeFrame() {
 	    JPanel mainPanel = new GradientPanel();

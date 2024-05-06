@@ -1,17 +1,30 @@
 package util.constants;
 
+/**
+ * Constants related to window properties and titles.
+ */
 public class WindowConstants {
-    // Window dimensions
-	 public static final int DEFAULT_WINDOW_WIDTH = 1280;
-	 public static final int DEFAULT_WINDOW_HEIGHT = 720;
-	 
-	 // Title for the application window
-	 public static final String WINDOW_TITLE = "UNO Game Simulation";
-	 
-	 public static final String LOGIN_WINDOW_TITLE = "UNO Game Simulation | LOGIN";
-	 public static final String REGISTRATION_WINDOW_TITLE = "UNO Game Simulation | REGISTRATION";
-	 
-	 public static final String LEADERBOARD_WINDOW_TITLE = "UNO Game Simulation | LEADERBOARD";
-	 public static final String USER_PROFILE_WINDOW_TITLE_PREFIX = "UNO Game Simulation | USER INFO: ";
-	 public static final String MAIN_MENU_WINDOW_TITLE_PREFIX = "UNO Game Simulation | MAIN MENU: ";
+	/** The default window width. */
+	public static final int DEFAULT_WINDOW_WIDTH = 1280;
+
+	/** The default window height. */
+	public static final int DEFAULT_WINDOW_HEIGHT = 720;
+
+	/** The title of the main application window. */
+	public static final String WINDOW_TITLE = "UNO Game Simulation";
+
+	/** The title of the login window. */
+	public static final String LOGIN_WINDOW_TITLE = "UNO Game Simulation | LOGIN";
+
+	/** The title of the registration window. */
+	public static final String REGISTRATION_WINDOW_TITLE = "UNO Game Simulation | REGISTRATION";
+
+	/** The title of the leaderboard window. */
+	public static final String LEADERBOARD_WINDOW_TITLE = "UNO Game Simulation | LEADERBOARD";
+
+	/** The prefix for user profile window titles. */
+	public static final String USER_PROFILE_WINDOW_TITLE_PREFIX = "UNO Game Simulation | USER INFO: ";
+
+	/** The prefix for main menu window titles. */
+	public static final String MAIN_MENU_WINDOW_TITLE_PREFIX = "UNO Game Simulation | MAIN MENU: ";
 }

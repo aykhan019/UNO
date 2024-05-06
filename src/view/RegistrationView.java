@@ -475,6 +475,8 @@ public class RegistrationView extends BaseFrame {
             
             toaster.success(UITexts.WELCOME);
             
+            dispose();
+            
         	new LeaderboardView(); 
         } catch (IOException e) {
             toaster.error(ErrorConstants.UNKNOWN_ERROR);

@@ -172,11 +172,9 @@ public class LeaderboardView extends BaseFrame {
 								column);
 						((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
 
-						if (row == finalCurrentUserRow) {
-							c.setForeground(UIColors.OFFBLACK); // Bronze
-
+						if (row == finalCurrentUserRow ) { // && row > 2 
+							c.setForeground(UIColors.OFFBLACK); 
 						} else {
-
 							if (row == 0) {
 								c.setForeground(new Color(249, 161, 20)); // Gold
 							} else if (row == 1) {
@@ -187,7 +185,7 @@ public class LeaderboardView extends BaseFrame {
 								c.setForeground(Color.WHITE);
 							}
 						}
-
+	
 						return c;
 					}
 				};
@@ -278,7 +276,7 @@ public class LeaderboardView extends BaseFrame {
 				Graphics2D g2d = (Graphics2D) g.create();
 
 				Color color1 = new Color(20, 136, 204); // First color of the gradient
-				Color color2 = new Color(43, 50, 178); // Second color of the gradien
+				Color color2 = new Color(43, 50, 178); // Second color of the gradient
 
 				GradientPaint gradient = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
 

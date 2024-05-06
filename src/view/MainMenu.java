@@ -1,13 +1,13 @@
 package view;
 
 import javax.swing.Box;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import data.UserStatisticRepository;
 import util.constants.FontConstants;
@@ -27,22 +27,39 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+/**
+ * Represents the main menu interface of the application, providing access
+ * to various features and functionalities through a user-friendly interface.
+ */
+@SuppressWarnings("serial")
 public class MainMenu extends BaseFrame {
 	/**
 	 * The toaster object for displaying notifications.
 	 */
 	private final Toaster toaster;
 
+	/**
+	 * The top panel of the main menu.
+	 */
 	private JPanel topPanel = new GradientPanel();
 
+	/**
+	 * The custom font used in the main menu.
+	 */
 	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
 
+	/**
+	 * Constructs a new MainMenu object.
+	 */
 	public MainMenu() {
 		super(WindowConstants.MAIN_MENU_WINDOW_TITLE_PREFIX);
 		toaster = new Toaster(topPanel);
 		initializeFrame();
 	}
 
+	/**
+	 * Initializes the graphical components of the main menu.
+	 */
 	@Override
 	void initializeFrame() {
 		setLayout(new BorderLayout());
@@ -116,6 +133,48 @@ public class MainMenu extends BaseFrame {
 
 		add(topPanel, BorderLayout.NORTH);
 
+		// TOP PANEL RIGHT
+		topPanelRight.setLayout(new BoxLayout(topPanelRight, BoxLayout.X_AXIS));
+		topPanelRight.setBorder(new EmptyBorder(0, 75, 0, 25));
+
+		ImageIcon logoutButtonIcon = new ImageIcon(
+				new ImageIcon(ImagePath.MENU_LOGOUT).getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+
+		ImageIcon infoButtonIcon = new ImageIcon(
+				new ImageIcon(ImagePath.MENU_INFO).getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+
+		ImageIcon menuListButtonIcon = new ImageIcon(
+				new ImageIcon(ImagePath.MENU_LIST).getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+
+		ButtonWithImage logoutButton = new ButtonWithImage(logoutButtonIcon, 50, 50);
+		ButtonWithImage infoButton = new ButtonWithImage(infoButtonIcon, 50, 50);
+		ButtonWithImage menuListButton = new ButtonWithImage(menuListButtonIcon, 50, 50);
+
+		logoutButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				logout();
+			}
+		});
+
+		infoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showInformationDialog();
+			}
+		});
+
+		menuListButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openMenuList();
+			}
+		});
+
+		topPanelRight.add(menuListButton);
+		topPanelRight.add(infoButton);
+		topPanelRight.add(logoutButton);
+
 		// MIDDLE PANEL
 		JPanel middlePanel = new GradientPanel();
 		middlePanel.setLayout(new GridLayout(1, 2));
@@ -175,10 +234,11 @@ public class MainMenu extends BaseFrame {
 		JPanel bottomPanelLeft = new JPanel();
 		JPanel bottomPanelRight = new JPanel();
 		bottomPanelLeft.setLayout(new BoxLayout(bottomPanelLeft, BoxLayout.X_AXIS));
+		bottomPanelLeft.setBorder(new EmptyBorder(0, 15, 0, 0));
 
 		int bottomPanelWidth = getWidth();
-		bottomPanelLeft.setPreferredSize(new Dimension(bottomPanelWidth / 2 + 50, 100));
-		bottomPanelRight.setPreferredSize(new Dimension(bottomPanelWidth / 2 - 50, 100));
+		bottomPanelLeft.setPreferredSize(new Dimension(bottomPanelWidth / 2 + 100, 100));
+		bottomPanelRight.setPreferredSize(new Dimension(bottomPanelWidth / 2 - 100, 100));
 
 		bottomPanelLeft.setOpaque(false);
 		bottomPanelRight.setOpaque(false);
@@ -222,25 +282,59 @@ public class MainMenu extends BaseFrame {
 			}
 		});
 
-		bottomPanelLeft.add(Box.createVerticalGlue());
+		bottomPanelLeft.add(Box.createHorizontalGlue());
 		bottomPanelLeft.add(btn1);
+		bottomPanelLeft.add(Box.createHorizontalStrut(20));
 		bottomPanelLeft.add(btn2);
+		bottomPanelLeft.add(Box.createHorizontalStrut(20));
 		bottomPanelLeft.add(btn3);
-		bottomPanelLeft.add(Box.createVerticalGlue());
+		bottomPanelLeft.add(Box.createHorizontalGlue());
 
 		add(bottomPanel, BorderLayout.SOUTH);
 
 		setVisible(true);
 	}
 
+	/**
+	 * Logs out the current user and navigates to the login page.
+	 */
+	private void logout() {
+		CurrentUserManager.getInstance().setCurrentUser(null);
+		dispose();
+		new LoginPageView();
+	}
+
+	/**
+	 * Opens the menu list.
+	 */
+	private void openMenuList() {
+		toaster.warn(UITexts.I_DO_NOT_WORK);
+	}
+
+	/**
+	 * Displays information dialog.
+	 */
+	private void showInformationDialog() {
+		toaster.warn(UITexts.I_DO_NOT_WORK);
+	}
+
+	/**
+	 * Opens the settings window.
+	 */
 	private void openSettingsWindow() {
 		toaster.warn(UITexts.I_DO_NOT_WORK);
 	}
 
+	/**
+	 * Shares content.
+	 */
 	private void shareContent() {
 		toaster.warn(UITexts.I_DO_NOT_WORK);
 	}
 
+	/**
+	 * Shows the leaderboard.
+	 */
 	private void showLeaderboard() {
 		dispose();
 		new LeaderboardView();
