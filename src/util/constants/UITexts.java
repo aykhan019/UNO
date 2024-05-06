@@ -32,6 +32,15 @@ public class UITexts {
     public static final String USER_DETAILS_TOTAL_SCORE = "Total Score: ";	
     public static final String USER_DETAILS_AVERAGE_SCORE = "Average Score: ";
     public static final String USER_DETAILS_WIN_LOSS_RATIO = "Win/Loss Ratio: ";	
+    
+    public static final String MENU_BUTTON_SETTINGS = "Settings";
+    public static final String MENU_BUTTON_SHARE = "Share";
+    public static final String MENU_BUTTON_LEADERBOARD = "Leaderboard";
+    
+    public static final String I_DO_NOT_WORK = "I don't work.";
+    
+    public static final String CURRENT_USER = "User: ";
+    public static final String CURRENT_USER_SCORE = "Score : ";
 }
 
 

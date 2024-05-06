@@ -1,110 +1,248 @@
 package view;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
+import data.UserStatisticRepository;
+import util.constants.FontConstants;
 import util.constants.ImagePath;
+import util.constants.UIColors;
+import util.constants.UITexts;
 import util.constants.WindowConstants;
+import util.session.CurrentUserManager;
+import util.ui.UIUtils;
+import util.ui.toaster.Toaster;
+import view.CustomComponents.ButtonWithImage;
+import view.CustomComponents.GradientPanel;
 import view.CustomComponents.MenuTextButton;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainMenu extends BaseFrame {
+	/**
+	 * The toaster object for displaying notifications.
+	 */
+	private final Toaster toaster;
+
+	private JPanel topPanel = new GradientPanel();
+
+	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
 
 	public MainMenu() {
 		super(WindowConstants.MAIN_MENU_WINDOW_TITLE_PREFIX);
+		toaster = new Toaster(topPanel);
 		initializeFrame();
 	}
 
 	@Override
 	void initializeFrame() {
 		setLayout(new BorderLayout());
+		topPanel.setLayout(new BorderLayout());
 
-		JPanel topPanel = new JPanel(new BorderLayout());
-
-		// Create three sub-panels for the top panel
+		// TOP PANEL
 		JPanel topPanelLeft = new JPanel();
 		JPanel topPanelMiddle = new JPanel();
 		JPanel topPanelRight = new JPanel();
 
-		// Set background colors for clarity (you can remove these if not needed)
-		topPanelLeft.setBackground(Color.RED);
-		topPanelMiddle.setBackground(Color.yellow);
-		topPanelRight.setBackground(Color.BLUE);
+		topPanelLeft.setOpaque(false);
+		topPanelMiddle.setOpaque(false);
+		topPanelRight.setOpaque(false);
 
-		// Calculate the sizes for each sub-panel
 		int topPanelWidth = getWidth();
 		int topPanelHeight = 100;
-		int leftPanelWidth = topPanelWidth / 4; // 1/4 of the width
-		int middlePanelWidth = topPanelWidth / 2; // 1/2 of the width
-		int rightPanelWidth = topPanelWidth / 4; // 1/4 of the width
+		int leftPanelWidth = topPanelWidth / 4 + 70;
+		int middlePanelWidth = topPanelWidth / 2;
+		int rightPanelWidth = topPanelWidth / 4;
 
-		// Set preferred sizes for each sub-panel
 		topPanelLeft.setPreferredSize(new Dimension(leftPanelWidth, topPanelHeight));
 		topPanelMiddle.setPreferredSize(new Dimension(middlePanelWidth, topPanelHeight));
 		topPanelRight.setPreferredSize(new Dimension(rightPanelWidth, topPanelHeight));
 
-		// Add sub-panels to the top panel with BorderLayout.CENTER for middle panel
 		topPanel.add(topPanelLeft, BorderLayout.WEST);
 		topPanel.add(topPanelMiddle, BorderLayout.CENTER);
 		topPanel.add(topPanelRight, BorderLayout.EAST);
 
-		// Adding the top panel to the main frame
+		// TOP PANEL LEFT
+		topPanelLeft.setLayout(new BoxLayout(topPanelLeft, BoxLayout.X_AXIS));
+
+		JPanel imagePanel = new JPanel();
+		imagePanel.setOpaque(false);
+
+		ImageIcon imageIcon = new ImageIcon(ImagePath.AVATAR);
+		JLabel imageLabel = new JLabel();
+		imageLabel.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT)));
+		imagePanel.add(imageLabel);
+
+		JPanel textFieldsPanel = new JPanel();
+		textFieldsPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		textFieldsPanel.setLayout(new BoxLayout(textFieldsPanel, BoxLayout.Y_AXIS));
+		textFieldsPanel.setOpaque(false);
+
+		var currentUser = CurrentUserManager.getInstance().getCurrentUser();
+		JLabel upperTextField = new JLabel(UITexts.CURRENT_USER + currentUser.getUsername());
+		upperTextField.setOpaque(false);
+		upperTextField.setFont(customFont.deriveFont(Font.PLAIN, 17));
+		upperTextField.setForeground(UIColors.OFFWHITE);
+		upperTextField.setPreferredSize(new Dimension(300, 50));
+		textFieldsPanel.add(upperTextField);
+
+		try {
+			var userStatistic = UserStatisticRepository.getUserStatisticById(currentUser.getId());
+			JLabel lowerTextField = new JLabel(
+					UITexts.CURRENT_USER_SCORE.toUpperCase() + userStatistic.getTotalScore());
+			lowerTextField.setOpaque(false);
+			lowerTextField.setForeground(UIColors.OFFWHITE);
+			lowerTextField.setBorder(new EmptyBorder(7, 0, 0, 0));
+			lowerTextField.setFont(customFont.deriveFont(Font.PLAIN, 10));
+			lowerTextField.setPreferredSize(new Dimension(200, 100));
+			textFieldsPanel.add(lowerTextField);
+
+		} catch (IOException e) {
+			// TODO logger
+			e.printStackTrace();
+		}
+
+		topPanelLeft.add(imagePanel);
+		topPanelLeft.add(textFieldsPanel);
+
 		add(topPanel, BorderLayout.NORTH);
 
-		// Other panels remain the same
-		JPanel middlePanel = new JPanel();
-		middlePanel.setBackground(Color.GREEN);
+		// MIDDLE PANEL
+		JPanel middlePanel = new GradientPanel();
+		middlePanel.setLayout(new GridLayout(1, 2));
+
+		JPanel leftPanel = new JPanel();
+		leftPanel.setOpaque(false);
+		leftPanel.setBorder(new EmptyBorder(40, 230, 0, 0));
+
+		ImageIcon gameImageIcon = new ImageIcon(ImagePath.MENU_GAME_ICON);
+		Image scaledImage = gameImageIcon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		JLabel gameImageLabel = new JLabel(scaledIcon);
+		leftPanel.add(gameImageLabel);
+
+		JPanel rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		rightPanel.setBorder(new EmptyBorder(100, 100, 0, 0));
+		rightPanel.setOpaque(false);
+
+		var playButtonWidth = 280;
+		var playButtonHeight = 100;
+
+		ImageIcon playOfflineIcon = new ImageIcon(new ImageIcon(ImagePath.MENU_PLAY_OFFLINE_BUTTON_IMAGE).getImage()
+				.getScaledInstance(playButtonWidth, playButtonHeight, Image.SCALE_SMOOTH));
+		ImageIcon playOnlineIcon = new ImageIcon(new ImageIcon(ImagePath.MENU_PLAY_ONLINE_BUTTON_IMAGE).getImage()
+				.getScaledInstance(playButtonWidth, playButtonHeight, Image.SCALE_SMOOTH));
+
+		JButton playOfflineButton = new ButtonWithImage(playOfflineIcon, playButtonWidth, playButtonHeight);
+		JButton playOnlineButton = new ButtonWithImage(playOnlineIcon, playButtonWidth, playButtonHeight);
+
+		playOfflineButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+
+		playOnlineButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				toaster.warn(UITexts.I_DO_NOT_WORK);
+			}
+		});
+
+		rightPanel.add(playOfflineButton);
+		rightPanel.add(Box.createVerticalStrut(20));
+		rightPanel.add(playOnlineButton);
+
+		middlePanel.add(leftPanel);
+		middlePanel.add(rightPanel);
 		add(middlePanel, BorderLayout.CENTER);
 
-		// Creating a bottom panel with horizontal BoxLayout
-		JPanel bottomPanel = new JPanel();
+		// BOTTOM PANEL
+		JPanel bottomPanel = new GradientPanel();
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
-		// Creating two sub-panels for the bottom panel
 		JPanel bottomPanelLeft = new JPanel();
 		JPanel bottomPanelRight = new JPanel();
+		bottomPanelLeft.setLayout(new BoxLayout(bottomPanelLeft, BoxLayout.X_AXIS));
 
-		// Set preferred sizes for the sub-panels based on the width of the bottom panel
 		int bottomPanelWidth = getWidth();
-		bottomPanelLeft.setPreferredSize(new Dimension(bottomPanelWidth / 2, 100));
-		bottomPanelRight.setPreferredSize(new Dimension(bottomPanelWidth / 2, 100));
+		bottomPanelLeft.setPreferredSize(new Dimension(bottomPanelWidth / 2 + 50, 100));
+		bottomPanelRight.setPreferredSize(new Dimension(bottomPanelWidth / 2 - 50, 100));
 
-		// Set background colors for clarity (you can remove these if not needed)
-		bottomPanelLeft.setBackground(Color.YELLOW);
-		bottomPanelRight.setBackground(Color.pink);
+		bottomPanelLeft.setOpaque(false);
+		bottomPanelRight.setOpaque(false);
 
-		// Add the sub-panels to the bottom panel
 		bottomPanel.add(bottomPanelLeft);
 		bottomPanel.add(bottomPanelRight);
 
-		// Create an icon for the button (you can load an image or use a placeholder)
-		ImageIcon icon1 = new ImageIcon(ImagePath.SHARE);
-		ImageIcon icon2 = new ImageIcon(ImagePath.RATE);
-		ImageIcon icon3 = new ImageIcon(ImagePath.REMOVE);
+		// BOTTOM PANEL LEFT
+		ImageIcon icon1 = new ImageIcon(ImagePath.SETTINGS);
+		ImageIcon icon2 = new ImageIcon(ImagePath.SHARE);
+		ImageIcon icon3 = new ImageIcon(ImagePath.LEADERBOARD);
 
-		var buttonWidth = 170;
-		var buttonHeight = 60;
-		var borderWidth = 5;
+		var buttonWidth = 210;
+		var buttonHeight = 70;
 
-		// Create MenuTextButton instances
-		MenuTextButton button1 = new MenuTextButton(buttonWidth, buttonHeight, icon1.getImage(), "Button 1",
-				Color.WHITE, borderWidth, Color.red);
-		MenuTextButton button2 = new MenuTextButton(buttonWidth, buttonHeight, icon2.getImage(), "Button 2",
-				Color.BLACK, borderWidth, Color.cyan);
-		MenuTextButton button3 = new MenuTextButton(buttonWidth, buttonHeight, icon3.getImage(), "Button 2",
-				Color.BLACK, borderWidth, Color.magenta);
+		MenuTextButton btn1 = new MenuTextButton(icon1, buttonWidth, buttonHeight,
+				UITexts.MENU_BUTTON_SETTINGS.toUpperCase(), 63, 45, 19);
+		MenuTextButton btn2 = new MenuTextButton(icon2, buttonWidth, buttonHeight,
+				UITexts.MENU_BUTTON_SHARE.toUpperCase(), 80, 45, 19);
+		MenuTextButton btn3 = new MenuTextButton(icon3, buttonWidth + 40, buttonHeight,
+				UITexts.MENU_BUTTON_LEADERBOARD.toUpperCase(), 78, 45, 15);
 
-		// Add the buttons to the bottomPanelLeft
-		bottomPanelLeft.add(button1);
-		 bottomPanelLeft.add(button2);
-		 bottomPanelLeft.add(button3);
+		btn1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openSettingsWindow();
+			}
+		});
 
-		// Adding the bottom panel to the main frame
+		btn2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				shareContent();
+			}
+		});
+
+		btn3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showLeaderboard();
+			}
+		});
+
+		bottomPanelLeft.add(Box.createVerticalGlue());
+		bottomPanelLeft.add(btn1);
+		bottomPanelLeft.add(btn2);
+		bottomPanelLeft.add(btn3);
+		bottomPanelLeft.add(Box.createVerticalGlue());
+
 		add(bottomPanel, BorderLayout.SOUTH);
 
 		setVisible(true);
 	}
 
+	private void openSettingsWindow() {
+		toaster.warn(UITexts.I_DO_NOT_WORK);
+	}
+
+	private void shareContent() {
+		toaster.warn(UITexts.I_DO_NOT_WORK);
+	}
+
+	private void showLeaderboard() {
+		dispose();
+		new LeaderboardView();
+	}
 }

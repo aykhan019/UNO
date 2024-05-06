@@ -28,14 +28,4 @@ public class ButtonWithImage extends JButton {
 			}
 		});
 	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		if (getModel().isPressed()) {
-			g.setColor(new Color(255, 255, 255, 100));
-			g.fillRect(0, 0, getWidth(), getHeight());
-		}
-		super.paintComponent(g);
-	}
-
 }

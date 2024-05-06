@@ -1,68 +1,72 @@
 package view.CustomComponents;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
+import util.constants.FontConstants;
+import util.ui.UIUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+
+@SuppressWarnings("serial")
 public class MenuTextButton extends JButton {
-    private int buttonWidth;
-    private int buttonHeight;
-    private Image icon;
-    private String buttonText;
-    private Color borderColor;
-    private int borderWidth;
+
+    private final ImageIcon icon;
+    private final String buttonText;
+    private final int textX;
+    private final int textY;
+    private final int fontSize;
     
-    public MenuTextButton(int buttonWidth, int buttonHeight, Image icon, String buttonText, Color borderColor, int borderWidth, Color backgroundColor) {
-        this.buttonWidth = buttonWidth;
-        this.buttonHeight = buttonHeight;
+    /**
+    * The main font of the button.
+    */
+    private final Font textFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
+
+    public MenuTextButton(ImageIcon icon, int width, int height) {
+        this(icon, width, height, "", 0, 0, 20);
+    }
+
+    public MenuTextButton(ImageIcon icon, int width, int height, String buttonText, int textX, int textY, int fontSize) {
         this.icon = icon;
         this.buttonText = buttonText;
-        this.borderColor = borderColor;
-        this.borderWidth = borderWidth;
-        setBackground(backgroundColor);
+        this.textX = textX;
+        this.textY = textY;
+        this.fontSize = fontSize;
+
+        Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        setIcon(new ImageIcon(scaledImage));
+
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
+        setFocusPainted(false);
+        setPreferredSize(new Dimension(width, height));
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
+        super.paintComponent(g);
 
-        g2d.setColor(getBackground());
-        g2d.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), getHeight(), getHeight()));
-
-        // Draw border
-        setBorder(new RoundedBorder(10, 5, Color.black)); //10 is the radius
-
-        // Calculate width for part A and part B
-        int partAWidth = buttonWidth / 3;
-        int partBWidth = 2 * buttonWidth / 3;
-
-        // Draw icon in part A
-        if (icon != null) {
-            int iconHeight = getHeight() - 4; // Adjust height to center vertically
-            int iconWidth = iconHeight * icon.getWidth(null) / icon.getHeight(null); // Calculate width based on height and aspect ratio
-            g2d.drawImage(icon, 2, (getHeight() - iconHeight) / 2, iconWidth, iconHeight, null);
-        }
-
-        // Draw text in part B
+        // Draw text on the image if buttonText is provided
         if (buttonText != null) {
-            g2d.setFont(getFont());
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setFont(textFont.deriveFont(Font.PLAIN, fontSize));
             g2d.setColor(Color.WHITE);
-            FontMetrics fontMetrics = g2d.getFontMetrics();
-            int textWidth = fontMetrics.stringWidth(buttonText);
-            int textHeight = fontMetrics.getHeight();
-            g2d.drawString(buttonText, partAWidth + (partBWidth - textWidth) / 2, (getHeight() + textHeight) / 2);
+            g2d.drawString(buttonText, textX, textY);
+            g2d.dispose();
         }
-
-        g2d.dispose();
-    }
-
-
-    // Optional: Override getPreferredSize to set preferred size based on buttonWidth
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(buttonWidth, buttonHeight);
     }
 }
+
