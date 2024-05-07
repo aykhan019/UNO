@@ -47,8 +47,17 @@ public class ImagePath {
 	public static final String MENU_LOGOUT = "images/logout.png";
 
 	/** Info icon path. */
-	public static final String MENU_INFO = "images/info.png";
+    public static final String MENU_INFO = "images/info.png";
 
-	/** List icon path. */
-	public static final String MENU_LIST = "images/list.png";
+    /** List icon path. */
+    public static final String MENU_LIST = "images/list.png";
+
+    /** Image path for the increment button for selecting the number of players. */
+    public static final String NUMBER_OF_PLAYERS_INCREMENT = "images/increment-btn.png";
+
+    /** Image path for the decrement button for selecting the number of players. */
+    public static final String NUMBER_OF_PLAYERS_DECREMENT = "images/decrement-btn.png";
+
+    /** Image path for the start button. */
+    public static final String START_BUTTON = "images/start-btn.png";
 }

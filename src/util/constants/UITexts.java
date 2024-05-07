@@ -88,9 +88,15 @@ public class UITexts {
 	/** Placeholder text indicating that something doesn't work. */
 	public static final String I_DO_NOT_WORK = "I don't work.";
 
-	/** Text indicating the current user. */
-	public static final String CURRENT_USER = "User: ";
+	 /** Text indicating the current user. */
+    public static final String CURRENT_USER = "User: ";
 
-	/** Text indicating the current user's score. */
-	public static final String CURRENT_USER_SCORE = "Score: ";
+    /** Text indicating the current user's score. */
+    public static final String CURRENT_USER_SCORE = "Score: ";
+
+    /** Text for the option to play against bots. */
+    public static final String PLAY_AGAINST_BOTS = "Play Against Bots";
+
+    /** Text for indicating the selection of number of players. */
+    public static final String NUMBER_OF_PLAYERS = "Select Number of Players:";
 }

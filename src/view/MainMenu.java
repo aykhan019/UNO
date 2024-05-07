@@ -208,7 +208,8 @@ public class MainMenu extends BaseFrame {
 		playOfflineButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				dispose();
+				new NumberOfPlayersView();
 			}
 		});
 

@@ -20,11 +20,19 @@ public class WindowConstants {
 	public static final String REGISTRATION_WINDOW_TITLE = "UNO Game Simulation | REGISTRATION";
 
 	/** The title of the leaderboard window. */
-	public static final String LEADERBOARD_WINDOW_TITLE = "UNO Game Simulation | LEADERBOARD";
+    public static final String LEADERBOARD_WINDOW_TITLE = "UNO Game Simulation | LEADERBOARD";
 
-	/** The prefix for user profile window titles. */
-	public static final String USER_PROFILE_WINDOW_TITLE_PREFIX = "UNO Game Simulation | USER INFO: ";
+    /** The prefix for user profile window titles. */
+    public static final String USER_PROFILE_WINDOW_TITLE_PREFIX = "UNO Game Simulation | USER INFO: ";
 
-	/** The prefix for main menu window titles. */
-	public static final String MAIN_MENU_WINDOW_TITLE_PREFIX = "UNO Game Simulation | MAIN MENU: ";
+    /** The prefix for main menu window titles. */
+    public static final String MAIN_MENU_WINDOW_TITLE_PREFIX = "UNO Game Simulation | MAIN MENU";
+
+    /** The title for the number of players window. */
+    public static final String NUMBER_OF_PLAYERS_WINDOW = "UNO Game Simulation | SELECT NUMBER OF PLAYERS";
+
+    /** The title for the game table window. */
+    public static final String GAME_TABLE_WINDOW = "UNO Game Simulation | GAME TABLE";
 }
+
+
