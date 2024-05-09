@@ -14,7 +14,7 @@ public class GameSession {
 
 	private boolean playDirectionClockwise;
 
-	public GameSession(String sessionName, ArrayList<User> users) {
+	public GameSession(String sessionName) {
 		this.sessionName = sessionName;
 		this.users = users;
 		this.currentUser = users.get(0);
