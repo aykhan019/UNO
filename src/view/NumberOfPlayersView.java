@@ -37,7 +37,7 @@ public class NumberOfPlayersView extends BaseFrame {
 	 */
 
 	public NumberOfPlayersView() {
-		super(WindowConstants.NUMBER_OF_PLAYERS_WINDOW);
+		super(WindowConstants.NUMBER_OF_PLAYERS_WINDOW_TITLE);
 		initializeFrame();
 	}
 
