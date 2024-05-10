@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -18,8 +19,8 @@ import java.util.List;
 
 import data.UserRepository;
 import data.UserStatisticRepository;
-import model.User;
-import model.UserStatistic;
+import model.user.User;
+import model.user.UserStatistic;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UIColors;

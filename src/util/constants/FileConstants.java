@@ -15,4 +15,10 @@ public class FileConstants {
 
 	/** Separator for user statistic data. */
 	public static final String USER_STATISTIC_DATA_SEPARATOR = ":";
+	
+	/** Path to the bot data file. */
+	public static final String BOT_DATA_FILE_PATH = "database/botData.txt";
+	
+	/** Separator for bot data. */
+	public static final String BOT_DATA_SEPARATOR = ":";
 }

@@ -1,6 +1,6 @@
 package util.session;
 
-import model.User;
+import model.user.User;
 import java.io.*;
 
 /**

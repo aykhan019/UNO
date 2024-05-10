@@ -1,12 +1,13 @@
 package view;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.*;
 
 import data.UserRepository;
 import data.UserStatisticRepository;
-import model.User;
-import model.UserStatistic;
+import model.user.User;
+import model.user.UserStatistic;
 import util.constants.*;
 import util.constants.WindowConstants;
 import util.session.CurrentUserManager;

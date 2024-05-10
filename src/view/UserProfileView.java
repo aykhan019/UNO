@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import data.UserStatisticRepository;
-import model.User;
-import model.UserStatistic;
+import model.user.User;
+import model.user.UserStatistic;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UITexts;

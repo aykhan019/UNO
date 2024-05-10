@@ -5,7 +5,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import data.UserRepository;
-import model.User;
+import model.user.User;
 import util.constants.*;
 import util.constants.WindowConstants;
 import util.session.CurrentUserManager;

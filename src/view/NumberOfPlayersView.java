@@ -48,7 +48,7 @@ public class NumberOfPlayersView extends BaseFrame {
 	void initializeFrame() {
 		JPanel mainPanel = new GradientPanel();
 
-		mainPanel.setLayout(new GridLayout(4, 1));
+		mainPanel.setLayout(new GridLayout(5, 1));
 
 		JLabel playAgainstBotsLabel = new JLabel(UITexts.PLAY_AGAINST_BOTS.toUpperCase());
 		playAgainstBotsLabel.setFont(customFont.deriveFont(Font.PLAIN, 50));

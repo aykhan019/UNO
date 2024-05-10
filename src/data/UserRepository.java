@@ -2,7 +2,7 @@ package data;
 
 import java.io.*;
 import java.util.*;
-import model.User;
+import model.user.User;
 import util.constants.FileConstants;
 
 /**

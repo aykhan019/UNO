@@ -1,6 +1,6 @@
 package uno;
 
-import model.User;
+import model.user.User;
 import util.session.CurrentUserManager;
 import view.LoginPageView;
 import view.MainMenu;

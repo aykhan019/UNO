@@ -1,0 +1,9 @@
+932dfbab-02ff-4256-a170-ac940fea3e6f:Bot Elmo:elmo@bot.com:bot1
+f1f576b7-8c4e-4733-8c95-9296d1046c40:Bot Dante:dante@bot.com:bot2
+50531779-0568-4797-b8a3-e40e5b70017f:Bot Hasad:hasad@bot.com:bot3
+be463652-73f6-4889-a8c0-b58a9a7438d5:Bot Mikayla:mikayla@bot.com:bot4
+8e954d9c-307a-48a7-a8e5-3376aabf6c7c:Bot Hedwig:hedwig@bot.com:bot5
+01915b77-5bed-4f9a-b991-554ea6b8bb4f:Bot Roth:roth@bot.com:bot6
+c90b8a91-436b-4bbb-843b-603e2d919782:Bot Joel:joel@bot.com:bot7
+f137e21b-0d98-44ca-bd48-5644149cc625:Bot Joelle:joelle@bot.com:bot8
+793fd579-0999-4901-a1f0-f629c52ceacc:Bot Mendez:mendez@bot.com:bot9

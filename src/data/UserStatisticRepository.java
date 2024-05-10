@@ -1,8 +1,9 @@
 package data;
 
 import java.io.*;
+
 import java.util.*;
-import model.UserStatistic;
+import model.user.UserStatistic;
 import util.constants.FileConstants;
 
 /**
