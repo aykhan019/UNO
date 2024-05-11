@@ -1,12 +1,15 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UITexts;
+import util.constants.WarningConstants;
 import util.constants.WindowConstants;
 import util.ui.UIUtils;
+import util.ui.toaster.Toaster;
 import view.CustomComponents.ButtonWithImage;
 import view.CustomComponents.GradientPanel;
 
@@ -33,12 +36,22 @@ public class NumberOfPlayersView extends BaseFrame {
 	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
 
 	/**
+	 * The toaster object for displaying notifications.
+	 */
+	private final Toaster toaster;
+
+	/**
+	 * The main panel containing the components of the NumberOfPlayersView frame.
+	 */
+	private JPanel mainPanel;
+
+	/**
 	 * Constructs a new NumberOfPlayersView.
 	 */
-
 	public NumberOfPlayersView() {
 		super(WindowConstants.NUMBER_OF_PLAYERS_WINDOW_TITLE);
 		initializeFrame();
+		toaster = new Toaster(mainPanel);
 	}
 
 	/**
@@ -46,16 +59,38 @@ public class NumberOfPlayersView extends BaseFrame {
 	 */
 	@Override
 	void initializeFrame() {
-		JPanel mainPanel = new GradientPanel();
-
-		mainPanel.setLayout(new GridLayout(5, 1));
+		mainPanel = new GradientPanel();
+		mainPanel.setLayout(new GridLayout(6, 1));
 
 		JLabel playAgainstBotsLabel = new JLabel(UITexts.PLAY_AGAINST_BOTS.toUpperCase());
 		playAgainstBotsLabel.setFont(customFont.deriveFont(Font.PLAIN, 50));
 		playAgainstBotsLabel.setForeground(Color.cyan);
 		playAgainstBotsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		playAgainstBotsLabel.setOpaque(false);
-		mainPanel.add(playAgainstBotsLabel);
+		playAgainstBotsLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
+
+		ImageIcon icon = new ImageIcon(ImagePath.BACK_ICON);
+		Image image = icon.getImage();
+		Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		ButtonWithImage goBackButton = new ButtonWithImage(scaledIcon, 50, 50);
+
+		goBackButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+				new MainMenu();
+			}
+		});
+
+
+		JPanel labelPanel = new JPanel(new BorderLayout());
+		labelPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		labelPanel.setOpaque(false);
+		labelPanel.add(goBackButton, BorderLayout.WEST);
+		labelPanel.add(playAgainstBotsLabel, BorderLayout.CENTER);
+		mainPanel.add(labelPanel);
 
 		JLabel numberOfBotsTextLabel = new JLabel(UITexts.NUMBER_OF_PLAYERS);
 		numberOfBotsTextLabel.setFont(customFont.deriveFont(Font.PLAIN, 30));
@@ -101,22 +136,46 @@ public class NumberOfPlayersView extends BaseFrame {
 				}
 			}
 		});
+
 		thirdPanel.add(increaseButton);
 		thirdPanel.setOpaque(false);
-
 		mainPanel.add(thirdPanel);
+
+		JLabel nameOfSessionLabel = new JLabel(UITexts.NAME_OF_SESSION);
+		nameOfSessionLabel.setFont(customFont.deriveFont(Font.PLAIN, 30));
+		nameOfSessionLabel.setForeground(Color.white);
+		nameOfSessionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		nameOfSessionLabel.setOpaque(false);
+		mainPanel.add(nameOfSessionLabel);
+
+		JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		wrapper.setOpaque(false);
+		JTextField sessionNameField = new JTextField();
+		sessionNameField.setFont(customFont.deriveFont(Font.PLAIN, 23));
+		sessionNameField.setForeground(Color.white);
+		sessionNameField.setOpaque(false);
+		sessionNameField.setHorizontalAlignment(SwingConstants.CENTER);
+		sessionNameField.setPreferredSize(new Dimension(555, 90));
+		sessionNameField.setCaretColor(Color.white);
+		wrapper.add(sessionNameField);
+		mainPanel.add(wrapper);
 
 		var buttonWidth = 240;
 		var buttonHeight = 90;
 		ImageIcon logoutButtonIcon = new ImageIcon(new ImageIcon(ImagePath.START_BUTTON).getImage()
 				.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH));
 		JButton startGameButton = new ButtonWithImage(logoutButtonIcon, buttonWidth, buttonHeight);
+		startGameButton.setBorder(new EmptyBorder(0, 0, 10, 0));
 		startGameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-
-				new GameTable(numberOfPlayers);
+				var sessionName = sessionNameField.getText();
+				if (sessionName.length() == 0) {
+					toaster.warn(WarningConstants.FILL_SESSION_NAME_WARNING);
+				} else {
+					dispose();
+					new GameTable(numberOfPlayers, sessionName);
+				}
 			}
 		});
 		startGameButton.setHorizontalAlignment(SwingConstants.CENTER);

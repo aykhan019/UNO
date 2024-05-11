@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,7 +11,7 @@ import javax.swing.JPanel;
 
 import model.GameSession;
 import util.constants.WindowConstants;
-import util.ui.GameTableLayoutGenerator;
+import util.ui.GameTableLayoutHelper;
 
 public class GameTable extends BaseFrame {
 
@@ -18,21 +19,30 @@ public class GameTable extends BaseFrame {
 	private JPanel[][] cells;
 	private int numberOfPlayers;
 
-	public GameTable(int numberOfPlayers) {
+	public GameTable(int numberOfPlayers, String gameSessionName) {
 		super(WindowConstants.GAME_TABLE_WINDOW);
-		gameSession = new GameSession("");
+		gameSession = new GameSession(gameSessionName);
 		this.numberOfPlayers = numberOfPlayers;
 		initializeFrame();
+
+		var mainCells = GameTableLayoutHelper.getPlayerCells(numberOfPlayers);
+		for (var cell : mainCells) {
+			var cellPanel = getCell(cell[0], cell[1]);
+			cellPanel.setBackground(Color.black);
+		}
+
+		var centerPanel = getCenterPanel(numberOfPlayers);
+		centerPanel.setBackground(Color.cyan);
 	}
 
 	@Override
 	void initializeFrame() {
-		int rows = GameTableLayoutGenerator.rows;
-		int columns = GameTableLayoutGenerator.columns;
+		int rows = GameTableLayoutHelper.rows;
+		int columns = GameTableLayoutHelper.columns;
 
 		setLayout(new GridBagLayout());
 
-		GridBagConstraints[][] gbcArray = GameTableLayoutGenerator.generateLayout(numberOfPlayers);
+		GridBagConstraints[][] gbcArray = GameTableLayoutHelper.generateLayout(numberOfPlayers);
 
 		cells = new JPanel[rows][columns];
 
@@ -45,8 +55,8 @@ public class GameTable extends BaseFrame {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				cells[i][j] = new JPanel();
-				cells[i][j].setBackground(colors[colorIndex]);
-				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				// cells[i][j].setBackground(colors[colorIndex]);
+				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.gray));
 
 				// Set grid constraints
 				GridBagConstraints gbc = gbcArray[i][j];
@@ -59,10 +69,14 @@ public class GameTable extends BaseFrame {
 			}
 		}
 
-		getCell(0, 0).setBackground(Color.black);
-		getCell(0, 4).setBackground(Color.black);
-
 		setVisible(true);
+	}
+
+	public JPanel getCenterPanel(int numberOfPlayers) {
+		if (numberOfPlayers < 4) {
+			return getCell(1, 0);
+		}
+		return getCell(1, 1);
 	}
 
 	public JPanel getCell(int row, int column) {

@@ -60,4 +60,7 @@ public class ImagePath {
 
     /** Image path for the start button. */
     public static final String START_BUTTON = "images/start-btn.png";
+    
+    /** Image path for the window icon. */
+    public static final String WINDOW_ICON = "images/window-icon.png";
 }

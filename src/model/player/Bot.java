@@ -30,7 +30,7 @@ public class Bot extends Player {
 		try {
 			List<Bot> bots = BotRepository.getBots();
 			Collections.shuffle(bots);
-            return new ArrayList<>(bots.subList(0, numberBots));
+			return new ArrayList<>(bots.subList(0, numberBots));
 		} catch (IOException e) {
 			// TODO
 			return null;

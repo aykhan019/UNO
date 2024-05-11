@@ -99,4 +99,7 @@ public class UITexts {
 
     /** Text for indicating the selection of number of players. */
     public static final String NUMBER_OF_PLAYERS = "Select Number of Players:";
+    
+    /** Text for indicating the name of session. */
+    public static final String NAME_OF_SESSION = "Enter Name of the Game Session:";
 }

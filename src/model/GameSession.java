@@ -1,3 +1,5 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,13 +24,15 @@ public class GameSession {
 	private ArrayList<Card> drawPile;
 	private ArrayList<Card> discardPile;
 	private int currentPlayerIndex = 0;
+	private boolean playDirectionClockwise;
 	private int gameDirection = 1; // clockwise
 	private Card topCard;
 
-	private boolean playDirectionClockwise;
-
 	public GameSession(String sessionName) {
 		this.sessionName = sessionName;
+	}
+	
+	public void initializeGameSession() {
 		initializeDrawPile();
 		shuffleDrawPile();
 	}
@@ -79,10 +83,8 @@ public class GameSession {
 	    players.add(currentPlayer);
 
 	    // Add bots
-	    for (int i = 0; i < numBots; i++) {
-	        Bot bot = new Bot(); // You can assign IDs to bots dynamically
-	        players.add(bot);
-	    }
+	    var bots = Bot.getBotPlayers(numBots);
+	    players.addAll(bots);
 	}
 	
 	public void distributeCards() {
@@ -105,9 +107,6 @@ public class GameSession {
 	        return 5;
 	    }
 	}
-	
-	
-
 	
 	public void startGame() {
 		boolean gameEnded = false;
