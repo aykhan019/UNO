@@ -1,5 +1,5 @@
 package model.enums;
 
 public enum WildType {
-    WILD, WILD_DRAW_FOUR
+    WILD, WILD_DRAW_4
 }

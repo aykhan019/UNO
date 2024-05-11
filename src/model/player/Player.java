@@ -15,7 +15,7 @@ public class Player {
         this.hand = hand;
     }
 
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 

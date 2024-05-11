@@ -18,26 +18,39 @@ import model.user.User;
 import util.session.CurrentUserManager;
 
 public class GameSession {
-	private String sessionName;
-	private ArrayList<Player> players; // 1 current User, n - 1 bots
 	private Map<String, ArrayList<Card>> playerCards;
+	private ArrayList<Player> players; // 1 current User, n - 1 bots
 	private ArrayList<Card> drawPile;
 	private ArrayList<Card> discardPile;
-	private int currentPlayerIndex = 0;
-	private boolean playDirectionClockwise;
-	private int gameDirection = 1; // clockwise
+	private String sessionName;
 	private Card topCard;
+	private int currentPlayerIndex = 0;
+	private int numberOfPlayers;
+	private int gameDirection = 1; // clockwise
+	private boolean playDirectionClockwise;
 
-	public GameSession(String sessionName) {
+	public GameSession(int numberOfPlayers, String sessionName) {
 		this.sessionName = sessionName;
+		this.numberOfPlayers = numberOfPlayers;
 	}
 	
 	public void initializeGameSession() {
 		initializeDrawPile();
 		shuffleDrawPile();
+		initializePlayers();
+		distributeCards();
+		
+		for (var player : players) {
+			var cards = player.getHand();
+			System.out.println("++++++++++++++++++++++");
+			System.out.println(player.getUser().getUsername());
+			for (var card : cards) {
+				System.out.println(card.getName());
+			}
+		}
 	}
 
-	public void initializeDrawPile() {
+	private void initializeDrawPile() {
 		drawPile = new ArrayList<Card>();
 		for (Color color : Color.values()) {
 			if (color != Color.NONE) {
@@ -70,11 +83,11 @@ public class GameSession {
 		}
 	}
 
-	public void shuffleDrawPile() {
+	private void shuffleDrawPile() {
 		Collections.shuffle(drawPile);
 	}
 
-	public void initializePlayers(int numBots) {
+	private void initializePlayers() {
 	    players = new ArrayList<>();
 	    
 	    // Add Current user
@@ -83,11 +96,11 @@ public class GameSession {
 	    players.add(currentPlayer);
 
 	    // Add bots
-	    var bots = Bot.getBotPlayers(numBots);
+	    var bots = Bot.getBotPlayers(numberOfPlayers - 1);
 	    players.addAll(bots);
 	}
 	
-	public void distributeCards() {
+	private void distributeCards() {
 	    int numPlayers = players.size();
 	    int numCardsPerPlayer = calculateNumCardsPerPlayer(numPlayers);
 	    for (Player player : players) {
@@ -108,7 +121,8 @@ public class GameSession {
 	    }
 	}
 	
-	public void startGame() {
+	//TODO Change location
+	private void startGame() {
 		boolean gameEnded = false;
 		while (!gameEnded) {
 			Player currentPlayer = nextPlayer();

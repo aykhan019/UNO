@@ -1,5 +1,5 @@
 package model.enums;
 
 public enum ActionType {
-	DRAW_TWO, REVERSE, SKIP
+	DRAW_2, REVERSE, SKIP
 }

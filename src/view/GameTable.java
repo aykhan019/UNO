@@ -21,9 +21,10 @@ public class GameTable extends BaseFrame {
 
 	public GameTable(int numberOfPlayers, String gameSessionName) {
 		super(WindowConstants.GAME_TABLE_WINDOW);
-		gameSession = new GameSession(gameSessionName);
 		this.numberOfPlayers = numberOfPlayers;
+		gameSession = new GameSession(numberOfPlayers, gameSessionName);
 		initializeFrame();
+		gameSession.initializeGameSession();
 
 		var mainCells = GameTableLayoutHelper.getPlayerCells(numberOfPlayers);
 		for (var cell : mainCells) {
