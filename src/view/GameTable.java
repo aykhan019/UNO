@@ -70,22 +70,23 @@ public class GameTable extends BaseFrame {
 
 		// Create JTextArea for game status
 		gameStatusArea = new JTextArea();
-		gameStatusArea.setFont(textAreaFont.deriveFont(Font.PLAIN, 20));
-		gameStatusArea.setEditable(false); 
+		gameStatusArea.setFont(textAreaFont.deriveFont(Font.PLAIN, 18));
+		gameStatusArea.setEditable(false);
 		gameStatusArea.setLineWrap(true);
-		gameStatusArea.setWrapStyleWord(true); 
+		gameStatusArea.setWrapStyleWord(true);
 		gameStatusArea.setOpaque(false);
-		gameStatusArea.setBackground(new Color(0, 0, 0, 0)); 
-		gameStatusArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
+		gameStatusArea.setForeground(Color.white);
+		gameStatusArea.setBackground(new Color(0, 0, 0, 0));
+
 		// Wrap JTextArea in a JScrollPane
 		JScrollPane scrollPane = new JScrollPane(gameStatusArea);
-		scrollPane.setBounds(10, 60, 300, 150); 
-		scrollPane.setBorder(null); 
+		scrollPane.setBounds(10, 70, 300, 150);
+		scrollPane.setBorder(null);
+		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.getViewport().setBackground(Color.red);
-		scrollPane.revalidate();
-		scrollPane.repaint();
+		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0)); // Hide vertical scrollbar
+		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0)); // Hide horizontal scrollbar
+
 		// Create a custom Document listener to auto-scroll JTextArea
 		gameStatusArea.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
@@ -102,12 +103,15 @@ public class GameTable extends BaseFrame {
 			}
 		});
 
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		centerPanel.add(scrollPane);
 
+		JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
+		verticalLine.setBackground(Color.black);
+		verticalLine.setBounds(375, 0, 2, centerPanel.getHeight()); // Adjust height as needed
+		centerPanel.add(verticalLine);
+
 		drawPileButton = new JButton();
-		drawPileButton.setBounds(400, 90, 130, 150);
+		drawPileButton.setBounds(425, 90, 130, 150);
 		centerPanel.add(drawPileButton);
 		drawPileButton.addActionListener(new ActionListener() {
 			@Override
@@ -130,7 +134,7 @@ public class GameTable extends BaseFrame {
 		});
 
 		discardPileLabel = new JLabel();
-		discardPileLabel.setBounds(540, 90, 103, 150);
+		discardPileLabel.setBounds(565, 90, 103, 150);
 		discardPileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		centerPanel.add(discardPileLabel);
 
@@ -145,7 +149,7 @@ public class GameTable extends BaseFrame {
 		cardCountInDrawPile = new JLabel();
 		cardCountInDrawPile.setFont(customFont.deriveFont(Font.PLAIN, 22));
 		cardCountInDrawPile.setForeground(Color.white);
-		cardCountInDrawPile.setBounds(440, 245, 50, 50);
+		cardCountInDrawPile.setBounds(465, 245, 50, 50);
 		centerPanel.add(cardCountInDrawPile);
 
 		updateCardCountInDrawPile(gameSession.getDrawPileCardCount());
