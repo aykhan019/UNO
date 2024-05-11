@@ -27,34 +27,33 @@ public class GameSession {
 	private int currentPlayerIndex = 0;
 	private int numberOfPlayers;
 	private int gameDirection = 1; // clockwise
-	private boolean playDirectionClockwise;
+	private boolean playDirectionClockwise = true;
 
 	public GameSession(int numberOfPlayers, String sessionName) {
 		this.sessionName = sessionName;
 		this.numberOfPlayers = numberOfPlayers;
 	}
-	
+
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
+	}
+
+	public int getDrawPileCardCount() {
+		return drawPile.size();
+	}
+
 	public void initializeGameSession() {
 		initializeDrawPile();
 		shuffleDrawPile();
 		initializePlayers();
 		distributeCards();
-		
-		for (var player : players) {
-			var cards = player.getHand();
-			System.out.println("++++++++++++++++++++++");
-			System.out.println(player.getUser().getUsername());
-			for (var card : cards) {
-				System.out.println(card.getName());
-			}
-		}
+		discardPile = new ArrayList<Card>();
 	}
 
 	private void initializeDrawPile() {
 		drawPile = new ArrayList<Card>();
 		for (Color color : Color.values()) {
 			if (color != Color.NONE) {
-				// Add number cards
 				for (int value = 0; value <= 9; value++) {
 					if (value != 0) {
 						// Two sets of 1-9
@@ -88,74 +87,59 @@ public class GameSession {
 	}
 
 	private void initializePlayers() {
-	    players = new ArrayList<>();
-	    
-	    // Add Current user
-	    User currentUser = CurrentUserManager.getInstance().getCurrentUser();
-	    Player currentPlayer = new Player(currentUser, new ArrayList<Card>());
-	    players.add(currentPlayer);
+		players = new ArrayList<>();
 
-	    // Add bots
-	    var bots = Bot.getBotPlayers(numberOfPlayers - 1);
-	    players.addAll(bots);
+		// Add Current user
+		User currentUser = CurrentUserManager.getInstance().getCurrentUser();
+		Player currentPlayer = new Player(currentUser, new ArrayList<Card>());
+		players.add(currentPlayer);
+
+		// Add bots
+		var bots = Bot.getBotPlayers(numberOfPlayers - 1);
+		players.addAll(bots);
 	}
-	
+
 	private void distributeCards() {
-	    int numPlayers = players.size();
-	    int numCardsPerPlayer = calculateNumCardsPerPlayer(numPlayers);
-	    for (Player player : players) {
-	        for (int i = 0; i < numCardsPerPlayer; i++) {
-	            Card card = drawCard();
-	            player.addCard(card);
-	        }
-	    }
-	}
-
-	private int calculateNumCardsPerPlayer(int numPlayers) {
-	    if (numPlayers <= 4) {
-	        return 7;
-	    } else if (numPlayers <= 7) {
-	        return 6;
-	    } else {
-	        return 5;
-	    }
-	}
-	
-	//TODO Change location
-	private void startGame() {
-		boolean gameEnded = false;
-		while (!gameEnded) {
-			Player currentPlayer = nextPlayer();
-			if (currentPlayer instanceof Bot) {
-				playBotTurn((Bot) currentPlayer);
-			} else {
-				// Assuming this should be handled by the User interface
-				// playHumanTurn(currentPlayer);
+		int numPlayers = players.size();
+		int numCardsPerPlayer = calculateNumCardsPerPlayer(numPlayers);
+		for (Player player : players) {
+			for (int i = 0; i < numCardsPerPlayer; i++) {
+				Card card = drawCard();
+				player.addCard(card);
 			}
-			if (currentPlayer.hasWon()) {
-				gameEnded = true;
-			}
-			nextPlayer();
 		}
 	}
 
-	private void playHumanTurn(Player player) {
+	private int calculateNumCardsPerPlayer(int numPlayers) {
+		if (numPlayers <= 4) {
+			return 7;
+		} else if (numPlayers <= 7) {
+			return 6;
+		} else {
+			return 5;
+		}
+	}
+
+	public void playHumanTurn(Player player) {
 		// Implementation of human player's turn will depend on the user interface
 	}
 
-	private void playBotTurn(Bot bot) {
+	public Card playBotTurn(Bot bot) {
 		Card playableCard = bot.getPlayableCard(topCard);
 		if (playableCard != null) {
 			topCard = playableCard;
 			bot.removeCard(playableCard);
+			return playableCard;
 		} else {
-			Card drawnCard = drawCard(); 
+			Card drawnCard = drawCard();
 			bot.addCard(drawnCard);
 			if (drawnCard.isPlayableOn(topCard)) {
 				topCard = drawnCard;
 				bot.removeCard(drawnCard);
+				return drawnCard;
 			} else {
 				// Bot cannot play and end its turn;
+				return null;
 			}
 		}
 	}
@@ -168,13 +152,23 @@ public class GameSession {
 	}
 
 	public void reshuffleDiscardPile() {
-		Collections.shuffle(discardPile);
-		drawPile.addAll(discardPile);
-		discardPile.clear();
+		if (discardPile.size() > 0) {
+
+			Collections.shuffle(discardPile);
+			drawPile.addAll(discardPile);
+			discardPile.clear();
+		}
 	}
 
-	public void playCard(Card card) {
-		// Implementation of playing a card by a player
+	public boolean playCard(Card card) {
+		if (card.isPlayableOn(topCard)) {
+			topCard = card;
+			Player currentPlayer = players.get(currentPlayerIndex);
+			currentPlayer.removeCard(card);
+			discardPile.add(card);
+			return true;
+		}
+		return false;
 	}
 
 	public Player nextPlayer() {
@@ -185,6 +179,7 @@ public class GameSession {
 		} else {
 			index = (index - 1 + size) % size;
 		}
+		currentPlayerIndex = index;
 		return players.get(index);
 	}
 
@@ -194,5 +189,9 @@ public class GameSession {
 
 	public void penalizeNoUno() {
 		// Implementation of penalizing a player for not saying UNO
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 }

@@ -63,4 +63,11 @@ public class ImagePath {
     
     /** Image path for the window icon. */
     public static final String WINDOW_ICON = "images/window-icon.png";
+    
+    public static final String DEFAULT_CARD_IMAGE_PATH = "images/cards/default-card-image.jpg";
+    
+    public static final String DRAW_PILE_IMAGE_4 = "images/draw-pile-4-cards.png";
+    public static final String DRAW_PILE_IMAGE_3 = "images/draw-pile-3-cards.png";
+    public static final String DRAW_PILE_IMAGE_2 = "images/draw-pile-2-cards.png";
+
 }

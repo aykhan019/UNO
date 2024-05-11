@@ -1,11 +1,12 @@
 package model.cards;
 
 import model.enums.Color;
+
 import util.helpers.StringUtils;
 
 public class NumberCard extends Card {
     public NumberCard(Color color, int value) {
-        super(color, value, value, "images/card/" + StringUtils.capitalize(color.toString()) + "_" + value + ".jpg");
+        super(color, value, value, "images/cards/" + StringUtils.capitalize(color.toString()) + "_" + value + ".jpg");
         if (value < 0 || value > 9) {
             throw new IllegalArgumentException("Number card value must be between 0 and 9");
         }
@@ -21,6 +22,6 @@ public class NumberCard extends Card {
 				// Number cards can be played on action cards or wild cards
 				return true;
           }	
-          return false;
+          return true;
     }
 }

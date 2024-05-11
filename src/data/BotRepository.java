@@ -1,6 +1,7 @@
 package data;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import model.user.User;
 import util.constants.FileConstants;
 
 /**
- * Manages bot data retrieval operation. This class provides
- * methods for reading user data from a file.
+ * Manages bot data retrieval operation. This class provides methods for reading
+ * user data from a file.
  */
 public class BotRepository {
 	/**

@@ -8,5 +8,6 @@ public class WarningConstants {
 	public static final String FILL_INPUTS_WARNING = "Please fill out all required fields!";
 	
 	public static final String FILL_SESSION_NAME_WARNING = "Please enter name of the game session!";
+	public static final String YOU_CANNOT_PLAY_THIS_CARD = "You cannot play this card!";
 
 }
