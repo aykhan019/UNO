@@ -1,12 +1,14 @@
 package model.player;
 
 import model.cards.Card;
+import model.enums.Color;
 import model.user.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import data.BotRepository;
 
@@ -17,9 +19,9 @@ public class Bot extends Player {
 	}
 
 	@Override
-	public Card getPlayableCard(Card topCard) {
+	public Card getPlayableCard(Card topCard, Color colorToPlay) {
 		for (Card card : getHand()) {
-			if (card.isPlayableOn(topCard)) {
+			if (card.isPlayableOn(topCard) && card.getColor() == colorToPlay) {
 				return card;
 			}
 		}
@@ -35,5 +37,21 @@ public class Bot extends Player {
 			// TODO
 			return null;
 		}
+	}
+
+	/**
+	 * Choose a random color from the Color enum.
+	 * 
+	 * @return a random Color
+	 */
+	public Color chooseRandomColor() {
+		Color[] colors = Color.values();
+
+		int numColors = colors.length;
+
+		Random random = new Random();
+		int randomIndex = random.nextInt(numColors);
+
+		return colors[randomIndex];
 	}
 }

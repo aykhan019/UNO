@@ -28,14 +28,46 @@ public class GameSession {
 	private int numberOfPlayers;
 	private int gameDirection = 1; // clockwise
 	private boolean playDirectionClockwise = true;
+	private Color colorToPlay;
 
 	public GameSession(int numberOfPlayers, String sessionName) {
 		this.sessionName = sessionName;
 		this.numberOfPlayers = numberOfPlayers;
 	}
+	
+	public int getGameDirection() {
+		return gameDirection;
+	}
+	
+	public void reverseGameDirection() {
+		if (gameDirection == 1) {
+			gameDirection = -1;
+			playDirectionClockwise = false;
+		}
+		else {
+			gameDirection = 1;
+			playDirectionClockwise = true;
+		}
+	}
+	
+	public void setColorToPlay(Color color) {
+		colorToPlay = color;
+	}
+
+	public Color getColorToPlay() {
+		return colorToPlay;
+	}
 
 	public int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
+	}
+
+	public Player getCurrentPlayer() {
+		return players.get(currentPlayerIndex);
+	}
+
+	public void setCurrentPlayerIndex(int index) {
+		currentPlayerIndex = index;
 	}
 
 	public int getDrawPileCardCount() {
@@ -54,7 +86,7 @@ public class GameSession {
 		drawPile = new ArrayList<Card>();
 		for (Color color : Color.values()) {
 			if (color != Color.NONE) {
-				for (int value = 0; value <= 9; value++) {
+				for (int value = 0; value <= 2; value++) {
 					if (value != 0) {
 						// Two sets of 1-9
 						drawPile.add(new NumberCard(color, value));
@@ -68,6 +100,12 @@ public class GameSession {
 				// Add action cards
 				for (ActionType action : ActionType.values()) {
 					// Two action card
+					drawPile.add(new ActionCard(color, action));
+					drawPile.add(new ActionCard(color, action));
+					drawPile.add(new ActionCard(color, action));
+					drawPile.add(new ActionCard(color, action));
+					drawPile.add(new ActionCard(color, action));
+					drawPile.add(new ActionCard(color, action));
 					drawPile.add(new ActionCard(color, action));
 					drawPile.add(new ActionCard(color, action));
 				}
@@ -124,19 +162,19 @@ public class GameSession {
 		// Implementation of human player's turn will depend on the user interface
 	}
 
-	public Card playBotTurn(Bot bot) {
-		Card playableCard = bot.getPlayableCard(topCard);
+	public Object[] playBotTurn(Bot bot) {
+		Card playableCard = bot.getPlayableCard(topCard, colorToPlay);
 		if (playableCard != null) {
 			topCard = playableCard;
 			bot.removeCard(playableCard);
-			return playableCard;
+			return new Object[] { playableCard, false };
 		} else {
 			Card drawnCard = drawCard();
 			bot.addCard(drawnCard);
 			if (drawnCard.isPlayableOn(topCard)) {
 				topCard = drawnCard;
 				bot.removeCard(drawnCard);
-				return drawnCard;
+				return new Object[] { drawnCard, true };
 			} else {
 				// Bot cannot play and end its turn;
 				return null;
@@ -166,6 +204,7 @@ public class GameSession {
 			Player currentPlayer = players.get(currentPlayerIndex);
 			currentPlayer.removeCard(card);
 			discardPile.add(card);
+			colorToPlay = topCard.getColor();
 			return true;
 		}
 		return false;
@@ -180,7 +219,7 @@ public class GameSession {
 			index = (index - 1 + size) % size;
 		}
 		currentPlayerIndex = index;
-		return players.get(index);
+		return players.get(currentPlayerIndex);
 	}
 
 	public void declareUno() {

@@ -12,14 +12,17 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import model.GameSession;
+import model.cards.ActionCard;
 import model.cards.Card;
 import model.cards.WildCard;
+import model.enums.ActionType;
 import model.player.Bot;
 import model.player.Player;
 import model.user.User;
 import util.constants.ErrorConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
+import util.constants.UnoStatusMessages;
 import util.constants.WindowConstants;
 import util.ui.GameTableLayoutHelper;
 import util.ui.UIUtils;
@@ -53,24 +56,14 @@ public class GameTable extends BaseFrame {
 		addBotPlayerElements();
 		paintUserCell();
 		addCenterElements();
-
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
-		addStatusMessage("Hiii");
 	}
 
 	void addCenterElements() {
 		var centerPanel = getCenterPanel();
 		centerPanel.setLayout(null);
 
-		// Create JTextArea for game status
 		gameStatusArea = new JTextArea();
-		gameStatusArea.setFont(textAreaFont.deriveFont(Font.PLAIN, 18));
+		// gameStatusArea.setFont(textAreaFont.deriveFont(Font.PLAIN, 18));
 		gameStatusArea.setEditable(false);
 		gameStatusArea.setLineWrap(true);
 		gameStatusArea.setWrapStyleWord(true);
@@ -78,16 +71,14 @@ public class GameTable extends BaseFrame {
 		gameStatusArea.setForeground(Color.white);
 		gameStatusArea.setBackground(new Color(0, 0, 0, 0));
 
-		// Wrap JTextArea in a JScrollPane
 		JScrollPane scrollPane = new JScrollPane(gameStatusArea);
-		scrollPane.setBounds(10, 70, 300, 150);
+		scrollPane.setBounds(10, 70, 2950, 150);
 		scrollPane.setBorder(null);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0)); // Hide vertical scrollbar
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0)); // Hide horizontal scrollbar
+		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
 
-		// Create a custom Document listener to auto-scroll JTextArea
 		gameStatusArea.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
 				SwingUtilities.invokeLater(() -> {
@@ -107,7 +98,7 @@ public class GameTable extends BaseFrame {
 
 		JSeparator verticalLine = new JSeparator(SwingConstants.VERTICAL);
 		verticalLine.setBackground(Color.black);
-		verticalLine.setBounds(375, 0, 2, centerPanel.getHeight()); // Adjust height as needed
+		verticalLine.setBounds(375, 0, 2, centerPanel.getHeight());
 		centerPanel.add(verticalLine);
 
 		drawPileButton = new JButton();
@@ -117,7 +108,7 @@ public class GameTable extends BaseFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!drawPileButtonClicked) {
-					drawPileButtonClicked = true;
+					// drawPileButtonClicked = true;
 
 					var drawnCard = gameSession.drawCard();
 					gameSession.getPlayers().get(0).addCard(drawnCard);
@@ -141,7 +132,7 @@ public class GameTable extends BaseFrame {
 		ImageIcon icon = new ImageIcon(ImagePath.BACK_ICON);
 		Image image = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		ButtonWithImage leaveGameBtn = new ButtonWithImage(new ImageIcon(image), 50, 50);
-		leaveGameBtn.addActionListener(e -> goBack());
+		leaveGameBtn.addActionListener(e -> leaveGame());
 		leaveGameBtn.setSize(50, 50);
 		leaveGameBtn.setBounds(5, 5, 50, 50);
 		centerPanel.add(leaveGameBtn);
@@ -154,6 +145,133 @@ public class GameTable extends BaseFrame {
 
 		updateCardCountInDrawPile(gameSession.getDrawPileCardCount());
 		updateDrawPileImage();
+
+		addStatusMessage(UnoStatusMessages.getGameStartMessage());
+		addStatusMessage(UnoStatusMessages.getPlayerTurnMessage(gameSession.getCurrentPlayer()));
+		setCellBorders();
+	}
+
+	void handleCardSelection(JButton btn, Card card) {
+		if (gameSession.getCurrentPlayerIndex() == 0) {
+			gameSession.setCurrentPlayerIndex(-1);
+			var played = false;
+			if (card instanceof WildCard) {
+				ColorSelectionPopup colorSelectionPopup = new ColorSelectionPopup(this);
+				colorSelectionPopup.setVisible(true);
+				model.enums.Color selectedColor = colorSelectionPopup.getSelectedColor();
+				((WildCard) card).setColor(selectedColor);
+				gameSession.setColorToPlay(selectedColor);
+				gameSession.setCurrentPlayerIndex(0);
+				addStatusMessage(UnoStatusMessages.getWildCardPlayedMessage(gameSession.getCurrentPlayer(),
+						card.getName(), selectedColor));
+				gameSession.setCurrentPlayerIndex(-1);
+			}
+			gameSession.setCurrentPlayerIndex(0);
+			played = gameSession.playCard(card);
+			gameSession.setCurrentPlayerIndex(-1);
+			if (played) {
+				gameSession.setCurrentPlayerIndex(1);
+				Container parent = btn.getParent();
+				if (parent instanceof JPanel) {
+					JPanel cardPanel = (JPanel) parent;
+					cardPanel.remove(btn);
+					cardPanel.revalidate();
+					cardPanel.repaint();
+				}
+				updateDiscardPileImage(card.getImagePath());
+				gameSession.setCurrentPlayerIndex(0);
+				if (card instanceof WildCard) {
+					// handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
+				} else if (card instanceof ActionCard) {
+					handleActionCard(gameSession.getCurrentPlayer(), (ActionCard) card);
+				} else {
+					addStatusMessage(
+							UnoStatusMessages.getPlayerPlayCardMessage(gameSession.getCurrentPlayer(), card.getName()));
+				}
+				//gameSession.setCurrentPlayerIndex(0);
+				drawPileButtonClicked = true;
+				invokeBotTurn();
+			} else {
+				gameSession.setCurrentPlayerIndex(0);
+				toaster.warn(ErrorConstants.UNKNOWN_ERROR);
+			}
+		}
+	}
+
+	void invokeBotTurn() {
+		Player currentPlayer = gameSession.nextPlayer();
+		setCellBorders();
+		addStatusMessage(UnoStatusMessages.getPlayerTurnMessage(gameSession.getCurrentPlayer()));
+		// Wait 1 second before proceeding
+		Timer initialTimer = new Timer(3000, e -> {
+			if (currentPlayer instanceof Bot bot) {
+				var obj = gameSession.playBotTurn(bot);
+				if (obj != null) {
+					var playedCardByBot = (Card) obj[0];
+					var drewCard = (boolean) obj[1];
+					var playerIndex = gameSession.getCurrentPlayerIndex();
+
+					if (drewCard) {
+						addStatusMessage(UnoStatusMessages.getPlayerDrawCardMessage(currentPlayer));
+					}
+					if (playedCardByBot instanceof WildCard) {
+						handleWildCard(bot, (WildCard) playedCardByBot);
+					} else if (playedCardByBot instanceof ActionCard) {
+						handleActionCard(bot, (ActionCard) playedCardByBot);
+					} else {
+						addStatusMessage(
+								UnoStatusMessages.getPlayerPlayCardMessage(currentPlayer, playedCardByBot.getName()));
+					}
+					updateDiscardPileImage(playedCardByBot.getImagePath());
+					paintBotCell(mainCells[playerIndex], bot, bot.getUser());
+				} else {
+					addStatusMessage(UnoStatusMessages.getPlayerDrawCardMessage(currentPlayer));
+					addStatusMessage(UnoStatusMessages.getSkippedTurnMessage(currentPlayer));
+				}
+
+				if (currentPlayer.hasWon()) {
+					addStatusMessage(UnoStatusMessages.getPlayerWinMessage(currentPlayer));
+				} else {
+					invokeBotTurn();
+				}
+			} else {
+				drawPileButtonClicked = false;
+			}
+			setCellBorders();
+			updateCardCountInDrawPile(gameSession.getDrawPileCardCount());
+		});
+		initialTimer.setRepeats(false);
+		initialTimer.start();
+	}
+
+	private void handleWildCard(Player player, WildCard wildCard) {
+		if (player instanceof Bot bot) {
+			model.enums.Color selectedColor = bot.chooseRandomColor();
+			wildCard.setColor(selectedColor);
+			addStatusMessage(UnoStatusMessages.getWildCardPlayedMessage(player, wildCard.getName(), selectedColor));
+		}
+	}
+
+	private void handleActionCard(Player player, ActionCard actionCard) {
+		switch (actionCard.getAction()) {
+		case SKIP:
+			int nextPlayerIndex = gameSession.getCurrentPlayerIndex() + gameSession.getGameDirection();
+			System.out.println(nextPlayerIndex);
+			int playerCount = gameSession.getPlayers().size();
+			gameSession.setCurrentPlayerIndex((nextPlayerIndex + playerCount) % playerCount);
+			addStatusMessage(UnoStatusMessages.getSkipCardPlayedMessage(player, actionCard.getName()));
+			break;
+		case REVERSE:
+			gameSession.reverseGameDirection();
+			addStatusMessage(UnoStatusMessages.getReverseCardPlayedMessage(player, actionCard.getName()));
+			break;
+		case DRAW_2:
+			addStatusMessage(UnoStatusMessages.getReverseCardPlayedMessage(player, actionCard.getName()));
+			break;
+		default:
+			addStatusMessage(UnoStatusMessages.getActionCardPlayedMessage(player, actionCard.getName()));
+			break;
+		}
 	}
 
 	void addStatusMessage(String message) {
@@ -219,55 +337,6 @@ public class GameTable extends BaseFrame {
 		cellPanel.add(currentPlayerPanel, BorderLayout.CENTER);
 	}
 
-	void handleCardSelection(JButton btn, Card card) {
-		var played = false;
-		if (card instanceof WildCard) {
-			ColorSelectionPopup colorSelectionPopup = new ColorSelectionPopup(this);
-			colorSelectionPopup.setVisible(true);
-			model.enums.Color selectedColor = colorSelectionPopup.getSelectedColor();
-			((WildCard) card).setColor(selectedColor);
-		}
-		played = gameSession.playCard(card);
-		if (played) {
-			Container parent = btn.getParent();
-			if (parent instanceof JPanel) {
-				JPanel cardPanel = (JPanel) parent;
-				cardPanel.remove(btn);
-				cardPanel.revalidate();
-				cardPanel.repaint();
-			}
-			updateDiscardPileImage(card.getImagePath());
-			drawPileButtonClicked = true;
-			Timer timer = new Timer(1000, e -> invokeBotTurn());
-			timer.setRepeats(false);
-			timer.start();
-		} else {
-			toaster.warn(ErrorConstants.UNKNOWN_ERROR);
-		}
-	}
-
-	void invokeBotTurn() {
-		Player currentPlayer = gameSession.nextPlayer();
-		if (currentPlayer instanceof Bot bot) {
-			var playedCardByBot = gameSession.playBotTurn(bot);
-			if (playedCardByBot != null) {
-				var playerIndex = gameSession.getCurrentPlayerIndex();
-				updateDiscardPileImage(playedCardByBot.getImagePath());
-				paintBotCell(mainCells[playerIndex], bot, bot.getUser());
-			}
-			if (currentPlayer.hasWon()) {
-				// Handle game end
-			} else {
-				Timer timer = new Timer(1000, e -> invokeBotTurn());
-				timer.setRepeats(false);
-				timer.start();
-			}
-		} else {
-			drawPileButtonClicked = false;
-		}
-		updateCardCountInDrawPile(gameSession.getDrawPileCardCount());
-	}
-
 	void addBotPlayerElements() {
 		var players = gameSession.getPlayers();
 		Dimension[][] initialCellSizes = new Dimension[mainCells.length][];
@@ -300,6 +369,20 @@ public class GameTable extends BaseFrame {
 		addCurrentPlayerElements(playerCell);
 	}
 
+	void setCellBorders() {
+		var currentPlayerIndex = gameSession.getCurrentPlayerIndex();
+		var currentPlayerCellCoordinates = mainCells[currentPlayerIndex];
+		var currentPlayerCellPanel = getCell(currentPlayerCellCoordinates[0], currentPlayerCellCoordinates[1]);
+		currentPlayerCellPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+
+		for (var cellCoordinates : mainCells) {
+			var cellPanel = getCell(cellCoordinates[0], cellCoordinates[1]);
+			if (cellCoordinates != currentPlayerCellCoordinates) {
+				cellPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+			}
+		}
+	}
+
 	void paintBotCell(int[] cellCoordinates, Player player, User user) {
 		var cellPanel = getCell(cellCoordinates[0], cellCoordinates[1]);
 		cellPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -319,8 +402,14 @@ public class GameTable extends BaseFrame {
 		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		for (Card card : player.getHand()) {
-			ImageIcon cardImage = Card.getDefaultCardImage(30, 60);
-			JLabel cardLabel = new JLabel(cardImage);
+			// ImageIcon cardImage = Card.getDefaultCardImage(30, 60); TODO
+			//JLabel cardLabel = new JLabel(cardImage);
+			
+			ImageIcon cardImageIcon = new ImageIcon(card.getImagePath());
+			Image cardImage = cardImageIcon.getImage().getScaledInstance(30, 60, Image.SCALE_SMOOTH);
+			ImageIcon scaledCardImageIcon = new ImageIcon(cardImage);
+			JLabel cardLabel = new JLabel(scaledCardImageIcon);
+
 			cardPanel.add(cardLabel);
 		}
 		cardPanel.setOpaque(false);
@@ -358,6 +447,7 @@ public class GameTable extends BaseFrame {
 		return cells[row][column];
 	}
 
-	void goBack() {
+	void leaveGame() {
+
 	}
 }

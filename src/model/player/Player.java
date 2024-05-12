@@ -1,6 +1,7 @@
 package model.player;
 
 import model.cards.Card;
+import model.enums.Color;
 import model.user.User;
 
 import java.util.ArrayList;
@@ -31,9 +32,9 @@ public class Player {
         hand.remove(card);
     }
 
-    public Card getPlayableCard(Card topCard) {
+    public Card getPlayableCard(Card topCard, Color colorToPlay) {
         for (Card card : hand) {
-            if (card.isPlayableOn(topCard)) {
+            if (card.isPlayableOn(topCard) && card.getColor() == colorToPlay) {
                 return card;
             }
         }
