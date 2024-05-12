@@ -21,9 +21,6 @@ public class ActionCard extends Card {
 	@Override
 	public boolean isPlayableOn(Card otherCard) {
 		if (otherCard instanceof ActionCard other) {
-			System.out.println(other.getAction() + " " + this.getAction());
-			System.out.println(this.getColor() + " " + other.getColor());
-
 			if (other.getAction() == this.getAction() || this.getColor() == other.getColor())
 				return true;
 			return false;

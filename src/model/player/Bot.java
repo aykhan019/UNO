@@ -45,13 +45,12 @@ public class Bot extends Player {
 	 * @return a random Color
 	 */
 	public Color chooseRandomColor() {
-		Color[] colors = Color.values();
+	    Color[] colors = {Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN};
+	    int numColors = colors.length;
 
-		int numColors = colors.length;
+	    Random random = new Random();
+	    int randomIndex = random.nextInt(numColors);
 
-		Random random = new Random();
-		int randomIndex = random.nextInt(numColors);
-
-		return colors[randomIndex];
+	    return colors[randomIndex];
 	}
 }

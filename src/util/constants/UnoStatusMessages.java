@@ -42,8 +42,8 @@ public class UnoStatusMessages {
 	 * @param player The player who is drawing a card.
 	 * @return The status message.
 	 */
-	public static String getPlayerDrawCardMessage(Player player) {
-		return player.getUser().getUsername() + " has drawn a card.";
+	public static String getPlayerDrawCardMessage(Player player, int drawCount) {
+		return player.getUser().getUsername() + " has drawn " + drawCount + " card(s).";
 	}
 
 	/**
@@ -135,6 +135,11 @@ public class UnoStatusMessages {
 	 */
 	public static String getDrawFourPenaltyMessage(Player player) {
 		return "A Draw Four card was played. " + player.getUser().getUsername() + " drew 4 cards.";
+	}
+
+	public static String getDrawPenaltyMessage(Player player, int cardCount) {
+		return "A Draw " + cardCount + " card was played. " + player.getUser().getUsername() + " drew " + cardCount
+				+ " cards.";
 	}
 
 	/**
@@ -239,8 +244,8 @@ public class UnoStatusMessages {
 	}
 
 	public static String getWildCardPlayedMessage(Player player, String cardName, Color selectedColor) {
-		return String.format("%s played a Wild Card (%s) and chose %s color.", player.getUser().getUsername(), cardName,
-				selectedColor.toString());
+		return String.format("%s played a Wild Card (%s)\nand chose %s color.", player.getUser().getUsername(),
+				cardName, selectedColor.toString());
 	}
 
 	public static String getSkipCardPlayedMessage(Player player, String cardName) {

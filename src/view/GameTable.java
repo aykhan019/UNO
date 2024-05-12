@@ -16,6 +16,7 @@ import model.cards.ActionCard;
 import model.cards.Card;
 import model.cards.WildCard;
 import model.enums.ActionType;
+import model.enums.WildType;
 import model.player.Bot;
 import model.player.Player;
 import model.user.User;
@@ -24,6 +25,7 @@ import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UnoStatusMessages;
 import util.constants.WindowConstants;
+import util.session.CurrentUserManager;
 import util.ui.GameTableLayoutHelper;
 import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
@@ -56,6 +58,9 @@ public class GameTable extends BaseFrame {
 		addBotPlayerElements();
 		paintUserCell();
 		addCenterElements();
+
+		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		paintUserCell();
 	}
 
 	void addCenterElements() {
@@ -155,17 +160,7 @@ public class GameTable extends BaseFrame {
 		if (gameSession.getCurrentPlayerIndex() == 0) {
 			gameSession.setCurrentPlayerIndex(-1);
 			var played = false;
-			if (card instanceof WildCard) {
-				ColorSelectionPopup colorSelectionPopup = new ColorSelectionPopup(this);
-				colorSelectionPopup.setVisible(true);
-				model.enums.Color selectedColor = colorSelectionPopup.getSelectedColor();
-				((WildCard) card).setColor(selectedColor);
-				gameSession.setColorToPlay(selectedColor);
-				gameSession.setCurrentPlayerIndex(0);
-				addStatusMessage(UnoStatusMessages.getWildCardPlayedMessage(gameSession.getCurrentPlayer(),
-						card.getName(), selectedColor));
-				gameSession.setCurrentPlayerIndex(-1);
-			}
+
 			gameSession.setCurrentPlayerIndex(0);
 			played = gameSession.playCard(card);
 			gameSession.setCurrentPlayerIndex(-1);
@@ -181,14 +176,27 @@ public class GameTable extends BaseFrame {
 				updateDiscardPileImage(card.getImagePath());
 				gameSession.setCurrentPlayerIndex(0);
 				if (card instanceof WildCard) {
-					// handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
+					ColorSelectionPopup colorSelectionPopup = new ColorSelectionPopup(this);
+					colorSelectionPopup.setVisible(true);
+					model.enums.Color selectedColor = colorSelectionPopup.getSelectedColor();
+					((WildCard) card).setColor(selectedColor);
+					gameSession.setColorToPlay(selectedColor);
+					gameSession.setCurrentPlayerIndex(0);
+					addStatusMessage(UnoStatusMessages.getWildCardPlayedMessage(gameSession.getCurrentPlayer(),
+							card.getName(), selectedColor));
+					handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
+					if (((WildCard) card).getWildType() == WildType.WILD_DRAW_4) {
+						gameSession.setCurrentPlayerIndex(1);
+					} else {
+						gameSession.setCurrentPlayerIndex(0);
+					}
 				} else if (card instanceof ActionCard) {
 					handleActionCard(gameSession.getCurrentPlayer(), (ActionCard) card);
 				} else {
 					addStatusMessage(
 							UnoStatusMessages.getPlayerPlayCardMessage(gameSession.getCurrentPlayer(), card.getName()));
 				}
-				//gameSession.setCurrentPlayerIndex(0);
+				// gameSession.setCurrentPlayerIndex(0);
 				drawPileButtonClicked = true;
 				invokeBotTurn();
 			} else {
@@ -202,32 +210,27 @@ public class GameTable extends BaseFrame {
 		Player currentPlayer = gameSession.nextPlayer();
 		setCellBorders();
 		addStatusMessage(UnoStatusMessages.getPlayerTurnMessage(gameSession.getCurrentPlayer()));
-		// Wait 1 second before proceeding
 		Timer initialTimer = new Timer(3000, e -> {
 			if (currentPlayer instanceof Bot bot) {
 				var obj = gameSession.playBotTurn(bot);
-				if (obj != null) {
-					var playedCardByBot = (Card) obj[0];
-					var drewCard = (boolean) obj[1];
-					var playerIndex = gameSession.getCurrentPlayerIndex();
+				var playedCardByBot = (Card) obj[0];
+				var drewCard = (boolean) obj[1];
+				var playerIndex = gameSession.getCurrentPlayerIndex();
 
-					if (drewCard) {
-						addStatusMessage(UnoStatusMessages.getPlayerDrawCardMessage(currentPlayer));
-					}
-					if (playedCardByBot instanceof WildCard) {
-						handleWildCard(bot, (WildCard) playedCardByBot);
-					} else if (playedCardByBot instanceof ActionCard) {
-						handleActionCard(bot, (ActionCard) playedCardByBot);
-					} else {
-						addStatusMessage(
-								UnoStatusMessages.getPlayerPlayCardMessage(currentPlayer, playedCardByBot.getName()));
-					}
-					updateDiscardPileImage(playedCardByBot.getImagePath());
-					paintBotCell(mainCells[playerIndex], bot, bot.getUser());
-				} else {
-					addStatusMessage(UnoStatusMessages.getPlayerDrawCardMessage(currentPlayer));
-					addStatusMessage(UnoStatusMessages.getSkippedTurnMessage(currentPlayer));
+				if (drewCard) {
+					var drawCount = (int) obj[2];
+					addStatusMessage(UnoStatusMessages.getPlayerDrawCardMessage(currentPlayer, drawCount));
 				}
+				if (playedCardByBot instanceof WildCard w) {
+					handleWildCard(bot, w);
+				} else if (playedCardByBot instanceof ActionCard a) {
+					handleActionCard(bot, a);
+				} else {
+					addStatusMessage(
+							UnoStatusMessages.getPlayerPlayCardMessage(currentPlayer, playedCardByBot.getName()));
+				}
+				updateDiscardPileImage(playedCardByBot.getImagePath());
+				paintBotCell(mainCells[playerIndex], bot, bot.getUser());
 
 				if (currentPlayer.hasWon()) {
 					addStatusMessage(UnoStatusMessages.getPlayerWinMessage(currentPlayer));
@@ -250,15 +253,17 @@ public class GameTable extends BaseFrame {
 			wildCard.setColor(selectedColor);
 			addStatusMessage(UnoStatusMessages.getWildCardPlayedMessage(player, wildCard.getName(), selectedColor));
 		}
+
+		if (wildCard.getWildType() == WildType.WILD_DRAW_4) {
+			draw4();
+			skipNextPlayer();
+		}
 	}
 
 	private void handleActionCard(Player player, ActionCard actionCard) {
 		switch (actionCard.getAction()) {
 		case SKIP:
-			int nextPlayerIndex = gameSession.getCurrentPlayerIndex() + gameSession.getGameDirection();
-			System.out.println(nextPlayerIndex);
-			int playerCount = gameSession.getPlayers().size();
-			gameSession.setCurrentPlayerIndex((nextPlayerIndex + playerCount) % playerCount);
+			skipNextPlayer();
 			addStatusMessage(UnoStatusMessages.getSkipCardPlayedMessage(player, actionCard.getName()));
 			break;
 		case REVERSE:
@@ -266,12 +271,45 @@ public class GameTable extends BaseFrame {
 			addStatusMessage(UnoStatusMessages.getReverseCardPlayedMessage(player, actionCard.getName()));
 			break;
 		case DRAW_2:
-			addStatusMessage(UnoStatusMessages.getReverseCardPlayedMessage(player, actionCard.getName()));
-			break;
-		default:
 			addStatusMessage(UnoStatusMessages.getActionCardPlayedMessage(player, actionCard.getName()));
+			draw2();
+			skipNextPlayer();
+		default:
 			break;
 		}
+	}
+
+	void drawCards(int count) {
+		int currentPlayerIndex = gameSession.getCurrentPlayerIndex();
+		int gameDirection = gameSession.getGameDirection();
+		int nextPlayerIndex = (currentPlayerIndex + gameDirection) % gameSession.getPlayers().size();
+		if (nextPlayerIndex < 0) {
+			nextPlayerIndex += gameSession.getPlayers().size();
+		}
+		var nextPlayer = gameSession.getPlayers().get(nextPlayerIndex);
+		for (int x = 0; x < count; x++) {
+			var card = gameSession.drawCard();
+			nextPlayer.addCard(card);
+		}
+		addStatusMessage(UnoStatusMessages.getDrawPenaltyMessage(nextPlayer, count));
+		if (CurrentUserManager.getInstance().getCurrentUser().getId() != nextPlayer.getUser().getId())
+			paintBotCell(mainCells[nextPlayerIndex], nextPlayer, nextPlayer.getUser());
+		else
+			paintUserCell();
+	}
+
+	void draw2() {
+		drawCards(2);
+	}
+
+	void draw4() {
+		drawCards(4);
+	}
+
+	void skipNextPlayer() {
+		int nextPlayerIndex = gameSession.getCurrentPlayerIndex() + gameSession.getGameDirection();
+		int playerCount = gameSession.getPlayers().size();
+		gameSession.setCurrentPlayerIndex((nextPlayerIndex + playerCount) % playerCount);
 	}
 
 	void addStatusMessage(String message) {
@@ -387,10 +425,12 @@ public class GameTable extends BaseFrame {
 		var cellPanel = getCell(cellCoordinates[0], cellCoordinates[1]);
 		cellPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		cellPanel.removeAll();
+
 		JPanel botCardPanel = new JPanel();
 		botCardPanel.setLayout(new BoxLayout(botCardPanel, BoxLayout.Y_AXIS));
 		botCardPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		botCardPanel.setOpaque(false);
+
 		JLabel usernameLabel = new JLabel(user.getUsername());
 		usernameLabel.setFont(customFont.deriveFont(Font.PLAIN, 20));
 		usernameLabel.setForeground(Color.white);
@@ -398,22 +438,38 @@ public class GameTable extends BaseFrame {
 		botCardPanel.add(Box.createRigidArea(new Dimension(0, 25)));
 		botCardPanel.add(usernameLabel);
 		botCardPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+
 		JPanel cardPanel = new JPanel();
-		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Default spacing for the first card
 		cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		boolean isFirstCard = true;
 		for (Card card : player.getHand()) {
-			// ImageIcon cardImage = Card.getDefaultCardImage(30, 60); TODO
-			//JLabel cardLabel = new JLabel(cardImage);
-			
-			ImageIcon cardImageIcon = new ImageIcon(card.getImagePath());
-			Image cardImage = cardImageIcon.getImage().getScaledInstance(30, 60, Image.SCALE_SMOOTH);
-			ImageIcon scaledCardImageIcon = new ImageIcon(cardImage);
-			JLabel cardLabel = new JLabel(scaledCardImageIcon);
+			ImageIcon cardImage = Card.getDefaultCardImage(35, 60); // TODO
+			JLabel cardLabel = new JLabel(cardImage);
+
+			if (!isFirstCard) {
+				var margin = -(int) (player.getHand().size() * 2.5);
+				if (player.getHand().size() >= 13) {
+					margin = -25;
+				}
+				cardPanel.add(Box.createRigidArea(new Dimension(margin, 0))); // Adjust horizontal spacing for
+																				// subsequent cards
+			} else {
+				isFirstCard = false;
+			}
 
 			cardPanel.add(cardLabel);
 		}
+
 		cardPanel.setOpaque(false);
 		botCardPanel.add(cardPanel);
+
+		JLabel lbl = new JLabel(Integer.toString(player.getHand().size()));
+		lbl.setFont(customFont.deriveFont(Font.PLAIN, 20));
+		lbl.setForeground(Color.white);
+		lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botCardPanel.add(lbl);
+
 		cellPanel.add(botCardPanel, BorderLayout.CENTER);
 		cellPanel.revalidate();
 		cellPanel.repaint();

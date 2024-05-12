@@ -31,6 +31,10 @@ public class Player {
     public void removeCard(Card card) {
         hand.remove(card);
     }
+    
+    public int getCardCount() {
+    	return hand.size();
+    }
 
     public Card getPlayableCard(Card topCard, Color colorToPlay) {
         for (Card card : hand) {
@@ -42,6 +46,6 @@ public class Player {
     }
 
     public boolean hasWon() {
-        return hand.isEmpty();
+        return hand.size() == 0;
     }
 }
