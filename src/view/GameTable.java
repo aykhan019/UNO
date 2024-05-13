@@ -59,8 +59,11 @@ public class GameTable extends BaseFrame {
 		paintUserCell();
 		addCenterElements();
 
-		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		// gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		// gameSession.getPlayers().get(0).addCard(new ActionCard(model.enums.Color.RED,
+		// ActionType.REVERSE));
 		paintUserCell();
+
 	}
 
 	void addCenterElements() {
@@ -108,7 +111,9 @@ public class GameTable extends BaseFrame {
 
 		drawPileButton = new JButton();
 		drawPileButton.setBounds(425, 90, 130, 150);
-		centerPanel.add(drawPileButton);
+		drawPileButton.setPreferredSize(new Dimension(130, 150));
+		drawPileButton.setPreferredSize(new Dimension(130, 150));
+
 		drawPileButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,8 +133,11 @@ public class GameTable extends BaseFrame {
 				}
 			}
 		});
+		centerPanel.add(drawPileButton);
+		centerPanel.setComponentZOrder(drawPileButton, 0);
 
 		discardPileLabel = new JLabel();
+
 		discardPileLabel.setBounds(565, 90, 103, 150);
 		discardPileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		centerPanel.add(discardPileLabel);
@@ -186,7 +194,7 @@ public class GameTable extends BaseFrame {
 							card.getName(), selectedColor));
 					handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
 					if (((WildCard) card).getWildType() == WildType.WILD_DRAW_4) {
-						gameSession.setCurrentPlayerIndex(1);
+						gameSession.setCurrentPlayerIndex(gameSession.getGameDirection());
 					} else {
 						gameSession.setCurrentPlayerIndex(0);
 					}
@@ -213,7 +221,11 @@ public class GameTable extends BaseFrame {
 		Timer initialTimer = new Timer(3000, e -> {
 			if (currentPlayer instanceof Bot bot) {
 				var obj = gameSession.playBotTurn(bot);
+				if (currentPlayer.getCardCount() == 1) {
+					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(currentPlayer));
+				}
 				var playedCardByBot = (Card) obj[0];
+				gameSession.playCard(playedCardByBot);
 				var drewCard = (boolean) obj[1];
 				var playerIndex = gameSession.getCurrentPlayerIndex();
 
@@ -282,10 +294,7 @@ public class GameTable extends BaseFrame {
 	void drawCards(int count) {
 		int currentPlayerIndex = gameSession.getCurrentPlayerIndex();
 		int gameDirection = gameSession.getGameDirection();
-		int nextPlayerIndex = (currentPlayerIndex + gameDirection) % gameSession.getPlayers().size();
-		if (nextPlayerIndex < 0) {
-			nextPlayerIndex += gameSession.getPlayers().size();
-		}
+		int nextPlayerIndex = getNextIndex(currentPlayerIndex, gameDirection, gameSession.getPlayers().size());
 		var nextPlayer = gameSession.getPlayers().get(nextPlayerIndex);
 		for (int x = 0; x < count; x++) {
 			var card = gameSession.drawCard();
@@ -298,18 +307,28 @@ public class GameTable extends BaseFrame {
 			paintUserCell();
 	}
 
+	void skipNextPlayer() {
+		int currentPlayerIndex = gameSession.getCurrentPlayerIndex();
+		int gameDirection = gameSession.getGameDirection();
+		int playerCount = gameSession.getPlayers().size();
+		int nextPlayerIndex = getNextIndex(currentPlayerIndex, gameDirection, playerCount);
+		gameSession.setCurrentPlayerIndex(nextPlayerIndex);
+	}
+
+	int getNextIndex(int currentIndex, int direction, int playerCount) {
+		int nextIndex = currentIndex + direction;
+		if (nextIndex < 0) {
+			nextIndex += playerCount;
+		}
+		return (nextIndex + playerCount) % playerCount;
+	}
+
 	void draw2() {
 		drawCards(2);
 	}
 
 	void draw4() {
 		drawCards(4);
-	}
-
-	void skipNextPlayer() {
-		int nextPlayerIndex = gameSession.getCurrentPlayerIndex() + gameSession.getGameDirection();
-		int playerCount = gameSession.getPlayers().size();
-		gameSession.setCurrentPlayerIndex((nextPlayerIndex + playerCount) % playerCount);
 	}
 
 	void addStatusMessage(String message) {
@@ -353,12 +372,23 @@ public class GameTable extends BaseFrame {
 		JPanel currentPlayerPanel = new JPanel();
 		currentPlayerPanel.setOpaque(false);
 		JPanel cardPanel = new JPanel();
-		cardPanel.setOpaque(false);
 		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
-		cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		cardPanel.setBorder(new EmptyBorder(15, 0, 0, 0));
+		cardPanel.setOpaque(false);
+
+		if (currentPlayer.getCardCount() >= 20) {
+			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 33, 0, 0));
+		} else if (currentPlayer.getCardCount() >= 14) {
+			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 24, 0, 0));
+		} else if (currentPlayer.getCardCount() >= 10) {
+			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 21, 0, 0));
+		} else if (currentPlayer.getCardCount() >= 6) {
+			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 17, 0, 0));
+		}
+
+		cardPanel.setAlignmentX(CENTER_ALIGNMENT);
 		var cardWidth = 70;
 		var cardHeight = 110;
+		boolean isFirstCard = true;
 		for (Card card : currentPlayer.getHand()) {
 			ImageIcon cardImage = new ImageIcon(card.getImagePath());
 			Image img = cardImage.getImage();
@@ -367,11 +397,36 @@ public class GameTable extends BaseFrame {
 			JButton cardButton = new ButtonWithImage(resizedCardImage, cardWidth + 10, cardHeight + 10);
 			cardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			cardButton.setOpaque(false);
-			cardButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+
+			int marginToLeft = -(int) (currentPlayer.getCardCount() * 1.4);
+			if (isFirstCard) {
+				marginToLeft = 0;
+				isFirstCard = false;
+			}
+
+			cardButton.setBorder(BorderFactory.createEmptyBorder(0, marginToLeft, 0, 0));
 			cardButton.addActionListener(e -> handleCardSelection(cardButton, card));
 			cardPanel.add(cardButton);
 		}
 		currentPlayerPanel.add(cardPanel);
+
+		// Add UNO button with image
+		ImageIcon unoImage = new ImageIcon(ImagePath.UNO_BUTTON_IMAGE_PATH); // Replace with your image path
+		JButton unoButton = new JButton(unoImage);
+		unoButton.setOpaque(false);
+		unoButton.setContentAreaFilled(false);
+		unoButton.setBorderPainted(false);
+		if (currentPlayer.getCardCount() == 1) {
+			unoButton.setVisible(true);
+		} else {
+			unoButton.setVisible(false);
+		}
+		unoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//handleUnoAction();
+			}
+		});
 		cellPanel.add(currentPlayerPanel, BorderLayout.CENTER);
 	}
 

@@ -69,5 +69,5 @@ public class ImagePath {
     public static final String DRAW_PILE_IMAGE_4 = "images/draw-pile-4-cards.png";
     public static final String DRAW_PILE_IMAGE_3 = "images/draw-pile-3-cards.png";
     public static final String DRAW_PILE_IMAGE_2 = "images/draw-pile-2-cards.png";
-
+    public static final String UNO_BUTTON_IMAGE_PATH = "images/uno-btn.jpg";
 }
