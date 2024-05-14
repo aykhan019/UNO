@@ -106,7 +106,7 @@ public class GameSession {
 	private int calculateNumCardsPerPlayer(int numPlayers) {
 		return switch (numPlayers) {
 		case 1, 2, 3, 4 -> 7;
-		case 5, 6, 7 -> 6;
+		case 5, 6, 7 -> 2;
 		default -> 5;
 		};
 	}

@@ -5,11 +5,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import data.UserStatisticRepository;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.io.IOException;
 
 import model.GameSession;
 import model.cards.ActionCard;
@@ -24,6 +27,7 @@ import util.constants.ErrorConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UnoStatusMessages;
+import util.constants.WarningConstants;
 import util.constants.WindowConstants;
 import util.session.CurrentUserManager;
 import util.ui.GameTableLayoutHelper;
@@ -31,7 +35,7 @@ import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
 import view.CustomComponents.ButtonWithImage;
 import view.CustomComponents.GradientPanel;
-import view.popups.ColorSelectionPopup;
+import view.Popups.ColorSelectionPopup;
 
 public class GameTable extends BaseFrame {
 
@@ -47,9 +51,10 @@ public class GameTable extends BaseFrame {
 	private final Font textAreaFont = UIUtils.loadCustomFont(FontConstants.NeuropoliticalFontPath);
 	private boolean drawPileButtonClicked = false;
 	JTextArea gameStatusArea;
+	private int botDelay = 100;
 
 	public GameTable(int numberOfPlayers, String gameSessionName) {
-		super(WindowConstants.GAME_TABLE_WINDOW);
+		super(WindowConstants.GAME_TABLE_WINDOW + " : " + gameSessionName);
 		this.numberOfPlayers = numberOfPlayers;
 		gameSession = new GameSession(numberOfPlayers, gameSessionName);
 		gameSession.initializeGameSession();
@@ -59,7 +64,7 @@ public class GameTable extends BaseFrame {
 		paintUserCell();
 		addCenterElements();
 
-		// gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		gameSession.getPlayers().get(0).removeCard(gameSession.getPlayers().get(0).getHand().get(0));
 		// gameSession.getPlayers().get(0).addCard(new ActionCard(model.enums.Color.RED,
 		// ActionType.REVERSE));
 		paintUserCell();
@@ -80,7 +85,7 @@ public class GameTable extends BaseFrame {
 		gameStatusArea.setBackground(new Color(0, 0, 0, 0));
 
 		JScrollPane scrollPane = new JScrollPane(gameStatusArea);
-		scrollPane.setBounds(10, 70, 2950, 150);
+		scrollPane.setBounds(10, 70, 295, 255);
 		scrollPane.setBorder(null);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
@@ -206,10 +211,40 @@ public class GameTable extends BaseFrame {
 				}
 				// gameSession.setCurrentPlayerIndex(0);
 				drawPileButtonClicked = true;
-				invokeBotTurn();
+				if (gameSession.getCurrentPlayer().getCardCount() == 1) {
+					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(gameSession.getCurrentPlayer()));
+				}
+
+				if (gameSession.getPlayers().get(0).hasWon()) {
+					addStatusMessage(UnoStatusMessages.getPlayerWinMessage(gameSession.getPlayers().get(0)));
+					var totalScore = getTotalScoreOfLosers(0);
+
+					var currentUser = CurrentUserManager.getInstance().getCurrentUser();
+					try {
+						var currentUserStatistic = UserStatisticRepository.getUserStatisticById(currentUser.getId());
+						var statistics = UserStatisticRepository.getUserStatistics();
+						for (var statistic : statistics) {
+							if (statistic.getId().equals(currentUserStatistic.getId())) {
+								statistic.setTotalScore(currentUserStatistic.getTotalScore() + totalScore);
+								statistic.setNumberOfWins(currentUserStatistic.getNumberOfWins() + 1);
+								break;
+							}
+						}
+						UserStatisticRepository.updateUserStatistics(statistics);
+					} catch (IOException e1) {
+						// TODO logger
+						e1.printStackTrace();
+					}
+
+					dispose();
+
+					new YouWonWindow();
+				} else {
+					invokeBotTurn();
+				}
 			} else {
 				gameSession.setCurrentPlayerIndex(0);
-				toaster.warn(ErrorConstants.UNKNOWN_ERROR);
+				toaster.warn(WarningConstants.YOU_CANNOT_PLAY_THIS_CARD);
 			}
 		}
 	}
@@ -218,12 +253,9 @@ public class GameTable extends BaseFrame {
 		Player currentPlayer = gameSession.nextPlayer();
 		setCellBorders();
 		addStatusMessage(UnoStatusMessages.getPlayerTurnMessage(gameSession.getCurrentPlayer()));
-		Timer initialTimer = new Timer(3000, e -> {
+		Timer initialTimer = new Timer(botDelay, e -> {
 			if (currentPlayer instanceof Bot bot) {
 				var obj = gameSession.playBotTurn(bot);
-				if (currentPlayer.getCardCount() == 1) {
-					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(currentPlayer));
-				}
 				var playedCardByBot = (Card) obj[0];
 				gameSession.playCard(playedCardByBot);
 				var drewCard = (boolean) obj[1];
@@ -244,8 +276,16 @@ public class GameTable extends BaseFrame {
 				updateDiscardPileImage(playedCardByBot.getImagePath());
 				paintBotCell(mainCells[playerIndex], bot, bot.getUser());
 
+				if (currentPlayer.getCardCount() == 1) {
+					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(currentPlayer));
+				}
+
 				if (currentPlayer.hasWon()) {
 					addStatusMessage(UnoStatusMessages.getPlayerWinMessage(currentPlayer));
+
+					dispose();
+
+					new YouLostWindow(UnoStatusMessages.getPlayerRoundWinMessage(currentPlayer));
 				} else {
 					invokeBotTurn();
 				}
@@ -257,6 +297,20 @@ public class GameTable extends BaseFrame {
 		});
 		initialTimer.setRepeats(false);
 		initialTimer.start();
+	}
+
+	int getTotalScoreOfLosers(int index) {
+		var totalScore = 0;
+		for (int x = 0; x < gameSession.getPlayers().size(); x++) {
+			if (x != index) {
+				var p = gameSession.getPlayers().get(x);
+				var cards = p.getHand();
+				for (var c : cards) {
+					totalScore += c.getScore();
+				}
+			}
+		}
+		return totalScore;
 	}
 
 	private void handleWildCard(Player player, WildCard wildCard) {
@@ -367,67 +421,72 @@ public class GameTable extends BaseFrame {
 	}
 
 	void addCurrentPlayerElements(JPanel cellPanel) {
-		cellPanel.removeAll();
-		var currentPlayer = gameSession.getPlayers().get(0);
-		JPanel currentPlayerPanel = new JPanel();
-		currentPlayerPanel.setOpaque(false);
-		JPanel cardPanel = new JPanel();
-		cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
-		cardPanel.setOpaque(false);
+		try {
 
-		if (currentPlayer.getCardCount() >= 20) {
-			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 33, 0, 0));
-		} else if (currentPlayer.getCardCount() >= 14) {
-			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 24, 0, 0));
-		} else if (currentPlayer.getCardCount() >= 10) {
-			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 21, 0, 0));
-		} else if (currentPlayer.getCardCount() >= 6) {
-			cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 17, 0, 0));
-		}
+			cellPanel.removeAll();
+			var currentPlayer = gameSession.getPlayers().get(0);
+			JPanel currentPlayerPanel = new JPanel();
+			currentPlayerPanel.setOpaque(false);
+			JPanel cardPanel = new JPanel();
+			cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
+			cardPanel.setOpaque(false);
 
-		cardPanel.setAlignmentX(CENTER_ALIGNMENT);
-		var cardWidth = 70;
-		var cardHeight = 110;
-		boolean isFirstCard = true;
-		for (Card card : currentPlayer.getHand()) {
-			ImageIcon cardImage = new ImageIcon(card.getImagePath());
-			Image img = cardImage.getImage();
-			Image resizedImg = img.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH);
-			ImageIcon resizedCardImage = new ImageIcon(resizedImg);
-			JButton cardButton = new ButtonWithImage(resizedCardImage, cardWidth + 10, cardHeight + 10);
-			cardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			cardButton.setOpaque(false);
-
-			int marginToLeft = -(int) (currentPlayer.getCardCount() * 1.4);
-			if (isFirstCard) {
-				marginToLeft = 0;
-				isFirstCard = false;
+			if (currentPlayer.getCardCount() >= 20) {
+				cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 33, 0, 0));
+			} else if (currentPlayer.getCardCount() >= 14) {
+				cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 24, 0, 0));
+			} else if (currentPlayer.getCardCount() >= 10) {
+				cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 21, 0, 0));
+			} else if (currentPlayer.getCardCount() >= 6) {
+				cardPanel.setBorder(new EmptyBorder(15, currentPlayer.getCardCount() * 17, 0, 0));
 			}
 
-			cardButton.setBorder(BorderFactory.createEmptyBorder(0, marginToLeft, 0, 0));
-			cardButton.addActionListener(e -> handleCardSelection(cardButton, card));
-			cardPanel.add(cardButton);
-		}
-		currentPlayerPanel.add(cardPanel);
+			cardPanel.setAlignmentX(CENTER_ALIGNMENT);
+			var cardWidth = 70;
+			var cardHeight = 110;
+			boolean isFirstCard = true;
+			for (Card card : currentPlayer.getHand()) {
+				ImageIcon cardImage = new ImageIcon(card.getImagePath());
+				Image img = cardImage.getImage();
+				Image resizedImg = img.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH);
+				ImageIcon resizedCardImage = new ImageIcon(resizedImg);
+				JButton cardButton = new ButtonWithImage(resizedCardImage, cardWidth + 10, cardHeight + 10);
+				cardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				cardButton.setOpaque(false);
 
-		// Add UNO button with image
-		ImageIcon unoImage = new ImageIcon(ImagePath.UNO_BUTTON_IMAGE_PATH); // Replace with your image path
-		JButton unoButton = new JButton(unoImage);
-		unoButton.setOpaque(false);
-		unoButton.setContentAreaFilled(false);
-		unoButton.setBorderPainted(false);
-		if (currentPlayer.getCardCount() == 1) {
-			unoButton.setVisible(true);
-		} else {
-			unoButton.setVisible(false);
-		}
-		unoButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//handleUnoAction();
+				int marginToLeft = -(int) (currentPlayer.getCardCount() * 1.4);
+				if (isFirstCard) {
+					marginToLeft = 0;
+					isFirstCard = false;
+				}
+
+				cardButton.setBorder(BorderFactory.createEmptyBorder(0, marginToLeft, 0, 0));
+				cardButton.addActionListener(e -> handleCardSelection(cardButton, card));
+				cardPanel.add(cardButton);
 			}
-		});
-		cellPanel.add(currentPlayerPanel, BorderLayout.CENTER);
+			currentPlayerPanel.add(cardPanel);
+
+			// Add UNO button with image
+			ImageIcon unoImage = new ImageIcon(ImagePath.UNO_BUTTON_IMAGE_PATH); // Replace with your image path
+			JButton unoButton = new JButton(unoImage);
+			unoButton.setOpaque(false);
+			unoButton.setContentAreaFilled(false);
+			unoButton.setBorderPainted(false);
+			if (currentPlayer.getCardCount() == 1) {
+				unoButton.setVisible(true);
+			} else {
+				unoButton.setVisible(false);
+			}
+			unoButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// handleUnoAction();
+				}
+			});
+			cellPanel.add(currentPlayerPanel, BorderLayout.CENTER);
+		} catch (Exception e) {
+			// TODO logger
+		}
 	}
 
 	void addBotPlayerElements() {
@@ -499,7 +558,7 @@ public class GameTable extends BaseFrame {
 		cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boolean isFirstCard = true;
 		for (Card card : player.getHand()) {
-			ImageIcon cardImage = Card.getDefaultCardImage(35, 60); // TODO
+			ImageIcon cardImage = Card.getDefaultCardImage(35, 60);
 			JLabel cardLabel = new JLabel(cardImage);
 
 			if (!isFirstCard) {
@@ -507,8 +566,7 @@ public class GameTable extends BaseFrame {
 				if (player.getHand().size() >= 13) {
 					margin = -25;
 				}
-				cardPanel.add(Box.createRigidArea(new Dimension(margin, 0))); // Adjust horizontal spacing for
-																				// subsequent cards
+				cardPanel.add(Box.createRigidArea(new Dimension(margin, 0)));
 			} else {
 				isFirstCard = false;
 			}
@@ -559,6 +617,8 @@ public class GameTable extends BaseFrame {
 	}
 
 	void leaveGame() {
+		dispose();
 
+		new MainMenu();
 	}
 }

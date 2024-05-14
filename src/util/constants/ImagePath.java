@@ -47,27 +47,31 @@ public class ImagePath {
 	public static final String MENU_LOGOUT = "images/logout.png";
 
 	/** Info icon path. */
-    public static final String MENU_INFO = "images/info.png";
+	public static final String MENU_INFO = "images/info.png";
 
-    /** List icon path. */
-    public static final String MENU_LIST = "images/list.png";
+	/** List icon path. */
+	public static final String MENU_LIST = "images/list.png";
 
-    /** Image path for the increment button for selecting the number of players. */
-    public static final String NUMBER_OF_PLAYERS_INCREMENT = "images/increment-btn.png";
+	/** Image path for the increment button for selecting the number of players. */
+	public static final String NUMBER_OF_PLAYERS_INCREMENT = "images/increment-btn.png";
 
-    /** Image path for the decrement button for selecting the number of players. */
-    public static final String NUMBER_OF_PLAYERS_DECREMENT = "images/decrement-btn.png";
+	/** Image path for the decrement button for selecting the number of players. */
+	public static final String NUMBER_OF_PLAYERS_DECREMENT = "images/decrement-btn.png";
 
-    /** Image path for the start button. */
-    public static final String START_BUTTON = "images/start-btn.png";
-    
-    /** Image path for the window icon. */
-    public static final String WINDOW_ICON = "images/window-icon.png";
-    
-    public static final String DEFAULT_CARD_IMAGE_PATH = "images/cards/default-card-image.jpg";
-    
-    public static final String DRAW_PILE_IMAGE_4 = "images/draw-pile-4-cards.png";
-    public static final String DRAW_PILE_IMAGE_3 = "images/draw-pile-3-cards.png";
-    public static final String DRAW_PILE_IMAGE_2 = "images/draw-pile-2-cards.png";
-    public static final String UNO_BUTTON_IMAGE_PATH = "images/uno-btn.jpg";
+	/** Image path for the start button. */
+	public static final String START_BUTTON = "images/start-btn.png";
+
+	/** Image path for the window icon. */
+	public static final String WINDOW_ICON = "images/window-icon.png";
+
+	public static final String DEFAULT_CARD_IMAGE_PATH = "images/cards/default-card-image.jpg";
+
+	public static final String DRAW_PILE_IMAGE_4 = "images/draw-pile-4-cards.png";
+	public static final String DRAW_PILE_IMAGE_3 = "images/draw-pile-3-cards.png";
+	public static final String DRAW_PILE_IMAGE_2 = "images/draw-pile-2-cards.png";
+	public static final String UNO_BUTTON_IMAGE_PATH = "images/uno-btn.jpg";
+
+	public static final String YOU_WON_IMAGE = "images/you-won.png";
+	public static final String YOU_LOST_IMAGE = "images/you-lost.jpg";
+
 }

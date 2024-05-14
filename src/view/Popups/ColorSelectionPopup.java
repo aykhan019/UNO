@@ -1,4 +1,4 @@
-package view.popups;
+package view.Popups;
 
 import javax.swing.*;
 import java.awt.*;

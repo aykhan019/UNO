@@ -11,6 +11,16 @@ import view.MainMenu;
  */
 public class Main {
 
+	/**************
+	 * Pledge of Honor ****************************************** I hereby certify
+	 * that I have completed this programming project on my own without any help
+	 * from anyone else. The effort in the project thus belongs completely to me. I
+	 * did not search for a solution, or I did not consult any program written by
+	 * others or did not copy any program from other sources. I read and followed
+	 * the guidelines provided in the project description. READ AND SIGN BY WRITING
+	 * YOUR NAME SURNAME AND STUDENT ID SIGNATURE: <Aykhan Ahmadzada, 86004>
+	 *************************************************************************/
+
 	/**
 	 * The main method of the Uno application. It loads user data, checks if a user
 	 * is logged in, and displays the appropriate view (login page or main menu). It
