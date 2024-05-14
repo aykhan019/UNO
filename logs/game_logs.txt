@@ -1,0 +1,42 @@
+2024-05-14 21:59:23 - The game has started.
+2024-05-14 21:59:23 - aykhan's turn.
+2024-05-14 21:59:31 - The game has started.
+2024-05-14 21:59:31 - aykhan's turn.
+2024-05-14 21:59:33 - aykhan played a GREEN 7.
+2024-05-14 21:59:33 - aykhan has won!
+2024-05-14 22:00:12 - The game has started.
+2024-05-14 22:00:12 - aykhan's turn.
+2024-05-14 22:00:21 - The game has started.
+2024-05-14 22:00:21 - aykhan's turn.
+2024-05-14 22:00:29 - aykhan played a GREEN 1.
+2024-05-14 22:00:29 - Bot Mendez's turn.
+2024-05-14 22:00:29 - Bot Mendez played a GREEN 3.
+2024-05-14 22:00:29 - Bot Joelle's turn.
+2024-05-14 22:00:29 - Bot Joelle played a GREEN 6.
+2024-05-14 22:00:30 - Bot Hedwig's turn.
+2024-05-14 22:00:30 - Bot Hedwig played a Skip Card (GREEN SKIP).
+2024-05-14 22:00:30 - Bot Mendez's turn.
+2024-05-14 22:00:30 - Bot Mendez has drawn 1 card(s).
+2024-05-14 22:00:30 - Bot Mendez played an Action Card (GREEN DRAW_2).
+2024-05-14 22:00:30 - A Draw 2 card was played. Bot Joelle drew 2 cards.
+2024-05-14 22:00:31 - Bot Hedwig's turn.
+2024-05-14 22:00:31 - Bot Hedwig has drawn 1 card(s).
+2024-05-14 22:00:31 - Bot Hedwig played a GREEN 7.
+2024-05-14 22:00:31 - aykhan's turn.
+2024-05-14 22:00:32 - aykhan played a Skip Card (GREEN SKIP).
+2024-05-14 22:00:32 - Bot Joelle's turn.
+2024-05-14 22:00:32 - Bot Joelle played a GREEN 2.
+2024-05-14 22:00:32 - Bot Hedwig's turn.
+2024-05-14 22:00:32 - Bot Hedwig has drawn 1 card(s).
+2024-05-14 22:00:32 - Bot Hedwig played a GREEN 2.
+2024-05-14 22:00:32 - aykhan's turn.
+2024-05-14 22:00:33 - aykhan played a GREEN 0.
+2024-05-14 22:00:33 - Bot Mendez's turn.
+2024-05-14 22:00:33 - Bot Mendez has drawn 1 card(s).
+2024-05-14 22:00:33 - Bot Mendez played a Wild Card (WILD)
+and chose RED color.
+2024-05-14 22:00:34 - Bot Joelle's turn.
+2024-05-14 22:00:34 - Bot Joelle played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-14 22:00:34 - A Draw 4 card was played. Bot Hedwig drew 4 cards.
+2024-05-14 22:00:34 - aykhan's turn.

@@ -63,15 +63,25 @@ public class ImagePath {
 
 	/** Image path for the window icon. */
 	public static final String WINDOW_ICON = "images/window-icon.png";
-
+	
+	/** Default file path for the image of a card. */
 	public static final String DEFAULT_CARD_IMAGE_PATH = "images/cards/default-card-image.jpg";
 
+	/** File path for the image of the draw pile with 4 cards. */
 	public static final String DRAW_PILE_IMAGE_4 = "images/draw-pile-4-cards.png";
+
+	/** File path for the image of the draw pile with 3 cards. */
 	public static final String DRAW_PILE_IMAGE_3 = "images/draw-pile-3-cards.png";
+
+	/** File path for the image of the draw pile with 2 cards. */
 	public static final String DRAW_PILE_IMAGE_2 = "images/draw-pile-2-cards.png";
+
+	/** File path for the UNO button image. */
 	public static final String UNO_BUTTON_IMAGE_PATH = "images/uno-btn.jpg";
 
+	/** File path for the image indicating "You won". */
 	public static final String YOU_WON_IMAGE = "images/you-won.png";
-	public static final String YOU_LOST_IMAGE = "images/you-lost.jpg";
 
+	/** File path for the image indicating "You lost". */
+	public static final String YOU_LOST_IMAGE = "images/you-lost.jpg";
 }

@@ -11,12 +11,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents a window displayed when the player wins the game. Extends the
+ * BaseFrame class.
+ */
+@SuppressWarnings("serial")
 public class YouWonWindow extends BaseFrame {
+
+	/**
+	 * Constructs a new YouWonWindow.
+	 */
 	public YouWonWindow() {
 		super(util.constants.WindowConstants.YOU_WON_WINDOW_TITLE);
 		initializeFrame();
 	}
 
+	/**
+	 * Initializes the frame layout.
+	 */
 	@Override
 	void initializeFrame() {
 		JPanel mainPanel = new GradientPanel();
@@ -26,13 +38,16 @@ public class YouWonWindow extends BaseFrame {
 		mainPanel.setOpaque(false);
 		mainPanel.setPreferredSize(new Dimension(util.constants.WindowConstants.DEFAULT_WINDOW_WIDTH,
 				mainPanel.getPreferredSize().height));
+
 		JPanel buttonPanel = new JPanel(new GridBagLayout());
 		buttonPanel.setOpaque(false);
 		buttonPanel.setBorder(new EmptyBorder(20, -1180, 0, 0));
+
 		ImageIcon icon = new ImageIcon(ImagePath.BACK_ICON);
 		Image image = icon.getImage();
 		Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
 		ButtonWithImage backButton = new ButtonWithImage(scaledIcon, 50, 50);
 
 		backButton.addActionListener(new ActionListener() {

@@ -4,6 +4,9 @@ import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 
+import util.constants.FileConstants;
+import util.helpers.Logger;
+
 /**
  * Utility methods for UI-related tasks.
  */
@@ -43,8 +46,7 @@ public class UIUtils {
 			File fontFile = new File(path);
 			return Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 14);
 		} catch (Exception e) {
-			// TODO: Log the error
-			e.printStackTrace();
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 			return null;
 		}
 	}

@@ -13,16 +13,32 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents the window displayed when the player loses the game.
+ */
+@SuppressWarnings("serial")
 public class YouLostWindow extends BaseFrame {
+
+	/** The message to be displayed in the window. */
 	private String _message;
+
+	/** Font object for custom fonts in the window. */
 	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
 
+	/**
+	 * Constructs a new YouLostWindow with the specified message.
+	 * 
+	 * @param message The message to be displayed.
+	 */
 	public YouLostWindow(String message) {
 		super(util.constants.WindowConstants.YOU_LOST_WINDOW_TITLE);
 		_message = message;
 		initializeFrame();
 	}
 
+	/**
+	 * Initializes the frame of the YouLostWindow.
+	 */
 	@Override
 	void initializeFrame() {
 		JPanel mainPanel = new GradientPanel();
@@ -40,7 +56,6 @@ public class YouLostWindow extends BaseFrame {
 		Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 		ButtonWithImage backButton = new ButtonWithImage(scaledIcon, 50, 50);
-
 		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -48,7 +63,6 @@ public class YouLostWindow extends BaseFrame {
 				new MainMenu();
 			}
 		});
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		buttonPanel.add(backButton, gbc);
@@ -59,7 +73,6 @@ public class YouLostWindow extends BaseFrame {
 		Image bgImage = imageIcon.getImage();
 		Image bgScaledImage = bgImage.getScaledInstance(400, 200, Image.SCALE_SMOOTH);
 		ImageIcon bgScaledImageIcon = new ImageIcon(bgScaledImage);
-
 		JLabel imageLabel = new JLabel(bgScaledImageIcon);
 		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -70,6 +83,7 @@ public class YouLostWindow extends BaseFrame {
 		messageLabel.setForeground(Color.white);
 		messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		messageLabel.setBorder(new EmptyBorder(0, 0, 70, 0));
+
 		mainPanel.add(messageLabel, BorderLayout.SOUTH);
 
 		add(mainPanel);

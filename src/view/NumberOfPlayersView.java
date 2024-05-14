@@ -28,7 +28,7 @@ public class NumberOfPlayersView extends BaseFrame {
 	private JLabel numberOfPlayersLabel;
 
 	/** The number of players selected. */
-	private int numberOfPlayers = 5; // TODO change to 2
+	private int numberOfPlayers = 2;
 
 	/**
 	 * The main font of the leaderboard page.
@@ -170,7 +170,7 @@ public class NumberOfPlayersView extends BaseFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				var sessionName = sessionNameField.getText();
-				if (sessionName.length() != 0) { // TODO
+				if (sessionName.length() == 0) { 
 					toaster.warn(WarningConstants.FILL_SESSION_NAME_WARNING);
 				} else {
 					dispose();

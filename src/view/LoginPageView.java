@@ -8,6 +8,7 @@ import data.UserRepository;
 import model.user.User;
 import util.constants.*;
 import util.constants.WindowConstants;
+import util.helpers.Logger;
 import util.session.CurrentUserManager;
 import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
@@ -188,8 +189,7 @@ public class LoginPageView extends BaseFrame {
 			mainJPanel.setLayout(null);
 			mainJPanel.add(label1);
 		} catch (IOException e) {
-			// TODO: Log error if image loading fails
-			System.err.println("Error loading background image: " + e.getMessage());
+			Logger.log(ErrorConstants.BACKGROUND_IMAGE_ERROR, FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 	}
 
@@ -437,8 +437,7 @@ public class LoginPageView extends BaseFrame {
 			}
 		} catch (IOException e) {
 			toaster.error(ErrorConstants.UNKNOWN_ERROR);
-			// TODO logger
-			e.printStackTrace();
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 	}
 }

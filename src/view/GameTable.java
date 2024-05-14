@@ -10,25 +10,23 @@ import data.UserStatisticRepository;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.io.IOException;
 
 import model.GameSession;
 import model.cards.ActionCard;
 import model.cards.Card;
 import model.cards.WildCard;
-import model.enums.ActionType;
 import model.enums.WildType;
 import model.player.Bot;
 import model.player.Player;
 import model.user.User;
-import util.constants.ErrorConstants;
+import util.constants.FileConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UnoStatusMessages;
 import util.constants.WarningConstants;
 import util.constants.WindowConstants;
+import util.helpers.Logger;
 import util.session.CurrentUserManager;
 import util.ui.GameTableLayoutHelper;
 import util.ui.UIUtils;
@@ -37,46 +35,102 @@ import view.CustomComponents.ButtonWithImage;
 import view.CustomComponents.GradientPanel;
 import view.Popups.ColorSelectionPopup;
 
+/**
+ * Represents the main game table where the Uno game is played.
+ */
+@SuppressWarnings("serial")
 public class GameTable extends BaseFrame {
 
+	/**
+	 * Toaster object for displaying notifications.
+	 */
 	private Toaster toaster;
-	private GameSession gameSession;
-	private JPanel[][] cells;
-	private int[][] mainCells;
-	private int numberOfPlayers;
-	private JLabel discardPileLabel;
-	private JButton drawPileButton;
-	private JLabel cardCountInDrawPile;
-	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
-	private final Font textAreaFont = UIUtils.loadCustomFont(FontConstants.NeuropoliticalFontPath);
-	private boolean drawPileButtonClicked = false;
-	JTextArea gameStatusArea;
-	private int botDelay = 100;
 
+	/**
+	 * GameSession object representing the current game session.
+	 */
+	private GameSession gameSession;
+
+	/**
+	 * 2D array of JPanels representing the cells of the game table.
+	 */
+	private JPanel[][] cells;
+
+	/**
+	 * 2D array representing the main cells of the game table.
+	 */
+	private int[][] mainCells;
+
+	/**
+	 * Number of players in the game.
+	 */
+	private int numberOfPlayers;
+
+	/**
+	 * JLabel representing the discard pile in the game table.
+	 */
+	private JLabel discardPileLabel;
+
+	/**
+	 * JButton representing the draw pile in the game table.
+	 */
+	private JButton drawPileButton;
+
+	/**
+	 * JLabel representing the card count in the draw pile.
+	 */
+	private JLabel cardCountInDrawPile;
+
+	/**
+	 * Font object for custom fonts in the game table.
+	 */
+	private final Font customFont = UIUtils.loadCustomFont(FontConstants.RechargeFontPath);
+
+	/**
+	 * 
+	 * Boolean indicating whether the draw pile button has been clicked.
+	 */
+	private boolean drawPileButtonClicked = false;
+
+	/**
+	 * JTextArea representing the area for displaying game status.
+	 */
+	private JTextArea gameStatusArea;
+
+	/**
+	 * Delay time for bot actions in milliseconds.
+	 */
+	private int botDelay = 3000;
+
+	/**
+	 * Constructs a new GameTable object with the specified number of players and
+	 * game session name.
+	 * 
+	 * @param numberOfPlayers The number of players in the game.
+	 * @param gameSessionName The name of the game session.
+	 */
 	public GameTable(int numberOfPlayers, String gameSessionName) {
 		super(WindowConstants.GAME_TABLE_WINDOW + " : " + gameSessionName);
 		this.numberOfPlayers = numberOfPlayers;
 		gameSession = new GameSession(numberOfPlayers, gameSessionName);
 		gameSession.initializeGameSession();
+		gameSession.setSessionName(gameSessionName);
 		initializeFrame();
 		mainCells = GameTableLayoutHelper.getPlayerCells(numberOfPlayers);
 		addBotPlayerElements();
 		paintUserCell();
 		addCenterElements();
-
-		gameSession.getPlayers().get(0).removeCard(gameSession.getPlayers().get(0).getHand().get(0));
-		// gameSession.getPlayers().get(0).addCard(new ActionCard(model.enums.Color.RED,
-		// ActionType.REVERSE));
 		paintUserCell();
-
 	}
 
+	/**
+	 * Adds center elements to the game table interface.
+	 */
 	void addCenterElements() {
 		var centerPanel = getCenterPanel();
 		centerPanel.setLayout(null);
 
 		gameStatusArea = new JTextArea();
-		// gameStatusArea.setFont(textAreaFont.deriveFont(Font.PLAIN, 18));
 		gameStatusArea.setEditable(false);
 		gameStatusArea.setLineWrap(true);
 		gameStatusArea.setWrapStyleWord(true);
@@ -123,8 +177,6 @@ public class GameTable extends BaseFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!drawPileButtonClicked) {
-					// drawPileButtonClicked = true;
-
 					var drawnCard = gameSession.drawCard();
 					gameSession.getPlayers().get(0).addCard(drawnCard);
 					paintUserCell();
@@ -164,11 +216,17 @@ public class GameTable extends BaseFrame {
 		updateCardCountInDrawPile(gameSession.getDrawPileCardCount());
 		updateDrawPileImage();
 
-		addStatusMessage(UnoStatusMessages.getGameStartMessage());
+		addStatusMessage(UnoStatusMessages.getGameStartMessage(gameSession.getSessionName()));
 		addStatusMessage(UnoStatusMessages.getPlayerTurnMessage(gameSession.getCurrentPlayer()));
 		setCellBorders();
 	}
 
+	/**
+	 * Handles the selection of a card by a player.
+	 * 
+	 * @param btn  The button representing the selected card.
+	 * @param card The card that was selected.
+	 */
 	void handleCardSelection(JButton btn, Card card) {
 		if (gameSession.getCurrentPlayerIndex() == 0) {
 			gameSession.setCurrentPlayerIndex(-1);
@@ -209,7 +267,6 @@ public class GameTable extends BaseFrame {
 					addStatusMessage(
 							UnoStatusMessages.getPlayerPlayCardMessage(gameSession.getCurrentPlayer(), card.getName()));
 				}
-				// gameSession.setCurrentPlayerIndex(0);
 				drawPileButtonClicked = true;
 				if (gameSession.getCurrentPlayer().getCardCount() == 1) {
 					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(gameSession.getCurrentPlayer()));
@@ -231,9 +288,8 @@ public class GameTable extends BaseFrame {
 							}
 						}
 						UserStatisticRepository.updateUserStatistics(statistics);
-					} catch (IOException e1) {
-						// TODO logger
-						e1.printStackTrace();
+					} catch (IOException e) {
+						Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 					}
 
 					dispose();
@@ -249,6 +305,9 @@ public class GameTable extends BaseFrame {
 		}
 	}
 
+	/**
+	 * Initiates a bot player's turn.
+	 */
 	void invokeBotTurn() {
 		Player currentPlayer = gameSession.nextPlayer();
 		setCellBorders();
@@ -299,6 +358,12 @@ public class GameTable extends BaseFrame {
 		initialTimer.start();
 	}
 
+	/**
+	 * Calculates the total score of losing players.
+	 * 
+	 * @param index The index of the current player.
+	 * @return The total score of losing players.
+	 */
 	int getTotalScoreOfLosers(int index) {
 		var totalScore = 0;
 		for (int x = 0; x < gameSession.getPlayers().size(); x++) {
@@ -313,6 +378,12 @@ public class GameTable extends BaseFrame {
 		return totalScore;
 	}
 
+	/**
+	 * Handles the effect of playing a Wild Card.
+	 * 
+	 * @param player   The player who played the Wild Card.
+	 * @param wildCard The Wild Card that was played.
+	 */
 	private void handleWildCard(Player player, WildCard wildCard) {
 		if (player instanceof Bot bot) {
 			model.enums.Color selectedColor = bot.chooseRandomColor();
@@ -326,6 +397,12 @@ public class GameTable extends BaseFrame {
 		}
 	}
 
+	/**
+	 * Handles the effect of playing an Action Card.
+	 * 
+	 * @param player     The player who played the Action Card.
+	 * @param actionCard The Action Card that was played.
+	 */
 	private void handleActionCard(Player player, ActionCard actionCard) {
 		switch (actionCard.getAction()) {
 		case SKIP:
@@ -345,6 +422,11 @@ public class GameTable extends BaseFrame {
 		}
 	}
 
+	/**
+	 * Draws a specified number of cards from the draw pile.
+	 * 
+	 * @param count The number of cards to draw.
+	 */
 	void drawCards(int count) {
 		int currentPlayerIndex = gameSession.getCurrentPlayerIndex();
 		int gameDirection = gameSession.getGameDirection();
@@ -361,6 +443,9 @@ public class GameTable extends BaseFrame {
 			paintUserCell();
 	}
 
+	/**
+	 * Skips the turn of the next player.
+	 */
 	void skipNextPlayer() {
 		int currentPlayerIndex = gameSession.getCurrentPlayerIndex();
 		int gameDirection = gameSession.getGameDirection();
@@ -369,6 +454,14 @@ public class GameTable extends BaseFrame {
 		gameSession.setCurrentPlayerIndex(nextPlayerIndex);
 	}
 
+	/**
+	 * Gets the index of the next player in the game session.
+	 * 
+	 * @param currentIndex The index of the current player.
+	 * @param direction    The direction of the game (forward or backward).
+	 * @param playerCount  The total number of players in the game.
+	 * @return The index of the next player.
+	 */
 	int getNextIndex(int currentIndex, int direction, int playerCount) {
 		int nextIndex = currentIndex + direction;
 		if (nextIndex < 0) {
@@ -377,24 +470,46 @@ public class GameTable extends BaseFrame {
 		return (nextIndex + playerCount) % playerCount;
 	}
 
+	/**
+	 * Initiates drawing two cards from the draw pile.
+	 */
 	void draw2() {
 		drawCards(2);
 	}
 
+	/**
+	 * Initiates drawing four cards from the draw pile.
+	 */
 	void draw4() {
 		drawCards(4);
 	}
 
+	/**
+	 * Adds a status message to the game status area.
+	 * 
+	 * @param message The status message to add.
+	 */
 	void addStatusMessage(String message) {
 		gameStatusArea.append(message + "\n");
 
 		gameStatusArea.setCaretPosition(gameStatusArea.getDocument().getLength());
+
+		Logger.log(message, FileConstants.GAME_LOGS_FILE_PATH);
 	}
 
+	/**
+	 * Updates the displayed count of cards in the draw pile.
+	 * 
+	 * @param count The new count of cards in the draw pile.
+	 */
 	void updateCardCountInDrawPile(int count) {
 		cardCountInDrawPile.setText(Integer.toString(count));
 	}
 
+	/**
+	 * Updates the image of the draw pile button based on the number of cards in the
+	 * draw pile.
+	 */
 	void updateDrawPileImage() {
 		String imagePath;
 		var cardCount = gameSession.getDrawPileCardCount();
@@ -411,6 +526,12 @@ public class GameTable extends BaseFrame {
 		drawPileButton.setIcon(drawPileIcon);
 	}
 
+	/**
+	 * Updates the image of the discard pile based on the image path of the played
+	 * card.
+	 * 
+	 * @param imagePath The image path of the played card.
+	 */
 	void updateDiscardPileImage(String imagePath) {
 		ImageIcon discardPileIcon = new ImageIcon(imagePath);
 		Image scaledImage = discardPileIcon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
@@ -420,6 +541,11 @@ public class GameTable extends BaseFrame {
 		discardPileLabel.repaint();
 	}
 
+	/**
+	 * Adds elements representing the current player to the specified cell panel.
+	 * 
+	 * @param cellPanel The panel representing the cell for the current player.
+	 */
 	void addCurrentPlayerElements(JPanel cellPanel) {
 		try {
 
@@ -485,10 +611,13 @@ public class GameTable extends BaseFrame {
 			});
 			cellPanel.add(currentPlayerPanel, BorderLayout.CENTER);
 		} catch (Exception e) {
-			// TODO logger
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 	}
 
+	/**
+	 * Adds elements representing bot players to the game table interface.
+	 */
 	void addBotPlayerElements() {
 		var players = gameSession.getPlayers();
 		Dimension[][] initialCellSizes = new Dimension[mainCells.length][];
@@ -516,11 +645,17 @@ public class GameTable extends BaseFrame {
 		}
 	}
 
+	/**
+	 * Paints the cell representing the current user's player information.
+	 */
 	void paintUserCell() {
 		var playerCell = getCell(mainCells[0][0], mainCells[0][1]);
 		addCurrentPlayerElements(playerCell);
 	}
 
+	/**
+	 * Sets borders for the cells representing players in the game session.
+	 */
 	void setCellBorders() {
 		var currentPlayerIndex = gameSession.getCurrentPlayerIndex();
 		var currentPlayerCellCoordinates = mainCells[currentPlayerIndex];
@@ -535,6 +670,13 @@ public class GameTable extends BaseFrame {
 		}
 	}
 
+	/**
+	 * Paints the cell representing bot player information.
+	 * 
+	 * @param cellCoordinates The coordinates of the cell.
+	 * @param player          The bot player to paint.
+	 * @param user            The user associated with the bot player.
+	 */
 	void paintBotCell(int[] cellCoordinates, Player player, User user) {
 		var cellPanel = getCell(cellCoordinates[0], cellCoordinates[1]);
 		cellPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -557,7 +699,7 @@ public class GameTable extends BaseFrame {
 		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Default spacing for the first card
 		cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		boolean isFirstCard = true;
-		for (Card card : player.getHand()) {
+		for (int x = 0; x < player.getHand().size(); x++) {
 			ImageIcon cardImage = Card.getDefaultCardImage(35, 60);
 			JLabel cardLabel = new JLabel(cardImage);
 
@@ -588,6 +730,9 @@ public class GameTable extends BaseFrame {
 		cellPanel.repaint();
 	}
 
+	/**
+	 * Initializes the frame of the game table.
+	 */
 	@Override
 	void initializeFrame() {
 		int rows = GameTableLayoutHelper.rows;
@@ -608,14 +753,29 @@ public class GameTable extends BaseFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * Gets the center panel of the game table interface.
+	 * 
+	 * @return The center panel of the game table.
+	 */
 	public JPanel getCenterPanel() {
 		return getCell(1, 1);
 	}
 
+	/**
+	 * Gets the cell panel at the specified row and column indices.
+	 * 
+	 * @param row    The row index of the cell.
+	 * @param column The column index of the cell.
+	 * @return The cell panel at the specified indices.
+	 */
 	public JPanel getCell(int row, int column) {
 		return cells[row][column];
 	}
 
+	/**
+	 * Leaves the current game session and returns to the main menu.
+	 */
 	void leaveGame() {
 		dispose();
 

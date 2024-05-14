@@ -25,7 +25,7 @@ public class GameSession {
 	private Card topCard;
 	private int currentPlayerIndex = 0;
 	private int numberOfPlayers;
-	private int gameDirection = 1; // clockwise
+	private int gameDirection = 1;
 	private boolean playDirectionClockwise = true;
 	private Color colorToPlay;
 
@@ -34,7 +34,6 @@ public class GameSession {
 		this.numberOfPlayers = numberOfPlayers;
 	}
 
-	// Initialization methods
 	public void initializeGameSession() {
 		initializeDrawPile();
 		shuffleDrawPile();
@@ -106,7 +105,7 @@ public class GameSession {
 	private int calculateNumCardsPerPlayer(int numPlayers) {
 		return switch (numPlayers) {
 		case 1, 2, 3, 4 -> 7;
-		case 5, 6, 7 -> 2;
+		case 5, 6, 7 -> 6;
 		default -> 5;
 		};
 	}
@@ -172,6 +171,14 @@ public class GameSession {
 		return drawPile.size();
 	}
 
+	public void setSessionName(String sessionName) {
+		this.sessionName = sessionName;
+	}
+
+	public String getSessionName() {
+		return sessionName;
+	}
+
 	public Card drawCard() {
 		if (drawPile.isEmpty() || drawPile.size() == 1) {
 			reshuffleDiscardPile();
@@ -183,7 +190,6 @@ public class GameSession {
 		if (!discardPile.isEmpty()) {
 			Collections.shuffle(discardPile);
 			drawPile.addAll(discardPile);
-			// discardPile.clear();
 		}
 	}
 

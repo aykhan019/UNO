@@ -10,11 +10,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import data.UserStatisticRepository;
+import util.constants.FileConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UIColors;
 import util.constants.UITexts;
 import util.constants.WindowConstants;
+import util.helpers.Logger;
 import util.session.CurrentUserManager;
 import util.ui.UIUtils;
 import util.ui.toaster.Toaster;
@@ -124,8 +126,7 @@ public class MainMenu extends BaseFrame {
 			textFieldsPanel.add(lowerTextField);
 
 		} catch (IOException e) {
-			// TODO logger
-			e.printStackTrace();
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 
 		topPanelLeft.add(imagePanel);

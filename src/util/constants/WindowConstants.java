@@ -34,6 +34,9 @@ public class WindowConstants {
 	/** The title for the game table window. */
 	public static final String GAME_TABLE_WINDOW = "UNO Game Simulation | GAME TABLE";
 
+	/** Window title for the "You won" message in the UNO game simulation. */
 	public static final String YOU_WON_WINDOW_TITLE = "UNO Game Simulation | YOU WON! :)";
+
+	/** Window title for the "You lost" message in the UNO game simulation. */
 	public static final String YOU_LOST_WINDOW_TITLE = "UNO Game Simulation | YOU LOST! :(";
 }

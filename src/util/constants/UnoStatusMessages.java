@@ -1,9 +1,13 @@
 package util.constants;
 
 import model.enums.Color;
-import model.player.Bot;
 import model.player.Player;
 
+/**
+ * The UnoStatusMessages class provides static methods to generate various
+ * messages related to the status of Uno gameplay, such as card plays and player
+ * actions.
+ */
 public class UnoStatusMessages {
 
 	/**
@@ -62,8 +66,8 @@ public class UnoStatusMessages {
 	 * 
 	 * @return The status message.
 	 */
-	public static String getGameStartMessage() {
-		return "The game has started.";
+	public static String getGameStartMessage(String gameSessionName) {
+		return "The game " + gameSessionName + " has started.";
 	}
 
 	/**
@@ -137,6 +141,13 @@ public class UnoStatusMessages {
 		return "A Draw Four card was played. " + player.getUser().getUsername() + " drew 4 cards.";
 	}
 
+	/**
+	 * Returns the message when a player draws cards as a penalty.
+	 * 
+	 * @param player    The player who draws cards.
+	 * @param cardCount The number of cards drawn.
+	 * @return The message indicating the draw penalty.
+	 */
 	public static String getDrawPenaltyMessage(Player player, int cardCount) {
 		return "A Draw " + cardCount + " card was played. " + player.getUser().getUsername() + " drew " + cardCount
 				+ " cards.";
@@ -243,31 +254,81 @@ public class UnoStatusMessages {
 		return player.getUser().getUsername() + " played a Reverse card.";
 	}
 
+	/**
+	 * Returns the message when a Wild Card is played.
+	 * 
+	 * @param player        The player who played the card.
+	 * @param cardName      The name of the Wild Card.
+	 * @param selectedColor The color chosen by the player.
+	 * @return The message indicating the Wild Card played.
+	 */
 	public static String getWildCardPlayedMessage(Player player, String cardName, Color selectedColor) {
 		return String.format("%s played a Wild Card (%s)\nand chose %s color.", player.getUser().getUsername(),
 				cardName, selectedColor.toString());
 	}
 
+	/**
+	 * Returns the message when a Skip Card is played.
+	 * 
+	 * @param player   The player who played the card.
+	 * @param cardName The name of the Skip Card.
+	 * @return The message indicating the Skip Card played.
+	 */
 	public static String getSkipCardPlayedMessage(Player player, String cardName) {
 		return String.format("%s played a Skip Card (%s).", player.getUser().getUsername(), cardName);
 	}
 
+	/**
+	 * Returns the message when a Reverse Card is played.
+	 * 
+	 * @param player   The player who played the card.
+	 * @param cardName The name of the Reverse Card.
+	 * @return The message indicating the Reverse Card played.
+	 */
 	public static String getReverseCardPlayedMessage(Player player, String cardName) {
 		return String.format("%s played a Reverse Card (%s).", player.getUser().getUsername(), cardName);
 	}
 
+	/**
+	 * Returns the message when a Draw Two Card is played.
+	 * 
+	 * @param player   The player who played the card.
+	 * @param cardName The name of the Draw Two Card.
+	 * @return The message indicating the Draw Two Card played.
+	 */
 	public static String getDrawTwoCardPlayedMessage(Player player, String cardName) {
 		return String.format("%s played a Draw Two Card (%s).", player.getUser().getUsername(), cardName);
 	}
 
+	/**
+	 * Returns the message when a Draw Four Card is played.
+	 * 
+	 * @param player   The player who played the card.
+	 * @param cardName The name of the Draw Four Card.
+	 * @return The message indicating the Draw Four Card played.
+	 */
 	public static String getDrawFourCardPlayedMessage(Player player, String cardName) {
 		return String.format("%s played a Draw Four Card (%s).", player.getUser().getUsername(), cardName);
 	}
 
+	/**
+	 * Returns the message when an Action Card other than Wild, Skip, Reverse, Draw
+	 * Two, or Draw Four is played.
+	 * 
+	 * @param player   The player who played the card.
+	 * @param cardName The name of the Action Card.
+	 * @return The message indicating the Action Card played.
+	 */
 	public static String getActionCardPlayedMessage(Player player, String cardName) {
 		return String.format("%s played an Action Card (%s).", player.getUser().getUsername(), cardName);
 	}
 
+	/**
+	 * Returns the message when a player is skipped due to having no playable cards.
+	 * 
+	 * @param player The player who was skipped.
+	 * @return The message indicating the skipped turn.
+	 */
 	public static String getSkippedTurnMessage(Player player) {
 		return player.getUser().getUsername() + " skipped due to no playable cards.";
 	}

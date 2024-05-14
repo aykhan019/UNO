@@ -21,11 +21,14 @@ import data.UserRepository;
 import data.UserStatisticRepository;
 import model.user.User;
 import model.user.UserStatistic;
+import util.constants.ErrorConstants;
+import util.constants.FileConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UIColors;
 import util.constants.UITexts;
 import util.constants.WindowConstants;
+import util.helpers.Logger;
 import util.session.CurrentUserManager;
 import util.ui.UIUtils;
 import view.CustomComponents.ButtonWithImage;
@@ -116,8 +119,7 @@ public class LeaderboardView extends BaseFrame {
 			displayLeaderboard();
 			setVisible(true);
 		} catch (IOException e) {
-			// TODO logger
-			e.printStackTrace();
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 	}
 
@@ -173,8 +175,8 @@ public class LeaderboardView extends BaseFrame {
 								column);
 						((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
 
-						if (row == finalCurrentUserRow ) { // && row > 2 
-							c.setForeground(UIColors.OFFBLACK); 
+						if (row == finalCurrentUserRow) { // && row > 2
+							c.setForeground(UIColors.OFFBLACK);
 						} else {
 							if (row == 0) {
 								c.setForeground(new Color(249, 161, 20)); // Gold
@@ -186,7 +188,7 @@ public class LeaderboardView extends BaseFrame {
 								c.setForeground(Color.WHITE);
 							}
 						}
-	
+
 						return c;
 					}
 				};
@@ -208,8 +210,7 @@ public class LeaderboardView extends BaseFrame {
 						dispose();
 						new UserProfileView(selectedUser, LeaderboardView.class);
 					} catch (IOException ex) {
-						// TODO: Handle exception
-						ex.printStackTrace();
+						Logger.log(ErrorConstants.USER_DOES_NOT_EXIST, FileConstants.ERROR_LOGS_FILE_PATH);
 					}
 				}
 			}

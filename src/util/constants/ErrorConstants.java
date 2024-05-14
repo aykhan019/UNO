@@ -27,4 +27,10 @@ public class ErrorConstants {
 
 	/** Error message for invalid email format. */
 	public static final String INVALID_EMAIL_FORMAT = "Invalid email format. Please enter a valid email address.";
+
+	/** Error message indicating that bots do not exist. */
+	public static final String BOTS_DO_NOT_EXIST = "Bots do not exist!";
+
+	/** Error message indicating an error loading the background image. */
+	public static final String BACKGROUND_IMAGE_ERROR = "Error loading background image!";
 }

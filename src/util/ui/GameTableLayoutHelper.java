@@ -2,11 +2,26 @@ package util.ui;
 
 import java.awt.GridBagConstraints;
 
+/**
+ * Helper class for generating grid layout constraints for a game table.
+ */
 public class GameTableLayoutHelper {
-
+	/**
+	 * Number of rows in the grid layout.
+	 */
 	public final static int rows = 4;
+
+	/**
+	 * Number of columns in the grid layout.
+	 */
 	public final static int columns = 5;
 
+	/**
+	 * Generates grid layout constraints based on the number of players.
+	 * 
+	 * @param numberOfPlayers the number of players in the game
+	 * @return a 2D array of GridBagConstraints representing the layout constraints
+	 */
 	public static GridBagConstraints[][] generateLayout(int numberOfPlayers) {
 		GridBagConstraints[][] gbcArray = new GridBagConstraints[rows][columns];
 
@@ -18,41 +33,40 @@ public class GameTableLayoutHelper {
 				gbc.gridwidth = 1;
 				gbc.gridheight = 1;
 
-				if (numberOfPlayers == 10) { // 10 PLAYERS
+				if (numberOfPlayers == 10) {
 					if (i == 1 && j == 1) {
-						gbc.gridwidth = 3; // colspan
-						gbc.gridheight = 2; // rowspan
+						gbc.gridwidth = 3;
+						gbc.gridheight = 2;
 					} else if (i == 3 && j == 0) {
-						gbc.gridwidth = 5; // colspan
-						gbc.gridheight = 1; // rowspan
+						gbc.gridwidth = 5;
+						gbc.gridheight = 1;
 					}
 				}
-				if (numberOfPlayers > 3 && numberOfPlayers < 10) { // 4,5,6,7,8, 9 PLAYERS
+				if (numberOfPlayers > 3 && numberOfPlayers < 10) {
 					if (i == 1 && j == 1) {
-						gbc.gridwidth = 3; // colspan
-						gbc.gridheight = 2; // rowspan
+						gbc.gridwidth = 3;
+						gbc.gridheight = 2;
 					}
 				}
-				if (numberOfPlayers == 3) { // 3 PLAYERS
+				if (numberOfPlayers == 3) {
 					if (i == 1 && j == 0) {
-						gbc.gridwidth = 5; // colspan
-						gbc.gridheight = 2; // rowspan
+						gbc.gridwidth = 5;
+						gbc.gridheight = 2;
 					} else if (i == 3 && j == 0) {
-						gbc.gridwidth = 5; // colspan
-						gbc.gridheight = 1; // rowspan
+						gbc.gridwidth = 5;
+						gbc.gridheight = 1;
 					}
 				}
-				if (numberOfPlayers == 2) { // 2 PLAYERS
+				if (numberOfPlayers == 2) {
 					if (i == 1 && j == 0) {
-						gbc.gridwidth = 5; // colspan
-						gbc.gridheight = 2; // rowspan
+						gbc.gridwidth = 5;
+						gbc.gridheight = 2;
 					}
 				}
 
-				// Player Panel
 				if (i == 3 && j == 0) {
-					gbc.gridwidth = 5; // colspan
-					gbc.gridheight = 1; // rowspan
+					gbc.gridwidth = 5;
+					gbc.gridheight = 1;
 				}
 
 				gbc.weightx = 1.0 / columns;
@@ -66,6 +80,12 @@ public class GameTableLayoutHelper {
 		return gbcArray;
 	}
 
+	/**
+	 * Gets the grid cells occupied by the player panels.
+	 * 
+	 * @param numberOfPlayers the number of players in the game
+	 * @return a 2D array representing the grid cells occupied by player panels
+	 */
 	public static int[][] getPlayerCells(int numberOfPlayers) {
 
 		switch (numberOfPlayers) {

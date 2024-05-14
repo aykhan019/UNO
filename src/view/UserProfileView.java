@@ -10,10 +10,12 @@ import java.io.IOException;
 import data.UserStatisticRepository;
 import model.user.User;
 import model.user.UserStatistic;
+import util.constants.FileConstants;
 import util.constants.FontConstants;
 import util.constants.ImagePath;
 import util.constants.UITexts;
 import util.constants.WindowConstants;
+import util.helpers.Logger;
 import util.ui.UIUtils;
 import view.CustomComponents.ButtonWithImage;
 import view.CustomComponents.GradientPanel;
@@ -59,8 +61,7 @@ public class UserProfileView extends BaseFrame {
 			this.userStatistic = UserStatisticRepository.getUserStatisticById(user.getId());
 		} catch (IOException e) {
 			this.userStatistic = new UserStatistic(user.getId());
-			// TODO logger
-			e.printStackTrace();
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 		}
 		initializeFrame();
 	}
@@ -190,8 +191,7 @@ public class UserProfileView extends BaseFrame {
 	    try {
 	        this.previousPage.getConstructor().newInstance();
 	    } catch (Exception e) {
-	    	// TODO logger
-	        e.printStackTrace(); 
+			Logger.log(e.getMessage(), FileConstants.ERROR_LOGS_FILE_PATH);
 	    }
 	}
 }
