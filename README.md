@@ -14,16 +14,17 @@ This is a Java project implementing a simulation of the Uno card game. It allows
 
 ## Project Overview
 
-In this project, we aimed to practice object-oriented programming (OOP) in Java and learn how to work with GUIs using Java Swing Framework. The game includes functionalities such as card drawing, playing, special card effects, game save/load, user registration, login, leaderboard, and game statistics tracking.
+In this project, I aimed to practice object-oriented programming (OOP) in Java and learn how to work with GUIs using Java Swing Framework. The game includes functionalities such as card drawing, playing, user registration, login, leaderboard, and game statistics tracking.
+
+This project was developed as part of the COMP132: Advanced Programming course at Koç University.
 
 ## Features
 
 - User registration and login
 - Main menu with leaderboard and user statistics
-- Game session creation and continuation
+- Game session creation
 - Gameplay with card interactions and special effects
 - Interaction with AI opponents
-- Game save/load functionality
 - Logging of game events for review and analysis
 
 ## Installation
@@ -39,14 +40,13 @@ To run the Uno Card Game Simulation, follow these steps:
 Once the project is running, you can:
 
 - Register and log in with unique usernames and passwords.
-- Create or join game sessions.
+- Create game sessions.
 - Play Uno against computer-controlled opponents.
-- Save and load game sessions.
 - View user statistics and leaderboard.
 
 ## Demo
 
-[Watch the demonstration video on YouTube](<insert-youtube-video-link>)
+[Watch the demonstration video on YouTube](<youtube-video>)
 
 ## Contributing
 
