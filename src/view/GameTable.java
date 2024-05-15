@@ -118,16 +118,10 @@ public class GameTable extends BaseFrame {
 		gameSession.setSessionName(gameSessionName);
 		initializeFrame();
 		mainCells = GameTableLayoutHelper.getPlayerCells(numberOfPlayers);
-
-		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
-		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
-		gameSession.getPlayers().get(0).addCard(new ActionCard(model.enums.Color.RED, ActionType.REVERSE));
-
 		addBotPlayerElements();
 		paintUserCell();
 		addCenterElements();
 		paintUserCell();
-
 	}
 
 	/**
