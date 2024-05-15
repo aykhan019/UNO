@@ -16,6 +16,7 @@ import model.GameSession;
 import model.cards.ActionCard;
 import model.cards.Card;
 import model.cards.WildCard;
+import model.enums.ActionType;
 import model.enums.WildType;
 import model.player.Bot;
 import model.player.Player;
@@ -117,10 +118,16 @@ public class GameTable extends BaseFrame {
 		gameSession.setSessionName(gameSessionName);
 		initializeFrame();
 		mainCells = GameTableLayoutHelper.getPlayerCells(numberOfPlayers);
+
+		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		gameSession.getPlayers().get(0).addCard(new WildCard(WildType.WILD_DRAW_4));
+		gameSession.getPlayers().get(0).addCard(new ActionCard(model.enums.Color.RED, ActionType.REVERSE));
+
 		addBotPlayerElements();
 		paintUserCell();
 		addCenterElements();
 		paintUserCell();
+
 	}
 
 	/**
@@ -257,7 +264,15 @@ public class GameTable extends BaseFrame {
 							card.getName(), selectedColor));
 					handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
 					if (((WildCard) card).getWildType() == WildType.WILD_DRAW_4) {
-						gameSession.setCurrentPlayerIndex(gameSession.getGameDirection());
+//						var index = this.getNextIndex(gameSession.getCurrentPlayerIndex(),
+//								gameSession.getGameDirection(), gameSession.getPlayers().size());
+//						if (gameSession.getGameDirection() == -1) {
+//							index -= 1;
+//						}
+//						gameSession.setCurrentPlayerIndex(index);
+						gameSession.setCurrentPlayerIndex(0);
+						skipNextPlayer();
+
 					} else {
 						gameSession.setCurrentPlayerIndex(0);
 					}
@@ -268,7 +283,7 @@ public class GameTable extends BaseFrame {
 							UnoStatusMessages.getPlayerPlayCardMessage(gameSession.getCurrentPlayer(), card.getName()));
 				}
 				drawPileButtonClicked = true;
-				if (gameSession.getCurrentPlayer().getCardCount() == 1) {
+				if (gameSession.getPlayers().get(0).getCardCount() == 1) {
 					addStatusMessage(UnoStatusMessages.getPlayerCalledUnoMessage(gameSession.getCurrentPlayer()));
 				}
 
