@@ -264,15 +264,8 @@ public class GameTable extends BaseFrame {
 							card.getName(), selectedColor));
 					handleWildCard(gameSession.getCurrentPlayer(), (WildCard) card);
 					if (((WildCard) card).getWildType() == WildType.WILD_DRAW_4) {
-//						var index = this.getNextIndex(gameSession.getCurrentPlayerIndex(),
-//								gameSession.getGameDirection(), gameSession.getPlayers().size());
-//						if (gameSession.getGameDirection() == -1) {
-//							index -= 1;
-//						}
-//						gameSession.setCurrentPlayerIndex(index);
 						gameSession.setCurrentPlayerIndex(0);
 						skipNextPlayer();
-
 					} else {
 						gameSession.setCurrentPlayerIndex(0);
 					}

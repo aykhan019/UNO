@@ -40,3 +40,349 @@ and chose RED color.
 and chose RED color.
 2024-05-14 22:00:34 - A Draw 4 card was played. Bot Hedwig drew 4 cards.
 2024-05-14 22:00:34 - aykhan's turn.
+2024-05-15 12:10:16 - The game First Game has started.
+2024-05-15 12:10:16 - admin's turn.
+2024-05-15 12:10:22 - admin played a YELLOW 9.
+2024-05-15 12:10:22 - Bot Elmo's turn.
+2024-05-15 12:10:25 - Bot Elmo played a YELLOW 5.
+2024-05-15 12:10:25 - Bot Hedwig's turn.
+2024-05-15 12:10:29 - Bot Hedwig played a YELLOW 7.
+2024-05-15 12:10:29 - Bot Mikayla's turn.
+2024-05-15 12:10:32 - Bot Mikayla played a YELLOW 5.
+2024-05-15 12:10:32 - Bot Dante's turn.
+2024-05-15 12:10:35 - Bot Dante played a Reverse Card (YELLOW REVERSE).
+2024-05-15 12:10:35 - Bot Mikayla's turn.
+2024-05-15 12:10:38 - Bot Mikayla played an Action Card (YELLOW DRAW_2).
+2024-05-15 12:10:38 - A Draw 2 card was played. Bot Hedwig drew 2 cards.
+2024-05-15 12:10:39 - Bot Elmo's turn.
+2024-05-15 12:10:42 - Bot Elmo has drawn 1 card(s).
+2024-05-15 12:10:42 - Bot Elmo played an Action Card (YELLOW DRAW_2).
+2024-05-15 12:10:42 - A Draw 2 card was played. admin drew 2 cards.
+2024-05-15 12:10:42 - Bot Dante's turn.
+2024-05-15 12:10:45 - Bot Dante has drawn 5 card(s).
+2024-05-15 12:10:45 - Bot Dante played a YELLOW 1.
+2024-05-15 12:10:45 - Bot Mikayla's turn.
+2024-05-15 12:10:48 - Bot Mikayla has drawn 2 card(s).
+2024-05-15 12:10:48 - Bot Mikayla played a Wild Card (WILD)
+and chose YELLOW color.
+2024-05-15 12:10:48 - Bot Hedwig's turn.
+2024-05-15 12:10:51 - Bot Hedwig has drawn 2 card(s).
+2024-05-15 12:10:51 - Bot Hedwig played a YELLOW 6.
+2024-05-15 12:10:52 - Bot Elmo's turn.
+2024-05-15 12:10:55 - Bot Elmo has drawn 1 card(s).
+2024-05-15 12:10:55 - Bot Elmo played a YELLOW 3.
+2024-05-15 12:10:55 - admin's turn.
+2024-05-15 12:10:57 - admin played a YELLOW 8.
+2024-05-15 12:10:57 - Bot Dante's turn.
+2024-05-15 12:11:00 - Bot Dante has drawn 9 card(s).
+2024-05-15 12:11:00 - Bot Dante played a YELLOW 0.
+2024-05-15 12:11:01 - Bot Mikayla's turn.
+2024-05-15 12:11:04 - Bot Mikayla has drawn 9 card(s).
+2024-05-15 12:11:04 - Bot Mikayla played a Wild Card (WILD)
+and chose BLUE color.
+2024-05-15 12:11:04 - Bot Hedwig's turn.
+2024-05-15 12:11:07 - Bot Hedwig has drawn 3 card(s).
+2024-05-15 12:11:07 - Bot Hedwig played a Skip Card (BLUE SKIP).
+2024-05-15 12:11:08 - admin's turn.
+2024-05-15 12:11:10 - admin played a BLUE 8.
+2024-05-15 12:11:10 - Bot Dante's turn.
+2024-05-15 12:11:13 - Bot Dante played a Reverse Card (BLUE REVERSE).
+2024-05-15 12:11:14 - admin's turn.
+2024-05-15 12:11:17 - admin played a BLUE 6.
+2024-05-15 12:11:17 - Bot Elmo's turn.
+2024-05-15 12:11:20 - Bot Elmo played a BLUE 3.
+2024-05-15 12:11:20 - Bot Hedwig's turn.
+2024-05-15 12:11:23 - Bot Hedwig played a BLUE 5.
+2024-05-15 12:11:23 - Bot Mikayla's turn.
+2024-05-15 12:11:26 - Bot Mikayla played an Action Card (BLUE DRAW_2).
+2024-05-15 12:11:26 - A Draw 2 card was played. Bot Dante drew 2 cards.
+2024-05-15 12:11:27 - admin's turn.
+2024-05-15 12:11:29 - admin played a BLUE 2.
+2024-05-15 12:11:29 - Bot Elmo's turn.
+2024-05-15 12:11:32 - Bot Elmo has drawn 1 card(s).
+2024-05-15 12:11:32 - Bot Elmo played a Reverse Card (BLUE REVERSE).
+2024-05-15 12:11:32 - admin's turn.
+2024-05-15 12:11:44 - admin played a BLUE 0.
+2024-05-15 12:11:44 - Bot Dante's turn.
+2024-05-15 12:11:47 - Bot Dante played a BLUE 7.
+2024-05-15 12:11:48 - Bot Mikayla's turn.
+2024-05-15 12:11:51 - Bot Mikayla played a BLUE 5.
+2024-05-15 12:11:51 - Bot Hedwig's turn.
+2024-05-15 12:11:54 - Bot Hedwig has drawn 1 card(s).
+2024-05-15 12:11:54 - Bot Hedwig played a GREEN 5.
+2024-05-15 12:11:54 - Bot Elmo's turn.
+2024-05-15 12:11:57 - Bot Elmo played a GREEN 6.
+2024-05-15 12:11:58 - admin's turn.
+2024-05-15 12:12:00 - admin played a GREEN 6.
+2024-05-15 12:12:00 - Bot Dante's turn.
+2024-05-15 12:12:03 - Bot Dante played a GREEN 3.
+2024-05-15 12:12:03 - Bot Mikayla's turn.
+2024-05-15 12:12:06 - Bot Mikayla played a GREEN 3.
+2024-05-15 12:12:07 - Bot Hedwig's turn.
+2024-05-15 12:12:10 - Bot Hedwig played a Skip Card (GREEN SKIP).
+2024-05-15 12:12:10 - admin's turn.
+2024-05-15 12:12:12 - admin played a GREEN 7.
+2024-05-15 12:12:12 - Bot Dante's turn.
+2024-05-15 12:12:15 - Bot Dante played an Action Card (GREEN DRAW_2).
+2024-05-15 12:12:15 - A Draw 2 card was played. Bot Mikayla drew 2 cards.
+2024-05-15 12:12:16 - Bot Hedwig's turn.
+2024-05-15 12:12:19 - Bot Hedwig played a GREEN 2.
+2024-05-15 12:12:19 - Bot Elmo's turn.
+2024-05-15 12:12:22 - Bot Elmo has drawn 5 card(s).
+2024-05-15 12:12:22 - Bot Elmo played a GREEN 9.
+2024-05-15 12:12:22 - admin's turn.
+2024-05-15 12:12:28 - admin played a GREEN 8.
+2024-05-15 12:12:28 - Bot Dante's turn.
+2024-05-15 12:12:31 - Bot Dante played a GREEN 1.
+2024-05-15 12:12:32 - Bot Mikayla's turn.
+2024-05-15 12:12:35 - Bot Mikayla played a GREEN 7.
+2024-05-15 12:12:35 - Bot Hedwig's turn.
+2024-05-15 12:12:38 - Bot Hedwig played a GREEN 0.
+2024-05-15 12:12:38 - Bot Elmo's turn.
+2024-05-15 12:12:41 - Bot Elmo has drawn 1 card(s).
+2024-05-15 12:12:41 - Bot Elmo played a GREEN 9.
+2024-05-15 12:12:42 - admin's turn.
+2024-05-15 12:12:43 - admin played a GREEN 4.
+2024-05-15 12:12:43 - Bot Dante's turn.
+2024-05-15 12:12:46 - Bot Dante has drawn 1 card(s).
+2024-05-15 12:12:46 - Bot Dante played a Wild Card (WILD_DRAW_4)
+and chose BLUE color.
+2024-05-15 12:12:46 - A Draw 4 card was played. Bot Mikayla drew 4 cards.
+2024-05-15 12:12:47 - Bot Hedwig's turn.
+2024-05-15 12:12:50 - Bot Hedwig has drawn 6 card(s).
+2024-05-15 12:12:50 - Bot Hedwig played a Skip Card (BLUE SKIP).
+2024-05-15 12:12:50 - admin's turn.
+2024-05-15 12:12:58 - admin played a BLUE 8.
+2024-05-15 12:12:58 - Bot Dante's turn.
+2024-05-15 12:13:01 - Bot Dante played a BLUE 1.
+2024-05-15 12:13:01 - Bot Mikayla's turn.
+2024-05-15 12:13:04 - Bot Mikayla played a BLUE 4.
+2024-05-15 12:13:05 - Bot Hedwig's turn.
+2024-05-15 12:13:08 - Bot Hedwig has drawn 3 card(s).
+2024-05-15 12:13:08 - Bot Hedwig played a GREEN 4.
+2024-05-15 12:13:08 - Bot Elmo's turn.
+2024-05-15 12:13:11 - Bot Elmo has drawn 2 card(s).
+2024-05-15 12:13:11 - Bot Elmo played a RED 4.
+2024-05-15 12:13:11 - admin's turn.
+2024-05-15 12:13:13 - admin played a YELLOW 4.
+2024-05-15 12:13:13 - Bot Dante's turn.
+2024-05-15 12:13:16 - Bot Dante has drawn 3 card(s).
+2024-05-15 12:13:16 - Bot Dante played a YELLOW 4.
+2024-05-15 12:13:17 - Bot Mikayla's turn.
+2024-05-15 12:13:20 - Bot Mikayla played a YELLOW 1.
+2024-05-15 12:13:20 - Bot Hedwig's turn.
+2024-05-15 12:13:23 - Bot Hedwig played a Skip Card (YELLOW SKIP).
+2024-05-15 12:13:24 - admin's turn.
+2024-05-15 12:13:26 - admin played a YELLOW 8.
+2024-05-15 12:13:26 - Bot Dante's turn.
+2024-05-15 12:13:29 - Bot Dante has drawn 1 card(s).
+2024-05-15 12:13:29 - Bot Dante played a Skip Card (YELLOW SKIP).
+2024-05-15 12:13:29 - Bot Hedwig's turn.
+2024-05-15 12:13:32 - Bot Hedwig played a Reverse Card (YELLOW REVERSE).
+2024-05-15 12:13:33 - Bot Mikayla's turn.
+2024-05-15 12:13:36 - Bot Mikayla has drawn 2 card(s).
+2024-05-15 12:13:36 - Bot Mikayla played a YELLOW 9.
+2024-05-15 12:13:36 - Bot Dante's turn.
+2024-05-15 12:13:39 - Bot Dante has drawn 1 card(s).
+2024-05-15 12:13:39 - Bot Dante played a YELLOW 8.
+2024-05-15 12:13:40 - admin's turn.
+2024-05-15 12:13:44 - admin played a Wild Card (WILD_DRAW_4)
+and chose GREEN color.
+2024-05-15 12:13:44 - A Draw 4 card was played. Bot Elmo drew 4 cards.
+2024-05-15 12:13:44 - Bot Hedwig's turn.
+2024-05-15 12:13:47 - Bot Hedwig played a Reverse Card (GREEN REVERSE).
+2024-05-15 12:13:47 - Bot Elmo's turn.
+2024-05-15 12:13:51 - Bot Elmo has drawn 2 card(s).
+2024-05-15 12:13:51 - Bot Elmo played a Skip Card (GREEN SKIP).
+2024-05-15 12:13:51 - Bot Dante's turn.
+2024-05-15 12:13:54 - Bot Dante has drawn 1 card(s).
+2024-05-15 12:13:54 - Bot Dante played a Wild Card (WILD)
+and chose BLUE color.
+2024-05-15 12:13:55 - Bot Mikayla's turn.
+2024-05-15 12:13:58 - Bot Mikayla played an Action Card (BLUE DRAW_2).
+2024-05-15 12:13:58 - A Draw 2 card was played. Bot Hedwig drew 2 cards.
+2024-05-15 12:13:59 - Bot Elmo's turn.
+2024-05-15 12:14:02 - Bot Elmo played a BLUE 2.
+2024-05-15 12:14:02 - admin's turn.
+2024-05-15 12:14:07 - admin played a BLUE 5.
+2024-05-15 12:14:07 - Bot Dante's turn.
+2024-05-15 12:14:10 - Bot Dante played a BLUE 7.
+2024-05-15 12:14:10 - Bot Mikayla's turn.
+2024-05-15 12:14:13 - Bot Mikayla has drawn 3 card(s).
+2024-05-15 12:14:13 - Bot Mikayla played a BLUE 8.
+2024-05-15 12:14:14 - Bot Hedwig's turn.
+2024-05-15 12:14:17 - Bot Hedwig has drawn 1 card(s).
+2024-05-15 12:14:17 - Bot Hedwig played a BLUE 2.
+2024-05-15 12:14:17 - Bot Elmo's turn.
+2024-05-15 12:14:20 - Bot Elmo played a BLUE 5.
+2024-05-15 12:14:21 - admin's turn.
+2024-05-15 12:14:26 - admin played a Wild Card (WILD_DRAW_4)
+and chose GREEN color.
+2024-05-15 12:14:26 - A Draw 4 card was played. Bot Dante drew 4 cards.
+2024-05-15 12:15:31 - The game wdaw has started.
+2024-05-15 12:15:31 - admin's turn.
+2024-05-15 12:15:39 - admin played a BLUE 9.
+2024-05-15 12:15:39 - Bot Mendez's turn.
+2024-05-15 12:15:42 - Bot Mendez played a BLUE 4.
+2024-05-15 12:15:42 - Bot Hedwig's turn.
+2024-05-15 12:15:45 - Bot Hedwig has drawn 1 card(s).
+2024-05-15 12:15:45 - Bot Hedwig played a Wild Card (WILD_DRAW_4)
+and chose BLUE color.
+2024-05-15 12:15:45 - A Draw 4 card was played. Bot Elmo drew 4 cards.
+2024-05-15 12:15:46 - Bot Hasad's turn.
+2024-05-15 12:15:49 - Bot Hasad has drawn 1 card(s).
+2024-05-15 12:15:49 - Bot Hasad played a BLUE 7.
+2024-05-15 12:15:49 - admin's turn.
+2024-05-15 12:15:53 - admin played a Wild Card (WILD_DRAW_4)
+and chose YELLOW color.
+2024-05-15 12:15:53 - A Draw 4 card was played. Bot Mendez drew 4 cards.
+2024-05-15 12:15:54 - Bot Hedwig's turn.
+2024-05-15 12:15:57 - Bot Hedwig has drawn 3 card(s).
+2024-05-15 12:15:57 - Bot Hedwig played a YELLOW 9.
+2024-05-15 12:15:57 - Bot Elmo's turn.
+2024-05-15 12:16:00 - Bot Elmo played a YELLOW 8.
+2024-05-15 12:16:01 - Bot Hasad's turn.
+2024-05-15 12:16:04 - Bot Hasad played a Reverse Card (YELLOW REVERSE).
+2024-05-15 12:16:04 - Bot Elmo's turn.
+2024-05-15 12:16:07 - Bot Elmo played a YELLOW 6.
+2024-05-15 12:16:07 - Bot Hedwig's turn.
+2024-05-15 12:16:10 - Bot Hedwig has drawn 3 card(s).
+2024-05-15 12:16:10 - Bot Hedwig played a Wild Card (WILD_DRAW_4)
+and chose GREEN color.
+2024-05-15 12:16:10 - A Draw 4 card was played. Bot Mendez drew 4 cards.
+2024-05-15 12:16:11 - admin's turn.
+2024-05-15 12:18:03 - The game w3er has started.
+2024-05-15 12:18:03 - admin's turn.
+2024-05-15 12:18:07 - admin played an Action Card (RED DRAW_2).
+2024-05-15 12:18:07 - A Draw 2 card was played. Bot Hasad drew 2 cards.
+2024-05-15 12:18:08 - Bot Mendez's turn.
+2024-05-15 12:18:11 - Bot Mendez has drawn 2 card(s).
+2024-05-15 12:18:11 - Bot Mendez played a RED 5.
+2024-05-15 12:18:11 - Bot Roth's turn.
+2024-05-15 12:18:14 - Bot Roth played a RED 6.
+2024-05-15 12:18:14 - Bot Elmo's turn.
+2024-05-15 12:18:17 - Bot Elmo has drawn 2 card(s).
+2024-05-15 12:18:17 - Bot Elmo played a Wild Card (WILD)
+and chose YELLOW color.
+2024-05-15 12:18:17 - admin's turn.
+2024-05-15 12:18:32 - admin played a YELLOW 1.
+2024-05-15 12:18:32 - Bot Hasad's turn.
+2024-05-15 12:18:35 - Bot Hasad played a YELLOW 6.
+2024-05-15 12:18:35 - Bot Mendez's turn.
+2024-05-15 12:18:38 - Bot Mendez played a Skip Card (YELLOW SKIP).
+2024-05-15 12:18:39 - Bot Elmo's turn.
+2024-05-15 12:18:42 - Bot Elmo played a YELLOW 5.
+2024-05-15 12:18:42 - admin's turn.
+2024-05-15 12:18:51 - admin played an Action Card (YELLOW DRAW_2).
+2024-05-15 12:18:51 - A Draw 2 card was played. Bot Hasad drew 2 cards.
+2024-05-15 12:18:51 - Bot Mendez's turn.
+2024-05-15 12:18:54 - Bot Mendez played a YELLOW 3.
+2024-05-15 12:18:54 - Bot Roth's turn.
+2024-05-15 12:20:21 - The game 34534 has started.
+2024-05-15 12:20:21 - admin's turn.
+2024-05-15 12:20:35 - The game 234234 has started.
+2024-05-15 12:20:35 - admin's turn.
+2024-05-15 12:20:54 - The game 234234 has started.
+2024-05-15 12:20:54 - admin's turn.
+2024-05-15 12:21:02 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:21:02 - A Draw 4 card was played. Bot Mikayla drew 4 cards.
+2024-05-15 12:21:02 - Bot Joel's turn.
+2024-05-15 12:21:05 - Bot Joel played a RED 6.
+2024-05-15 12:21:06 - Bot Mendez's turn.
+2024-05-15 12:21:09 - Bot Mendez played a RED 7.
+2024-05-15 12:21:09 - admin's turn.
+2024-05-15 12:21:11 - admin played a Reverse Card (RED REVERSE).
+2024-05-15 12:21:11 - Bot Mendez's turn.
+2024-05-15 12:21:14 - Bot Mendez played a RED 1.
+2024-05-15 12:21:14 - Bot Joel's turn.
+2024-05-15 12:21:17 - Bot Joel played a RED 8.
+2024-05-15 12:21:17 - Bot Hasad's turn.
+2024-05-15 12:21:20 - Bot Hasad played a Skip Card (RED SKIP).
+2024-05-15 12:21:21 - admin's turn.
+2024-05-15 12:21:24 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:21:24 - A Draw 4 card was played. Bot Mendez drew 4 cards.
+2024-05-15 12:21:24 - Bot Hasad's turn.
+2024-05-15 12:21:27 - Bot Hasad has drawn 16 card(s).
+2024-05-15 12:21:27 - Bot Hasad played a RED 4.
+2024-05-15 12:21:28 - Bot Mikayla's turn.
+2024-05-15 12:22:04 - The game 32123 has started.
+2024-05-15 12:22:04 - admin's turn.
+2024-05-15 12:22:07 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:22:07 - A Draw 4 card was played. Bot Joel drew 4 cards.
+2024-05-15 12:22:07 - Bot Joelle's turn.
+2024-05-15 12:22:10 - Bot Joelle played a Skip Card (RED SKIP).
+2024-05-15 12:22:11 - admin's turn.
+2024-05-15 12:23:17 - The game 234432 has started.
+2024-05-15 12:23:17 - admin's turn.
+2024-05-15 12:23:19 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:23:19 - A Draw 4 card was played. Bot Mikayla drew 4 cards.
+2024-05-15 12:23:19 - Bot Hasad's turn.
+2024-05-15 12:23:31 - The game 34234 has started.
+2024-05-15 12:23:31 - admin's turn.
+2024-05-15 12:23:33 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:23:33 - A Draw 4 card was played. Bot Joel drew 4 cards.
+2024-05-15 12:23:33 - Bot Joel's turn.
+2024-05-15 12:35:58 - The game 5 has started.
+2024-05-15 12:35:58 - admin's turn.
+2024-05-15 12:35:59 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:35:59 - A Draw 4 card was played. Bot Hasad drew 4 cards.
+2024-05-15 12:36:00 - Bot Roth's turn.
+2024-05-15 12:36:03 - Bot Roth played a RED 8.
+2024-05-15 12:36:03 - Bot Dante's turn.
+2024-05-15 12:36:06 - Bot Dante played a RED 4.
+2024-05-15 12:36:06 - Bot Joelle's turn.
+2024-05-15 12:36:09 - Bot Joelle has drawn 7 card(s).
+2024-05-15 12:36:09 - Bot Joelle played a GREEN 4.
+2024-05-15 12:36:10 - admin's turn.
+2024-05-15 12:36:13 - admin played a Reverse Card (GREEN REVERSE).
+2024-05-15 12:36:13 - Bot Joelle's turn.
+2024-05-15 12:36:16 - Bot Joelle played a Skip Card (GREEN SKIP).
+2024-05-15 12:36:17 - Bot Roth's turn.
+2024-05-15 12:36:20 - Bot Roth played a GREEN 9.
+2024-05-15 12:36:20 - Bot Hasad's turn.
+2024-05-15 12:36:23 - Bot Hasad played an Action Card (GREEN DRAW_2).
+2024-05-15 12:36:23 - A Draw 2 card was played. admin drew 2 cards.
+2024-05-15 12:36:23 - Bot Joelle's turn.
+2024-05-15 12:36:26 - Bot Joelle played a GREEN 3.
+2024-05-15 12:36:27 - Bot Dante's turn.
+2024-05-15 12:36:30 - Bot Dante played a GREEN 6.
+2024-05-15 12:36:30 - Bot Roth's turn.
+2024-05-15 12:36:33 - Bot Roth has drawn 1 card(s).
+2024-05-15 12:36:33 - Bot Roth played a GREEN 5.
+2024-05-15 12:36:33 - Bot Hasad's turn.
+2024-05-15 12:36:36 - Bot Hasad played a GREEN 2.
+2024-05-15 12:36:36 - admin's turn.
+2024-05-15 12:36:52 - admin played a Wild Card (WILD_DRAW_4)
+and chose RED color.
+2024-05-15 12:36:52 - A Draw 4 card was played. Bot Joelle drew 4 cards.
+2024-05-15 12:36:52 - Bot Dante's turn.
+2024-05-15 12:36:55 - Bot Dante played a RED 6.
+2024-05-15 12:36:55 - Bot Roth's turn.
+2024-05-15 12:36:58 - Bot Roth has drawn 1 card(s).
+2024-05-15 12:36:58 - Bot Roth played a Wild Card (WILD)
+and chose GREEN color.
+2024-05-15 12:36:58 - Bot Hasad's turn.
+2024-05-15 12:37:01 - Bot Hasad played a Wild Card (WILD_DRAW_4)
+and chose GREEN color.
+2024-05-15 12:37:01 - A Draw 4 card was played. admin drew 4 cards.
+2024-05-15 12:37:02 - Bot Joelle's turn.
+2024-05-15 12:37:05 - Bot Joelle played a Wild Card (WILD)
+and chose YELLOW color.
+2024-05-15 12:37:05 - Bot Dante's turn.
+2024-05-15 12:37:08 - Bot Dante has drawn 4 card(s).
+2024-05-15 12:37:08 - Bot Dante played an Action Card (YELLOW DRAW_2).
+2024-05-15 12:37:08 - A Draw 2 card was played. Bot Roth drew 2 cards.
+2024-05-15 12:37:09 - Bot Hasad's turn.
+2024-05-15 12:37:12 - Bot Hasad played a YELLOW 4.
+2024-05-15 12:37:12 - admin's turn.
+2024-05-15 12:37:14 - admin played a Wild Card (WILD)
+and chose YELLOW color.
+2024-05-15 12:37:14 - Bot Joelle's turn.
+2024-05-15 12:37:17 - Bot Joelle played a YELLOW 7.
+2024-05-15 12:37:17 - Bot Dante's turn.
