@@ -46,7 +46,7 @@ Once the project is running, you can:
 
 ## Demo
 
-[Watch the demonstration video on YouTube](<youtube-video>)
+[Watch the demonstration video on YouTube]([<youtube-video>](https://www.youtube.com/watch?v=pNG8FPtT-xk&ab_channel=MyProjects))
 
 ## Contributing
 
