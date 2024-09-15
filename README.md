@@ -31,7 +31,7 @@ This project was developed as part of the COMP132: Advanced Programming course a
 
 To run the Uno Card Game Simulation, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/Drongo-J/UNO`
+1. Clone the repository: `git clone https://github.com/aykhan019/UNO`
 2. Open the project in your preferred Java IDE.
 3. Build and run the project.
 
