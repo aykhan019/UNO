@@ -45,8 +45,7 @@ Once the project is running, you can:
 - View user statistics and leaderboard.
 
 ## Demo
-
-[Watch the demonstration video on YouTube](https://www.youtube.com/watch?v=pNG8FPtT-xk&ab_channel=MyProjects)
+[![UNO Card Game Demo](https://media.aykhan.net/thumbnails/projects/uno.jpg)](https://www.youtube.com/watch?v=pNG8FPtT-xk)
 
 ## Contributing
 
